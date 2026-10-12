@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "efectos", "front": "Efectos principales de Azure Policy", "back": "Deny, Audit, Append, Modify, AuditIfNotExists, DeployIfNotExists y Disabled." },
+    { "id": "remediacion", "front": "Modify y DeployIfNotExists", "back": "Necesitan una managed identity en la asignación; los recursos existentes se corrigen con una remediation task." },
+    { "id": "donotenforce", "front": "Enforcement mode DoNotEnforce", "back": "La política evalúa y muestra el cumplimiento, pero no bloquea: sirve para probar su impacto." },
+    { "id": "locks-rol", "front": "¿Quién puede gestionar locks?", "back": "Quien tenga `Microsoft.Authorization/locks/*`: Owner y User Access Administrator (no Contributor)." },
+    { "id": "readonly", "front": "Efecto inesperado de ReadOnly", "back": "Bloquea operaciones POST como listar las claves de una storage account." },
+    { "id": "move", "front": "`az resource move` y regiones", "back": "Mueve a otro resource group o suscripción, sin cambiar la región. Para otra región: Azure Resource Mover o volver a desplegar." },
+    { "id": "budgets", "front": "Budgets de Cost Management", "back": "Importe por periodo y scope; alertas sobre gasto real o previsto; pueden llamar a un action group." }
+  ]
+}

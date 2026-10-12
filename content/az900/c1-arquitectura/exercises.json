@@ -1,0 +1,119 @@
+{
+  "exercises": [
+    {
+      "id": "que-es-zona",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Qué es una availability zone?",
+      "hints": ["Está dentro de una región y es independiente de las demás."],
+      "options": [
+        { "id": "a", "text": "Uno o más centros de datos físicamente separados dentro de una región, con energía, refrigeración y red independientes", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Una región de respaldo en otro país", "correct": false, "explanation": "Eso se parece más a un region pair (y suele estar en la misma geografía)." },
+        { "id": "c", "text": "Un grupo de racks que comparten fuente de alimentación", "correct": false, "explanation": "Eso es un fault domain de un availability set." }
+      ],
+      "solution": { "answer": "Centros de datos separados dentro de una región", "explanation": "Las regiones con zonas tienen un mínimo de tres. Desplegar en varias zonas protege frente a la caída de un centro de datos." }
+    },
+    {
+      "id": "zone-redundant",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un servicio replica automáticamente tus datos entre las zonas de la región sin que elijas ninguna. ¿Cómo se llama ese tipo de servicio?",
+      "hints": ["Hay tres tipos: zonal, zone-redundant y no regional."],
+      "options": [
+        { "id": "a", "text": "Zonal", "correct": false, "explanation": "En un servicio zonal eliges tú una zona concreta." },
+        { "id": "b", "text": "Zone-redundant", "correct": true, "explanation": "Correcto: la plataforma replica entre zonas." },
+        { "id": "c", "text": "No regional", "correct": false, "explanation": "Los no regionales no dependen de zonas ni regiones (p. ej. Entra ID)." }
+      ],
+      "solution": { "answer": "Zone-redundant", "explanation": "Ejemplo: el almacenamiento ZRS copia los datos entre zonas de forma automática." }
+    },
+    {
+      "id": "region-pair",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Qué ventajas da usar la región emparejada (region pair) como secundaria? (marca todas)",
+      "hints": ["Son dos: una sobre actualizaciones y otra sobre desastres.", "El failover no es automático."],
+      "options": [
+        { "id": "a", "text": "Las actualizaciones planificadas se aplican de forma escalonada entre ambas regiones", "correct": true, "explanation": "Correcto: actualizaciones secuenciales." },
+        { "id": "b", "text": "Ante un desastre en toda una geografía, una región de cada pareja tiene prioridad de recuperación", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Failover automático de todos tus recursos sin configurar nada", "correct": false, "explanation": "No: el plan de recuperación lo diseñas tú." },
+        { "id": "d", "text": "Todas las regiones tienen pareja", "correct": false, "explanation": "Muchas regiones nuevas no tienen pareja." }
+      ],
+      "solution": { "answer": "Actualizaciones secuenciales y recuperación prioritaria", "explanation": "Además, casi todas las parejas están en la misma geografía, lo que ayuda con la residencia de datos." }
+    },
+    {
+      "id": "sovereign",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Quién opera Azure en China?",
+      "hints": ["Es una de las sovereign regions."],
+      "options": [
+        { "id": "a", "text": "Microsoft, igual que el resto de regiones", "correct": false, "explanation": "Azure en China no la opera Microsoft directamente." },
+        { "id": "b", "text": "21Vianet", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "El gobierno de EE. UU.", "correct": false, "explanation": "Azure Government es otra sovereign region, para organismos de EE. UU." }
+      ],
+      "solution": { "answer": "21Vianet", "explanation": "Las sovereign regions (Azure Government y Azure en China) están aisladas de la instancia principal de Azure por motivos legales y de cumplimiento." }
+    },
+    {
+      "id": "orden-jerarquia",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa la jerarquía de Azure, de mayor a menor.",
+      "template": "{{n1}} > {{n2}} > {{n3}} > recursos",
+      "hints": ["El nivel más alto agrupa suscripciones.", "Escribe los nombres en inglés y en plural."],
+      "blanks": [
+        { "id": "n1", "accepted": ["management groups", "Management groups"] },
+        { "id": "n2", "accepted": ["subscriptions", "Subscriptions", "suscripciones", "Suscripciones"] },
+        { "id": "n3", "accepted": ["resource groups", "Resource groups"] }
+      ],
+      "solution": { "answer": "management groups > subscriptions > resource groups > recursos", "explanation": "Lo que asignas en un nivel (roles, políticas) se hereda hacia abajo." }
+    },
+    {
+      "id": "borrar-rg",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Borras el resource group `rg-pruebas`, que contiene dos VMs y una storage account. ¿Qué ocurre?",
+      "hints": ["Un resource group es un contenedor con ciclo de vida común."],
+      "options": [
+        { "id": "a", "text": "Se borran el grupo y todos sus recursos", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Los recursos pasan al resource group por defecto", "correct": false, "explanation": "No existe un grupo por defecto al que se muevan." },
+        { "id": "c", "text": "Azure no deja borrar un grupo que tiene recursos", "correct": false, "explanation": "Sí deja (salvo que haya un resource lock); borra todo." }
+      ],
+      "solution": { "answer": "Se borra todo", "explanation": "Por eso conviene agrupar recursos con el mismo ciclo de vida, y proteger lo crítico con resource locks." }
+    },
+    {
+      "id": "suscripcion-limites",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Para qué dos cosas actúa una suscripción como límite? (marca todas)",
+      "hints": ["Una tiene que ver con el dinero y otra con los permisos."],
+      "options": [
+        { "id": "a", "text": "Facturación", "correct": true, "explanation": "Correcto: cada suscripción tiene su factura." },
+        { "id": "b", "text": "Control de acceso", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Ubicación geográfica de los recursos", "correct": false, "explanation": "Una suscripción puede tener recursos en cualquier región." }
+      ],
+      "solution": { "answer": "Facturación y acceso", "explanation": "Se suelen separar suscripciones por entorno o departamento para repartir costes y permisos." }
+    },
+    {
+      "id": "mg-niveles",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cuántos niveles de profundidad admite un árbol de management groups (sin contar la raíz ni el nivel de suscripciones)?",
+      "hints": ["Es un número menor que diez."],
+      "options": [
+        { "id": "a", "text": "3", "correct": false, "explanation": "Son más." },
+        { "id": "b", "text": "6", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "10 000", "correct": false, "explanation": "10 000 es el número máximo de management groups por directorio." }
+      ],
+      "solution": { "answer": "6", "explanation": "Hasta seis niveles, hasta 10 000 management groups por directorio y un único padre por cada management group o suscripción." }
+    },
+    {
+      "id": "cmd-group-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea con la Azure CLI el resource group `rg-tienda` en la región `westeurope`.",
+      "hints": ["Es `az group create`.", "Necesita el nombre (`--name` o `-n`) y la región (`--location` o `-l`)."],
+      "accepted": ["az group create --name rg-tienda --location westeurope"],
+      "solution": { "answer": "az group create --name rg-tienda --location westeurope", "explanation": "La región del resource group es donde se guardan sus metadatos; sus recursos pueden estar en otras regiones." }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Suscripciones y gobernanza",
+  "summary": "Azure Policy, resource locks, tags, mover recursos, management groups, budgets y Azure Advisor en la práctica.",
+  "level": 2,
+  "order": 1,
+  "xp": 120,
+  "prereqs": []
+}

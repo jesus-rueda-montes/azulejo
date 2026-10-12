@@ -1,0 +1,8 @@
+{
+  "title": "Storage en la práctica",
+  "summary": "Crear y proteger storage accounts: redundancia, cifrado, firewall, SAS y claves; blobs, file shares, niveles, lifecycle, soft delete y versioning.",
+  "level": 2,
+  "order": 2,
+  "xp": 120,
+  "prereqs": []
+}

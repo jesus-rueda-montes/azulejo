@@ -1,0 +1,12 @@
+{
+  "cards": [
+    { "id": "plan", "front": "App Service plan", "back": "Define región, SO, tier e instancias. Todas sus apps comparten esas instancias; se escala el plan." },
+    { "id": "tiers", "front": "Tiers de App Service", "back": "Free/Shared (pruebas), Basic (manual), Standard (slots y autoescalado), Premium, Isolated (App Service Environment)." },
+    { "id": "scale", "front": "Scale up frente a scale out", "back": "Scale up: cambiar de tier. Scale out: más instancias (manual o autoescalado)." },
+    { "id": "slots", "front": "Deployment slots", "back": "Desde Standard. Despliegas en staging y haces swap a production sin cortes; otro swap lo deshace. Slot settings: no viajan con el swap." },
+    { "id": "dominio", "front": "Dominio personalizado en App Service", "back": "CNAME (o A) hacia la app + TXT `asuid`. No en Free. Managed certificate gratuito; HTTPS Only." },
+    { "id": "red-appservice", "front": "Redes de App Service", "back": "Entrada: access restrictions y private endpoint. Salida hacia la VNet: VNet integration." },
+    { "id": "acr", "front": "Azure Container Registry", "back": "Basic, Standard, Premium (geo-replicación, private endpoints). `az acr build` construye en Azure. Mejor managed identity + AcrPull que admin user." },
+    { "id": "aci-aca", "front": "ACI frente a Container Apps", "back": "ACI: contenedores sueltos, container groups, sin autoescalado. Container Apps: environment, ingress, revisions y escalado (incluso a cero)." }
+  ]
+}

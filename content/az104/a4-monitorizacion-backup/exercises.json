@@ -1,0 +1,141 @@
+{
+  "exercises": [
+    {
+      "id": "diagnostic-settings",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres consultar con KQL los logs de acceso de una storage account, pero el workspace está vacío. ¿Qué falta?",
+      "hints": ["Los logs de los recursos no se guardan solos."],
+      "options": [
+        { "id": "a", "text": "Un diagnostic setting que envíe esos logs al Log Analytics workspace", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Una alerta de métrica", "correct": false, "explanation": "Las alertas avisan; no recogen logs." },
+        { "id": "c", "text": "Un action group", "correct": false, "explanation": "Define qué hacer cuando salta una alerta." }
+      ],
+      "solution": { "answer": "Diagnostic setting", "explanation": "Destinos posibles: Log Analytics workspace, storage account o Event Hub." }
+    },
+    {
+      "id": "cmd-workspace",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea el Log Analytics workspace `law-tienda` en `rg-monitor` con una retención de 90 días.",
+      "hints": ["Es `az monitor log-analytics workspace create`.", "La retención va en `--retention-time`."],
+      "accepted": ["az monitor log-analytics workspace create --name law-tienda --resource-group rg-monitor --retention-time 90"],
+      "solution": { "answer": "az monitor log-analytics workspace create -n law-tienda -g rg-monitor --retention-time 90", "explanation": "Más retención, más coste: ajústala a lo que necesites consultar." }
+    },
+    {
+      "id": "kql-basico",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa la consulta KQL que cuenta, por usuario, las operaciones de borrado del último día.",
+      "template": "AzureActivity\n| {{filtro}} TimeGenerated > ago(1d)\n| where OperationNameValue has \"delete\"\n| {{agrega}} total = count() by Caller",
+      "hints": ["Un operador filtra filas.", "El otro agrega por una columna."],
+      "blanks": [
+        { "id": "filtro", "accepted": ["where"] },
+        { "id": "agrega", "accepted": ["summarize"] }
+      ],
+      "solution": { "answer": "where · summarize", "explanation": "`where` filtra y `summarize ... by` agrega. Otros habituales: `project`, `order by`, `take`." }
+    },
+    {
+      "id": "cmd-metric-alert",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea en `rg-web` la alerta de métrica `cpu-alta` sobre el recurso `/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-web/providers/Microsoft.Compute/virtualMachines/vm-web-01`, con la condición `avg Percentage CPU > 90` y el action group `ag-guardia`.",
+      "hints": ["Es `az monitor metrics alert create` con `--scopes` y `--condition`.", "La condición lleva espacios: ponla entre comillas. El action group va en `--action`."],
+      "accepted": ["az monitor metrics alert create --name cpu-alta --resource-group rg-web --scopes /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-web/providers/Microsoft.Compute/virtualMachines/vm-web-01 --condition \"avg Percentage CPU > 90\" --action ag-guardia"],
+      "solution": { "answer": "az monitor metrics alert create -n cpu-alta -g rg-web --scopes /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-web/providers/Microsoft.Compute/virtualMachines/vm-web-01 --condition \"avg Percentage CPU > 90\" --action ag-guardia", "explanation": "Con `--window-size` y `--evaluation-frequency` ajustas el periodo y cada cuánto se evalúa." }
+    },
+    {
+      "id": "processing-rule",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Cada domingo de 02:00 a 04:00 hay mantenimiento y no quieres recibir avisos. ¿Qué configuras?",
+      "hints": ["Actúa sobre las alertas ya disparadas."],
+      "options": [
+        { "id": "a", "text": "Una alert processing rule con supresión programada", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Borrar las alertas el domingo y crearlas el lunes", "correct": false, "explanation": "Laborioso y propenso a olvidos." },
+        { "id": "c", "text": "Un diagnostic setting", "correct": false, "explanation": "Envía logs; no silencia alertas." }
+      ],
+      "solution": { "answer": "Alert processing rule", "explanation": "También sirven para añadir un action group a todas las alertas de un ámbito." }
+    },
+    {
+      "id": "severidad",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Qué severidad de alerta es la más grave en Azure Monitor?",
+      "hints": ["La escala va de 0 a 4."],
+      "options": [
+        { "id": "a", "text": "Sev 0", "correct": true, "explanation": "Correcto: crítica." },
+        { "id": "b", "text": "Sev 4", "correct": false, "explanation": "Es la informativa." }
+      ],
+      "solution": { "answer": "Sev 0", "explanation": "0 crítica, 1 error, 2 advertencia, 3 informativa, 4 detallada." }
+    },
+    {
+      "id": "cmd-backup-vm",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Protege la VM `vm-web-01` con el vault `rsv-tienda` (grupo `rg-backup`) usando la política `DefaultPolicy`.",
+      "hints": ["Es `az backup protection enable-for-vm`.", "Vault en `--vault-name`, VM en `--vm` y política en `--policy-name`."],
+      "accepted": ["az backup protection enable-for-vm --vault-name rsv-tienda --resource-group rg-backup --vm vm-web-01 --policy-name DefaultPolicy"],
+      "solution": { "answer": "az backup protection enable-for-vm -v rsv-tienda -g rg-backup --vm vm-web-01 -p DefaultPolicy", "explanation": "Si la VM está en otro resource group, se indica su ID completo en `--vm`." }
+    },
+    {
+      "id": "cmd-backup-jobs",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Lista los trabajos de backup fallidos del vault `rsv-tienda` (grupo `rg-backup`).",
+      "hints": ["Es `az backup job list`.", "Filtra con `--status`."],
+      "accepted": ["az backup job list --vault-name rsv-tienda --resource-group rg-backup --status Failed"],
+      "solution": { "answer": "az backup job list -v rsv-tienda -g rg-backup --status Failed", "explanation": "Revisarlos a diario (o con una alerta) evita descubrir el problema al ir a restaurar." }
+    },
+    {
+      "id": "tipo-vault",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres hacer copia de los blobs de una storage account. ¿Qué vault usas?",
+      "hints": ["Hay dos tipos de vault."],
+      "options": [
+        { "id": "a", "text": "Backup vault", "correct": true, "explanation": "Correcto: blobs, discos, PostgreSQL y AKS." },
+        { "id": "b", "text": "Recovery Services vault", "correct": false, "explanation": "Es para VMs, SQL/SAP HANA en VM, Azure Files y MARS." }
+      ],
+      "solution": { "answer": "Backup vault", "explanation": "Recovery Services vault: VMs y Azure Files. Backup vault: blobs y discos, entre otros." }
+    },
+    {
+      "id": "vault-region",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: puedes hacer copia de una VM de West Europe en un Recovery Services vault de North Europe.",
+      "hints": ["La región del vault importa."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "El vault debe estar en la misma región que la VM." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Para tener las copias también en otra región, usa un vault GRS con Cross Region Restore." }
+    },
+    {
+      "id": "rpo-rto",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa las siglas de recuperación ante desastres.",
+      "template": "Datos que puedes perder (en tiempo): {{perdida}}\nTiempo máximo hasta recuperar el servicio: {{tiempo}}",
+      "hints": ["Recovery Point Objective y Recovery Time Objective."],
+      "blanks": [
+        { "id": "perdida", "accepted": ["RPO"] },
+        { "id": "tiempo", "accepted": ["RTO"] }
+      ],
+      "solution": { "answer": "RPO · RTO", "explanation": "Site Recovery reduce los dos replicando continuamente a otra región." }
+    },
+    {
+      "id": "test-failover",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres comprobar que tu plan de Site Recovery funciona sin afectar a producción. ¿Qué haces?",
+      "hints": ["Hay un failover específico para probar."],
+      "options": [
+        { "id": "a", "text": "Un test failover a una red aislada", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Un failover real y un failback rápido", "correct": false, "explanation": "Afecta a producción." },
+        { "id": "c", "text": "Restaurar un backup en la misma región", "correct": false, "explanation": "No prueba la replicación ni el plan de recuperación." }
+      ],
+      "solution": { "answer": "Test failover", "explanation": "Levanta las réplicas en una red aislada; después se limpian." }
+    }
+  ]
+}

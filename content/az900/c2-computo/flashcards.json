@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "vm", "front": "¿Cuándo usar Azure Virtual Machines?", "back": "Lift-and-shift, control total del SO o software sin alternativa PaaS. Es IaaS: los parches son tuyos." },
+    { "id": "vmss", "front": "Virtual Machine Scale Sets", "back": "Grupo de VMs idénticas con escalado automático (por métricas o por horario), gestionadas juntas." },
+    { "id": "availability-set", "front": "Availability set", "back": "Reparte VMs en hasta 3 fault domains (fallos de hardware) y 20 update domains (mantenimiento). Sin coste extra." },
+    { "id": "avd", "front": "Azure Virtual Desktop", "back": "Escritorios y apps Windows en la nube, accesibles desde cualquier dispositivo, con Windows multisesión." },
+    { "id": "contenedores", "front": "ACI, Container Apps y AKS", "back": "ACI: un contenedor, lo más simple. Container Apps: serverless con autoescalado. AKS: Kubernetes gestionado." },
+    { "id": "functions", "front": "Azure Functions", "back": "Serverless por eventos (HTTP, colas, blobs, temporizador). En el plan de consumo pagas por ejecución." },
+    { "id": "app-service", "front": "Azure App Service", "back": "PaaS para web apps, API apps, WebJobs y back ends móviles, en Windows o Linux." }
+  ]
+}

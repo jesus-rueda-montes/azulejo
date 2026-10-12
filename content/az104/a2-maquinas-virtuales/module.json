@@ -1,0 +1,8 @@
+{
+  "title": "Máquinas virtuales en la práctica",
+  "summary": "Crear y operar VMs con la CLI: tamaños, discos, cifrado en el host, zonas y availability sets, mover VMs y scale sets.",
+  "level": 2,
+  "order": 3,
+  "xp": 120,
+  "prereqs": []
+}

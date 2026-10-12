@@ -1,0 +1,8 @@
+{
+  "title": "Entra ID y Azure RBAC",
+  "summary": "Usuarios, grupos, licencias, invitados y SSPR en Microsoft Entra ID; roles de Azure, scopes e interpretación de asignaciones.",
+  "level": 1,
+  "order": 2,
+  "xp": 100,
+  "prereqs": []
+}

@@ -1,0 +1,12 @@
+{
+  "cards": [
+    { "id": "stop-deallocate", "front": "`az vm stop` frente a `az vm deallocate`", "back": "Stop: apagada pero asignada (se paga el cómputo). Deallocate: hardware liberado (no se paga el cómputo; los discos sí)." },
+    { "id": "resize", "front": "Cambiar el tamaño de una VM", "back": "`az vm list-vm-resize-options` y `az vm resize --size`. Reinicia la VM; si el tamaño no está en su clúster, hay que desasignarla." },
+    { "id": "discos", "front": "Roles de disco de una VM", "back": "SO (persistente), datos (persistentes; máximo según tamaño) y temporal (no es managed disk; los datos pueden perderse)." },
+    { "id": "tipos-disco", "front": "Tipos de managed disk", "back": "Ultra Disk, Premium SSD v2, Premium SSD, Standard SSD y Standard HDD." },
+    { "id": "cifrado", "front": "Cifrado de discos de VM", "back": "SSE siempre activo (no cifra temporal ni cachés). Encryption at host: también temporal y cachés. ADE se retira el 15/09/2028." },
+    { "id": "mover-vm", "front": "Mover una VM", "back": "A otro grupo o suscripción: `az resource move` con sus dependencias. A otra región: Azure Resource Mover o Site Recovery." },
+    { "id": "avset-zona", "front": "Availability set y zona de una VM", "back": "Se eligen al crearla. Availability set: hasta 3 fault domains y 20 update domains. No se combinan en la misma VM." },
+    { "id": "vmss", "front": "Virtual Machine Scale Sets", "back": "Orquestación Flexible (recomendada) o Uniform; autoescalado por métricas u horario; actualización Manual, Automatic o Rolling." }
+  ]
+}

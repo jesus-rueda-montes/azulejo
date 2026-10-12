@@ -1,0 +1,128 @@
+{
+  "exercises": [
+    {
+      "id": "cmd-vnet-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea en `rg-red` la VNet `vnet-hub` con el espacio `10.0.0.0/16` y una subnet `snet-app` con `10.0.1.0/24`.",
+      "hints": ["Es `az network vnet create`.", "Usa `--address-prefixes`, `--subnet-name` y `--subnet-prefixes`."],
+      "accepted": ["az network vnet create --name vnet-hub --resource-group rg-red --address-prefixes 10.0.0.0/16 --subnet-name snet-app --subnet-prefixes 10.0.1.0/24"],
+      "solution": { "answer": "az network vnet create -n vnet-hub -g rg-red --address-prefixes 10.0.0.0/16 --subnet-name snet-app --subnet-prefixes 10.0.1.0/24", "explanation": "Más subnets después con `az network vnet subnet create`." }
+    },
+    {
+      "id": "ips-reservadas",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cuántas direcciones puedes asignar a recursos en una subnet /28 (16 direcciones)?",
+      "hints": ["Azure reserva algunas en cada subnet."],
+      "options": [
+        { "id": "a", "text": "11", "correct": true, "explanation": "Correcto: 16 − 5 reservadas." },
+        { "id": "b", "text": "14", "correct": false, "explanation": "Eso sería reservando solo red y broadcast, como en una red clásica." },
+        { "id": "c", "text": "16", "correct": false, "explanation": "Azure reserva 5." }
+      ],
+      "solution": { "answer": "11", "explanation": "Azure reserva la primera dirección, las tres siguientes y la última de cada subnet." }
+    },
+    {
+      "id": "cmd-peering",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Desde `vnet-hub` (grupo `rg-red`), crea el peering `hub-a-spoke1` hacia `vnet-spoke1`, permitiendo el acceso entre VNets.",
+      "hints": ["Es `az network vnet peering create` con `--vnet-name` y `--remote-vnet`.", "Añade `--allow-vnet-access`."],
+      "accepted": ["az network vnet peering create --name hub-a-spoke1 --resource-group rg-red --vnet-name vnet-hub --remote-vnet vnet-spoke1 --allow-vnet-access"],
+      "solution": { "answer": "az network vnet peering create -n hub-a-spoke1 -g rg-red --vnet-name vnet-hub --remote-vnet vnet-spoke1 --allow-vnet-access", "explanation": "Falta el peering de vuelta, desde `vnet-spoke1` hacia `vnet-hub`." }
+    },
+    {
+      "id": "peering-transitivo",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "spoke1 y spoke2 tienen peering con el hub, pero no entre ellas. ¿Pueden comunicarse?",
+      "hints": ["Piensa en la transitividad."],
+      "options": [
+        { "id": "a", "text": "No, salvo que haya un peering entre ellas o un firewall/NVA en el hub que enrute (con UDRs)", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Sí, a través del hub", "correct": false, "explanation": "El peering no es transitivo." },
+        { "id": "c", "text": "Sí, si están en la misma región", "correct": false, "explanation": "La región no cambia la transitividad." }
+      ],
+      "solution": { "answer": "No", "explanation": "El peering no es transitivo." }
+    },
+    {
+      "id": "cmd-udr",
+      "type": "command",
+      "cli": "az",
+      "prompt": "En la route table `rt-app` (grupo `rg-red`), crea la ruta `a-internet` que envía `0.0.0.0/0` al firewall `10.0.0.4`.",
+      "hints": ["Es `az network route-table route create` con `--route-table-name`.", "El next hop es `VirtualAppliance` con `--next-hop-ip-address`."],
+      "accepted": ["az network route-table route create --name a-internet --resource-group rg-red --route-table-name rt-app --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.0.4"],
+      "solution": { "answer": "az network route-table route create -n a-internet -g rg-red --route-table-name rt-app --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.0.4", "explanation": "La route table hay que asociarla a la subnet (`--route-table` en la subnet)." }
+    },
+    {
+      "id": "cmd-nsg-rule",
+      "type": "command",
+      "cli": "az",
+      "prompt": "En el NSG `nsg-app` (grupo `rg-red`), crea la regla `permitir-https` con prioridad `100` que permita la entrada TCP al puerto `443`.",
+      "hints": ["Es `az network nsg rule create` con `--nsg-name` y `--priority`.", "Indica `--direction`, `--access`, `--protocol` y `--destination-port-ranges`."],
+      "accepted": ["az network nsg rule create --name permitir-https --resource-group rg-red --nsg-name nsg-app --priority 100 --direction Inbound --access Allow --protocol Tcp --destination-port-ranges 443"],
+      "solution": { "answer": "az network nsg rule create -n permitir-https -g rg-red --nsg-name nsg-app --priority 100 --direction Inbound --access Allow --protocol Tcp --destination-port-ranges 443", "explanation": "Inbound es el valor por defecto de `--direction`, pero escribirlo deja clara la intención." }
+    },
+    {
+      "id": "nsg-prioridad",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un NSG tiene «Deny TCP 443» con prioridad 200 y «Allow TCP 443» con prioridad 300. ¿Qué ocurre con el tráfico al 443?",
+      "hints": ["Se aplica la primera regla que coincide."],
+      "options": [
+        { "id": "a", "text": "Se deniega: gana la prioridad 200 (número menor)", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Se permite: gana la prioridad 300 (número mayor)", "correct": false, "explanation": "Al revés: menor número, mayor prioridad." },
+        { "id": "c", "text": "Se permite porque Allow siempre gana", "correct": false, "explanation": "Solo cuenta el orden de prioridad." }
+      ],
+      "solution": { "answer": "Se deniega", "explanation": "Las reglas se evalúan de menor a mayor número y se aplica la primera que coincide." }
+    },
+    {
+      "id": "bastion-req",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa los requisitos de Azure Bastion.",
+      "template": "Subnet: {{subnet}} (tamaño /{{mascara}} o mayor)\nIP pública: SKU {{sku}}, estática",
+      "hints": ["La subnet tiene un nombre fijo.", "La máscara es /26."],
+      "blanks": [
+        { "id": "subnet", "accepted": ["AzureBastionSubnet"] },
+        { "id": "mascara", "accepted": ["26"] },
+        { "id": "sku", "accepted": ["Standard"] }
+      ],
+      "solution": { "answer": "AzureBastionSubnet · /26 · Standard", "explanation": "Con Bastion, las VMs no necesitan IP pública." }
+    },
+    {
+      "id": "private-endpoint",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Necesitas que la oficina (conectada por VPN) acceda a una storage account por IP privada. ¿Qué usas?",
+      "hints": ["Uno de los dos mantiene la IP pública del servicio."],
+      "options": [
+        { "id": "a", "text": "Un private endpoint y una private DNS zone", "correct": true, "explanation": "Correcto: IP privada en tu VNet, accesible por VPN." },
+        { "id": "b", "text": "Un service endpoint en la subnet", "correct": false, "explanation": "El servicio sigue con IP pública y on-premises no lo usa." },
+        { "id": "c", "text": "Una UDR hacia la storage account", "correct": false, "explanation": "Las rutas no dan IP privada al servicio." }
+      ],
+      "solution": { "answer": "Private endpoint", "explanation": "La private DNS zone `privatelink.blob.core.windows.net` hace que el nombre resuelva a la IP privada." }
+    },
+    {
+      "id": "cmd-ip-flow",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Con Network Watcher, comprueba si la VM `vm-web-01` (grupo `rg-web`) acepta tráfico TCP de entrada desde `203.0.113.10:50000` a su IP `10.0.1.4:443`.",
+      "hints": ["Es `az network watcher test-ip-flow`.", "`--local` es la IP:puerto de la VM y `--remote` el otro extremo."],
+      "accepted": ["az network watcher test-ip-flow --vm vm-web-01 --resource-group rg-web --direction Inbound --protocol TCP --local 10.0.1.4:443 --remote 203.0.113.10:50000"],
+      "solution": { "answer": "az network watcher test-ip-flow --vm vm-web-01 -g rg-web --direction Inbound --protocol TCP --local 10.0.1.4:443 --remote 203.0.113.10:50000", "explanation": "Responde Allow o Deny y el nombre de la regla de NSG que decide." }
+    },
+    {
+      "id": "lb-vs-appgw",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Necesitas enviar `/api/*` a un grupo de servidores y `/img/*` a otro, con WAF. ¿Qué servicio usas?",
+      "hints": ["Enrutar por URL es de capa 7."],
+      "options": [
+        { "id": "a", "text": "Application Gateway", "correct": true, "explanation": "Correcto: capa 7, enrutado por ruta y WAF." },
+        { "id": "b", "text": "Azure Load Balancer", "correct": false, "explanation": "Es de capa 4: no ve las URLs." },
+        { "id": "c", "text": "Una UDR", "correct": false, "explanation": "Las rutas trabajan con IPs, no con URLs." }
+      ],
+      "solution": { "answer": "Application Gateway", "explanation": "Load Balancer para TCP/UDP; Application Gateway para HTTP/HTTPS con reglas por ruta o host." }
+    }
+  ]
+}

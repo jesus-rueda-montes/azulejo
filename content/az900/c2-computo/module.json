@@ -1,0 +1,8 @@
+{
+  "title": "Cómputo y hosting de aplicaciones",
+  "summary": "Virtual Machines, scale sets, availability sets, Azure Virtual Desktop, contenedores, Functions y App Service: cuándo usar cada uno.",
+  "level": 2,
+  "order": 1,
+  "xp": 100,
+  "prereqs": []
+}

@@ -1,0 +1,12 @@
+{
+  "cards": [
+    { "id": "entra-id", "front": "Microsoft Entra ID", "back": "Identidad y acceso en la nube: autenticación, SSO y gestión de apps y dispositivos. Entra Connect sincroniza con el AD on-premises." },
+    { "id": "domain-services", "front": "Microsoft Entra Domain Services", "back": "Unión a dominio, GPO, LDAP y Kerberos/NTLM gestionados, sin controladores de dominio propios." },
+    { "id": "mfa", "front": "Factores de MFA", "back": "Algo que sabes (contraseña), algo que tienes (móvil, llave) y algo que eres (biometría)." },
+    { "id": "passwordless", "front": "Opciones passwordless", "back": "Windows Hello for Business, Microsoft Authenticator y llaves de seguridad FIDO2 (passkeys)." },
+    { "id": "conditional", "front": "Conditional Access", "back": "Señales (usuario, ubicación, dispositivo, app, riesgo) → permitir, exigir MFA o bloquear." },
+    { "id": "rbac-roles", "front": "Roles fundamentales de Azure RBAC", "back": "Owner (todo y da acceso), Contributor (gestiona, no da acceso), Reader (ver), User Access Administrator (gestiona acceso)." },
+    { "id": "zero-trust", "front": "Principios de Zero Trust", "back": "Verificar explícitamente, mínimo privilegio y asumir la brecha." },
+    { "id": "defender", "front": "Microsoft Defender for Cloud", "back": "Postura de seguridad (secure score, recomendaciones) y protección frente a amenazas en Azure, on-premises y otras nubes." }
+  ]
+}

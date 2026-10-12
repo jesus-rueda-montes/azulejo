@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "region", "front": "¿Qué es una región de Azure?", "back": "Un área geográfica con uno o más centros de datos unidos por una red de baja latencia. Es lo que eliges al crear un recurso." },
+    { "id": "zona", "front": "Availability zone", "back": "Centros de datos físicamente separados dentro de una región, con energía, refrigeración y red propias. Mínimo tres por región." },
+    { "id": "pair", "front": "Ventajas de un region pair", "back": "Actualizaciones secuenciales, recuperación prioritaria y residencia de datos en la misma geografía. No hay failover automático." },
+    { "id": "sovereign", "front": "Sovereign regions", "back": "Azure Government (EE. UU.) y Azure en China (operada por 21Vianet): aisladas por cumplimiento legal." },
+    { "id": "jerarquia", "front": "Jerarquía de Azure", "back": "Management groups → suscripciones → resource groups → recursos. Roles y políticas se heredan hacia abajo." },
+    { "id": "rg", "front": "Reglas de los resource groups", "back": "Un recurso en un solo grupo, no se anidan, y borrar el grupo borra todo su contenido." },
+    { "id": "arm", "front": "Azure Resource Manager (ARM)", "back": "La capa de despliegue y gestión por la que pasan todas las peticiones: portal, CLI, PowerShell y API." }
+  ]
+}

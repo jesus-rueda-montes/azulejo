@@ -1,0 +1,10 @@
+{
+  "cards": [
+    { "id": "consumo", "front": "Modelo basado en el consumo", "back": "Pagas solo lo que usas, sin inversión inicial: gasto OpEx en vez de CapEx." },
+    { "id": "escalado", "front": "Escalar vertical frente a horizontal", "back": "Vertical (scale up): más CPU/RAM en la misma máquina. Horizontal (scale out): más máquinas." },
+    { "id": "elasticidad", "front": "Escalabilidad frente a elasticidad", "back": "Escalabilidad: poder crecer. Elasticidad: crecer y decrecer automáticamente según la demanda." },
+    { "id": "modelos-servicio", "front": "Ejemplos de IaaS, PaaS y SaaS en Azure", "back": "IaaS: Virtual Machines. PaaS: App Service, Azure SQL Database. SaaS: Microsoft 365." },
+    { "id": "responsabilidad", "front": "¿Qué es siempre del cliente en la responsabilidad compartida?", "back": "Los datos, los dispositivos y las cuentas e identidades. Lo físico (centro de datos, red, hosts) es siempre de Microsoft." },
+    { "id": "modelos-nube", "front": "Nube pública, privada e híbrida", "back": "Pública: compartida, del proveedor. Privada: de una sola organización. Híbrida: ambas conectadas." }
+  ]
+}

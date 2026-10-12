@@ -1,0 +1,105 @@
+{
+  "exercises": [
+    {
+      "id": "capex-opex",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Una empresa deja de comprar servidores y pasa a pagar una factura mensual por las VMs que usa en Azure. ¿Qué cambio de gasto ha hecho?",
+      "hints": ["Uno de los gastos se paga por adelantado y el otro a medida que se consume."],
+      "options": [
+        { "id": "a", "text": "De CapEx a OpEx", "correct": true, "explanation": "Correcto: deja la inversión inicial (CapEx) por el pago continuo por consumo (OpEx)." },
+        { "id": "b", "text": "De OpEx a CapEx", "correct": false, "explanation": "Es al revés: comprar servidores es CapEx." },
+        { "id": "c", "text": "Ninguno: ambos son CapEx", "correct": false, "explanation": "La factura mensual de la nube es gasto operativo." }
+      ],
+      "solution": { "answer": "De CapEx a OpEx", "explanation": "La nube sigue un modelo basado en el consumo: sin inversión inicial y pagando lo que se usa, es decir, OpEx." }
+    },
+    {
+      "id": "elasticidad",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Una web pasa automáticamente de 2 a 30 instancias cuando sube el tráfico y vuelve a 2 cuando baja. ¿Qué ventaja de la nube describe?",
+      "hints": ["La clave está en la palabra «automáticamente» y en que también baja."],
+      "options": [
+        { "id": "a", "text": "Elasticidad", "correct": true, "explanation": "Correcto: ajustar la capacidad automáticamente a la demanda, en ambos sentidos." },
+        { "id": "b", "text": "Alta disponibilidad", "correct": false, "explanation": "La alta disponibilidad es seguir en servicio pese a los fallos." },
+        { "id": "c", "text": "Predictibilidad de costes", "correct": false, "explanation": "Tiene que ver con prever el gasto, no con escalar." }
+      ],
+      "solution": { "answer": "Elasticidad", "explanation": "La escalabilidad es la capacidad de crecer; la elasticidad es hacerlo de forma automática según la carga, hacia arriba y hacia abajo." }
+    },
+    {
+      "id": "vertical-horizontal",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Cambiar una VM de 4 a 16 vCPU es escalar…",
+      "hints": ["¿Se añaden máquinas o se agranda la que hay?"],
+      "options": [
+        { "id": "a", "text": "Verticalmente (scale up)", "correct": true, "explanation": "Correcto: misma máquina, más recursos." },
+        { "id": "b", "text": "Horizontalmente (scale out)", "correct": false, "explanation": "Escalar horizontalmente es añadir más máquinas." }
+      ],
+      "solution": { "answer": "Verticalmente", "explanation": "Vertical = más CPU/RAM en la misma máquina; horizontal = más instancias." }
+    },
+    {
+      "id": "iaas-paas-saas",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un equipo quiere desplegar su API sin gestionar sistemas operativos ni parches, pero escribiendo y desplegando su propio código. ¿Qué modelo de servicio encaja?",
+      "hints": ["Necesitan una plataforma, no una aplicación terminada ni máquinas virtuales."],
+      "options": [
+        { "id": "a", "text": "IaaS", "correct": false, "explanation": "En IaaS el cliente gestiona el sistema operativo y sus parches." },
+        { "id": "b", "text": "PaaS", "correct": true, "explanation": "Correcto: el proveedor gestiona la plataforma y tú despliegas el código. Ejemplo: App Service." },
+        { "id": "c", "text": "SaaS", "correct": false, "explanation": "SaaS es una aplicación ya hecha; no despliegas tu código." }
+      ],
+      "solution": { "answer": "PaaS", "explanation": "PaaS (App Service, Azure SQL Database…) te da una plataforma gestionada: tú solo te ocupas de tu aplicación y tus datos." }
+    },
+    {
+      "id": "responsabilidad",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "Según el modelo de responsabilidad compartida, ¿qué es SIEMPRE responsabilidad del cliente, sea IaaS, PaaS o SaaS? (marca todas)",
+      "hints": ["Son tres cosas.", "Piensa en lo que el proveedor nunca puede controlar por ti."],
+      "options": [
+        { "id": "a", "text": "La información y los datos", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Los dispositivos (móviles y PCs)", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Las cuentas e identidades", "correct": true, "explanation": "Correcto." },
+        { "id": "d", "text": "El centro de datos físico", "correct": false, "explanation": "El centro de datos físico es siempre responsabilidad de Microsoft." },
+        { "id": "e", "text": "El sistema operativo", "correct": false, "explanation": "Depende del modelo: es del cliente en IaaS y del proveedor en PaaS y SaaS." }
+      ],
+      "solution": { "answer": "Datos, dispositivos e identidades", "explanation": "Lo físico (centro de datos, red y hosts) es siempre de Microsoft; los datos, los dispositivos y las cuentas e identidades, siempre del cliente." }
+    },
+    {
+      "id": "hibrida",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un hospital mantiene sus historiales clínicos en su centro de datos por normativa, pero ejecuta su web pública en Azure y conecta ambos entornos. ¿Qué modelo de nube usa?",
+      "hints": ["Combina dos modelos."],
+      "options": [
+        { "id": "a", "text": "Pública", "correct": false, "explanation": "No todo está en la nube pública." },
+        { "id": "b", "text": "Privada", "correct": false, "explanation": "La web está en Azure, que es nube pública." },
+        { "id": "c", "text": "Híbrida", "correct": true, "explanation": "Correcto: recursos propios y nube pública conectados." }
+      ],
+      "solution": { "answer": "Híbrida", "explanation": "La nube híbrida combina infraestructura privada (u on-premises) con nube pública, conectadas entre sí." }
+    },
+    {
+      "id": "serverless",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: con Azure Functions (serverless) pagas por las ejecuciones de tu código, sin gestionar servidores.",
+      "hints": ["Serverless no significa que no existan servidores."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": true, "explanation": "Correcto: los servidores existen, pero no los gestionas, y el coste va ligado a la ejecución." },
+        { "id": "f", "text": "Falso", "correct": false, "explanation": "Es justo la idea de serverless." }
+      ],
+      "solution": { "answer": "Verdadero", "explanation": "En serverless el código se ejecuta en respuesta a eventos y el proveedor se ocupa de toda la infraestructura." }
+    },
+    {
+      "id": "fill-reservas",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa: las reservas de Azure dan descuento a cambio de comprometerte a 1 o {{anios}} años de uso.",
+      "template": "Reservas: compromiso de 1 o {{anios}} años",
+      "hints": ["Son dos plazos posibles; el corto es 1 año."],
+      "blanks": [{ "id": "anios", "accepted": ["3", "tres"] }],
+      "solution": { "answer": "3", "explanation": "Las reservas se contratan a 1 o 3 años. A más plazo, más descuento frente al pago por uso." }
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "exercises": [
+    {
+      "id": "cloud-shell",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Estás en el ordenador de un compañero y necesitas ejecutar comandos de Azure sin instalar nada. ¿Qué usas?",
+      "hints": ["Se abre desde el propio portal, en el navegador."],
+      "options": [
+        { "id": "a", "text": "Azure Cloud Shell", "correct": true, "explanation": "Correcto: terminal en el navegador, ya autenticada, con Bash o PowerShell." },
+        { "id": "b", "text": "Azure Arc", "correct": false, "explanation": "Arc gestiona recursos fuera de Azure." },
+        { "id": "c", "text": "Azure Advisor", "correct": false, "explanation": "Advisor da recomendaciones." }
+      ],
+      "solution": { "answer": "Azure Cloud Shell", "explanation": "Cloud Shell incluye la Azure CLI y Azure PowerShell sin instalar nada en el equipo." }
+    },
+    {
+      "id": "cli-vs-ps",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cuál de estos comandos es de Azure PowerShell?",
+      "hints": ["PowerShell usa la forma verbo-sustantivo."],
+      "options": [
+        { "id": "a", "text": "`az vm create`", "correct": false, "explanation": "Es de la Azure CLI." },
+        { "id": "b", "text": "`New-AzVM`", "correct": true, "explanation": "Correcto: cmdlet verbo-sustantivo." }
+      ],
+      "solution": { "answer": "New-AzVM", "explanation": "La CLI usa `az <grupo> <comando>`; PowerShell, cmdlets `Verbo-AzSustantivo`. Ambas pasan por Resource Manager." }
+    },
+    {
+      "id": "arc",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres aplicar Azure Policy y ver en el portal unos servidores que siguen en tu centro de datos y otros que están en otra nube. ¿Qué usas?",
+      "hints": ["Extiende la gestión de Azure fuera de Azure."],
+      "options": [
+        { "id": "a", "text": "Azure Arc", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Azure Migrate", "correct": false, "explanation": "Migrate sirve para trasladar cargas a Azure, no para gestionarlas donde están." },
+        { "id": "c", "text": "ExpressRoute", "correct": false, "explanation": "ExpressRoute es conectividad de red." }
+      ],
+      "solution": { "answer": "Azure Arc", "explanation": "Arc proyecta servidores, Kubernetes y bases de datos externos en Azure para gestionarlos con Policy, RBAC, tags y Monitor." }
+    },
+    {
+      "id": "declarativo",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Qué significa que una plantilla ARM es declarativa?",
+      "hints": ["Piensa en el «qué» frente al «cómo»."],
+      "options": [
+        { "id": "a", "text": "Describes el estado final que quieres y Resource Manager decide cómo y en qué orden crearlo", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Escribes paso a paso los comandos que hay que ejecutar", "correct": false, "explanation": "Eso es un enfoque imperativo (un script)." },
+        { "id": "c", "text": "Solo se puede usar desde el portal", "correct": false, "explanation": "Se despliega desde el portal, la CLI, PowerShell o pipelines." }
+      ],
+      "solution": { "answer": "Describes el estado final", "explanation": "Por eso es idempotente: desplegarla otra vez deja el mismo resultado." }
+    },
+    {
+      "id": "bicep",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: Bicep es un lenguaje más conciso que se compila a una plantilla ARM en JSON.",
+      "hints": ["Bicep no sustituye a Resource Manager."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": true, "explanation": "Correcto." },
+        { "id": "f", "text": "Falso", "correct": false, "explanation": "Bicep compila a ARM JSON." }
+      ],
+      "solution": { "answer": "Verdadero", "explanation": "Bicep tiene la misma capacidad que ARM con una sintaxis más legible." }
+    },
+    {
+      "id": "advisor",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿En qué categorías da recomendaciones Azure Advisor? (marca todas)",
+      "hints": ["Son cinco; aquí aparecen cuatro."],
+      "options": [
+        { "id": "a", "text": "Cost", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Security", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Reliability", "correct": true, "explanation": "Correcto." },
+        { "id": "d", "text": "Performance", "correct": true, "explanation": "Correcto." },
+        { "id": "e", "text": "Licensing", "correct": false, "explanation": "No es una categoría de Advisor; la quinta es Operational Excellence." }
+      ],
+      "solution": { "answer": "Cost, Security, Reliability y Performance", "explanation": "Las cinco categorías son Reliability, Security, Performance, Operational Excellence y Cost." }
+    },
+    {
+      "id": "service-health",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres recibir un aviso cuando Microsoft programe un mantenimiento que afecte a los servicios que usas en West Europe. ¿Dónde lo configuras?",
+      "hints": ["Hay tres niveles: global, tus servicios y cada recurso."],
+      "options": [
+        { "id": "a", "text": "Azure Service Health", "correct": true, "explanation": "Correcto: incidencias, mantenimientos y avisos de tus servicios y regiones." },
+        { "id": "b", "text": "Azure status", "correct": false, "explanation": "Es la vista global de todo Azure, no personalizada." },
+        { "id": "c", "text": "Application Insights", "correct": false, "explanation": "Monitoriza tu aplicación, no la plataforma." }
+      ],
+      "solution": { "answer": "Azure Service Health", "explanation": "Azure status (global), Service Health (tus servicios y regiones) y Resource Health (cada recurso)." }
+    },
+    {
+      "id": "kql",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa: los logs que recoge Azure Monitor se consultan en Log Analytics con el lenguaje...",
+      "template": "Lenguaje de consulta: {{lenguaje}}",
+      "hints": ["Son tres letras.", "Kusto Query Language."],
+      "blanks": [{ "id": "lenguaje", "accepted": ["KQL", "kql"] }],
+      "solution": { "answer": "KQL", "explanation": "KQL (Kusto Query Language) permite filtrar, agregar y unir datos de logs." }
+    },
+    {
+      "id": "app-insights",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres conocer los tiempos de respuesta, la tasa de errores y las dependencias lentas de tu aplicación web. ¿Qué parte de Azure Monitor usas?",
+      "hints": ["Es la herramienta de APM."],
+      "options": [
+        { "id": "a", "text": "Application Insights", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Resource Health", "correct": false, "explanation": "Resource Health indica si un recurso está disponible." },
+        { "id": "c", "text": "Azure Advisor", "correct": false, "explanation": "Advisor da recomendaciones, no telemetría." }
+      ],
+      "solution": { "answer": "Application Insights", "explanation": "Application Insights mide peticiones, tiempos de respuesta, errores, dependencias y vistas de página, y hace pruebas de disponibilidad." }
+    },
+    {
+      "id": "cmd-group-list",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Desde Cloud Shell, lista tus resource groups con salida en forma de tabla.",
+      "hints": ["Es `az group list`.", "El formato de salida se elige con `--output` (o `-o`)."],
+      "accepted": ["az group list --output table"],
+      "solution": { "answer": "az group list --output table", "explanation": "`--output` (o `-o`) acepta json, jsonc, table, tsv, yaml, yamlc y none." }
+    }
+  ]
+}

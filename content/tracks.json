@@ -1,0 +1,14 @@
+{
+  "tracks": [
+    {
+      "id": "az900",
+      "title": "Fundamentos de Azure (AZ-900)",
+      "description": "Conceptos de cloud y los servicios principales de Azure: arquitectura, cómputo, redes, almacenamiento, identidad, costes y gobernanza."
+    },
+    {
+      "id": "az104",
+      "title": "Administración de Azure (AZ-104)",
+      "description": "Administración práctica con la Azure CLI: Entra ID y RBAC, gobernanza, storage, VMs, App Service y contenedores, redes, monitorización y backup."
+    }
+  ]
+}

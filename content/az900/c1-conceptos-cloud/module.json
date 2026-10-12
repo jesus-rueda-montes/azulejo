@@ -1,0 +1,8 @@
+{
+  "title": "Qué es la nube",
+  "summary": "Cloud computing, modelo de consumo, ventajas de la nube, modelos público/privado/híbrido, IaaS/PaaS/SaaS, serverless y responsabilidad compartida.",
+  "level": 1,
+  "order": 1,
+  "xp": 80,
+  "prereqs": []
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Redes en Azure",
+  "summary": "Virtual networks, subnets, peering, Azure DNS, VPN Gateway, ExpressRoute y endpoints públicos y privados.",
+  "level": 2,
+  "order": 2,
+  "xp": 100,
+  "prereqs": []
+}

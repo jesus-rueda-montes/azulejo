@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "cifrado", "front": "Cifrado de una storage account", "back": "Siempre activo en reposo. Claves gestionadas por Microsoft (por defecto) o por el cliente en Key Vault; opcional cifrado de infraestructura." },
+    { "id": "sas-tipos", "front": "Tipos de SAS", "back": "User delegation (Entra ID, recomendado), service (clave, un servicio) y account (clave, uno o varios servicios)." },
+    { "id": "stored-policy", "front": "Stored access policy", "back": "En un contenedor; fija permisos y caducidad de service SAS y permite revocarlos sin regenerar claves. Máximo cinco por contenedor." },
+    { "id": "firewall", "front": "Firewall de una storage account", "back": "`--default-action Deny` + reglas de IP o subnet (service endpoint) + private endpoints + excepción de servicios de confianza." },
+    { "id": "files-permisos", "front": "Permisos de Azure Files por identidad", "back": "Identidad de AD DS, Entra Domain Services o Entra Kerberos; rol de share (SMB Share Reader/Contributor/Elevated Contributor) + NTFS." },
+    { "id": "lifecycle", "front": "Lifecycle management", "back": "Reglas JSON: tierToCool/tierToCold/tierToArchive/delete por días desde modificación, creación o último acceso; filtros por prefijo y tipo." },
+    { "id": "proteccion", "front": "Protección de datos de blobs", "back": "Soft delete de blobs y de contenedores (1-365 días), versioning, snapshots y object replication (versioning + change feed)." }
+  ]
+}

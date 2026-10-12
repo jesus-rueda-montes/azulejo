@@ -1,0 +1,8 @@
+{
+  "title": "Almacenamiento",
+  "summary": "Servicios de Azure Storage, storage accounts, niveles de acceso, redundancia y herramientas para mover y migrar datos.",
+  "level": 2,
+  "order": 3,
+  "xp": 100,
+  "prereqs": []
+}

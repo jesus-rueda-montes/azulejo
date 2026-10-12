@@ -1,0 +1,108 @@
+{
+  "exercises": [
+    {
+      "id": "vm-lift-shift",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Hay que llevar a Azure, sin cambiar nada, una aplicación que necesita una versión concreta de Windows Server y un agente instalado a mano. ¿Qué servicio encaja?",
+      "hints": ["Necesitas control total del sistema operativo."],
+      "options": [
+        { "id": "a", "text": "Azure Virtual Machines", "correct": true, "explanation": "Correcto: IaaS, control total del SO (lift-and-shift)." },
+        { "id": "b", "text": "Azure Functions", "correct": false, "explanation": "Functions ejecuta funciones por eventos; no te deja gestionar el SO." },
+        { "id": "c", "text": "App Service", "correct": false, "explanation": "En PaaS no controlas el SO ni instalas agentes a mano." }
+      ],
+      "solution": { "answer": "Azure Virtual Machines", "explanation": "Las VMs son la opción para lift-and-shift y para software que exige control del sistema operativo." }
+    },
+    {
+      "id": "vmss",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Necesitas un grupo de VMs idénticas que aumente o reduzca automáticamente el número de instancias según la CPU. ¿Qué usas?",
+      "hints": ["Su nombre en inglés incluye la palabra «scale»."],
+      "options": [
+        { "id": "a", "text": "Availability set", "correct": false, "explanation": "Reparte VMs para resistir fallos, pero no escala." },
+        { "id": "b", "text": "Virtual Machine Scale Set", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Azure Virtual Desktop", "correct": false, "explanation": "AVD sirve escritorios Windows a usuarios." }
+      ],
+      "solution": { "answer": "Virtual Machine Scale Set", "explanation": "Un scale set gestiona VMs idénticas con escalado automático por métricas o por horario." }
+    },
+    {
+      "id": "fault-update",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "En un availability set, ¿qué protege frente a un fallo de alimentación o de un switch de red?",
+      "hints": ["Uno de los dos dominios es para fallos y el otro para mantenimiento."],
+      "options": [
+        { "id": "a", "text": "Los fault domains", "correct": true, "explanation": "Correcto: hasta 3 grupos de hardware con alimentación y red separadas." },
+        { "id": "b", "text": "Los update domains", "correct": false, "explanation": "Los update domains son para el mantenimiento planificado." }
+      ],
+      "solution": { "answer": "Fault domains", "explanation": "Fault domains (hasta 3) frente a fallos de hardware; update domains (hasta 20) para que el mantenimiento no reinicie todas las VMs a la vez." }
+    },
+    {
+      "id": "functions",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Cada vez que se sube una imagen a un storage account hay que generar una miniatura, y por la noche casi no hay subidas. ¿Qué opción encaja mejor y es más barata?",
+      "hints": ["Se ejecuta en respuesta a un evento y se paga por ejecución."],
+      "options": [
+        { "id": "a", "text": "Una VM encendida siempre", "correct": false, "explanation": "Pagarías la VM incluso cuando no hay imágenes." },
+        { "id": "b", "text": "Azure Functions", "correct": true, "explanation": "Correcto: serverless por eventos; sin eventos, no hay coste de cómputo en el plan de consumo." },
+        { "id": "c", "text": "Azure Kubernetes Service", "correct": false, "explanation": "Demasiado complejo para una tarea por eventos." }
+      ],
+      "solution": { "answer": "Azure Functions", "explanation": "Functions se dispara por eventos (aquí, un blob nuevo) y escala solo." }
+    },
+    {
+      "id": "contenedor-simple",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cuál es la forma más sencilla de ejecutar un único contenedor en Azure sin gestionar servidores ni orquestadores?",
+      "hints": ["Su nombre incluye la palabra «Instances»."],
+      "options": [
+        { "id": "a", "text": "Azure Container Instances", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Azure Kubernetes Service", "correct": false, "explanation": "AKS es un orquestador: es potente pero más complejo." },
+        { "id": "c", "text": "Azure Virtual Desktop", "correct": false, "explanation": "AVD no ejecuta contenedores de aplicaciones." }
+      ],
+      "solution": { "answer": "Azure Container Instances", "explanation": "ACI es lo más simple; Container Apps añade autoescalado y ingress, y AKS da Kubernetes completo." }
+    },
+    {
+      "id": "app-service",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Qué puedes alojar en Azure App Service? (marca todas)",
+      "hints": ["App Service es para aplicaciones que se sirven por HTTP y sus tareas asociadas."],
+      "options": [
+        { "id": "a", "text": "Web apps", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "API apps", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "WebJobs (tareas en segundo plano)", "correct": true, "explanation": "Correcto." },
+        { "id": "d", "text": "Escritorios Windows multisesión", "correct": false, "explanation": "Eso es Azure Virtual Desktop." }
+      ],
+      "solution": { "answer": "Web apps, API apps y WebJobs", "explanation": "También back ends para apps móviles, en Windows o Linux y con varios lenguajes o contenedores." }
+    },
+    {
+      "id": "avd",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: Azure Virtual Desktop permite que varios usuarios compartan la misma VM con Windows multisesión.",
+      "hints": ["Recuerda la palabra «multisesión»."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": true, "explanation": "Correcto: Windows 10/11 Enterprise multisesión." },
+        { "id": "f", "text": "Falso", "correct": false, "explanation": "Es una de sus características principales." }
+      ],
+      "solution": { "answer": "Verdadero", "explanation": "AVD ofrece escritorios y apps Windows desde la nube; con multisesión, varios usuarios usan la misma VM." }
+    },
+    {
+      "id": "recursos-vm",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Qué recursos necesita una VM para conectarse a una red privada de Azure? (marca todas)",
+      "hints": ["Son dos: la red en sí y la «tarjeta» que conecta la VM a ella.", "La IP pública es opcional."],
+      "options": [
+        { "id": "a", "text": "Una virtual network con su subnet", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Una interfaz de red (NIC)", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Una IP pública", "correct": false, "explanation": "Es opcional: solo hace falta si se accede desde internet." },
+        { "id": "d", "text": "Un availability set", "correct": false, "explanation": "Es opcional; sirve para la alta disponibilidad, no para la red." }
+      ],
+      "solution": { "answer": "VNet/subnet y NIC", "explanation": "Además, el tamaño, la imagen y los discos. La IP pública y el NSG son opcionales." }
+    }
+  ]
+}

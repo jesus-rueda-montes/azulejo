@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "tipos-grupo", "front": "Tipos de grupo y de pertenencia en Entra ID", "back": "Security o Microsoft 365. Pertenencia Assigned (a mano) o Dynamic user/device (regla; requiere Entra ID P1)." },
+    { "id": "licencias", "front": "Requisito para asignar una licencia", "back": "El usuario necesita usage location. Con licencias por grupo, al cambiar de grupo: primero añadir al nuevo, luego quitar del viejo." },
+    { "id": "b2b", "front": "Usuarios B2B", "back": "Externos invitados que entran con su propia identidad; aparecen como Guest en tu directorio." },
+    { "id": "sspr", "front": "Opciones de SSPR", "back": "Ámbito None/Selected/All; 1 o 2 métodos; registro obligatorio opcional; los admins siempre usan dos métodos; writeback para usuarios sincronizados." },
+    { "id": "asignacion", "front": "Partes de una asignación de rol", "back": "Security principal (quién) + role definition (qué) + scope (dónde). Se hereda hacia abajo y se suma." },
+    { "id": "data-actions", "front": "Actions frente a DataActions", "back": "Actions: gestión del recurso. DataActions: acceso a los datos (p. ej. leer blobs). Contributor no lee blobs con Entra ID." },
+    { "id": "entra-azure", "front": "Roles de Entra frente a roles de Azure", "back": "Entra: el directorio (usuarios, grupos, licencias). Azure RBAC: los recursos de Azure." }
+  ]
+}

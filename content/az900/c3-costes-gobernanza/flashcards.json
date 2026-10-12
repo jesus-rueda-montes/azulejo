@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "factores", "front": "Factores de coste en Azure", "back": "Tipo de recurso, consumo, mantenimiento, región, tráfico de red (salida), tipo de suscripción y Marketplace." },
+    { "id": "calculadoras", "front": "Calculadora de precios frente a TCO", "back": "Precios: estima el coste en Azure antes de desplegar. TCO: compara on-premises con Azure." },
+    { "id": "cost-management", "front": "Microsoft Cost Management", "back": "Cost analysis, budgets con alertas (no apagan recursos) y recomendaciones de ahorro." },
+    { "id": "tags", "front": "Tags", "back": "Pares nombre-valor para costes, gestión, operaciones, cumplimiento y automatización. No se heredan por defecto." },
+    { "id": "policy", "front": "Azure Policy", "back": "Reglas con efectos (deny, audit, modify…), asignadas a un scope y heredadas. Iniciativa = grupo de políticas." },
+    { "id": "locks", "front": "Resource locks", "back": "CanNotDelete: no se borra. ReadOnly: ni se modifica ni se borra. Afectan también a los Owner." },
+    { "id": "purview", "front": "Microsoft Purview", "back": "Gobierno de datos (descubrir, clasificar, linaje) y soluciones de riesgo y cumplimiento." }
+  ]
+}

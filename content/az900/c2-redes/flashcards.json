@@ -1,0 +1,10 @@
+{
+  "cards": [
+    { "id": "vnet", "front": "Azure Virtual Network", "back": "Red privada y aislada en una región, dividida en subnets. Filtra tráfico con NSG y conecta con internet, Azure y on-premises." },
+    { "id": "peering", "front": "Virtual network peering", "back": "Une VNets con IPs privadas por la red troncal de Microsoft, también entre regiones. No es transitivo." },
+    { "id": "vpn", "front": "Tipos de conexión de VPN Gateway", "back": "Site-to-site (red completa), point-to-site (un equipo) y network-to-network (VNet con VNet). Cifrado por internet." },
+    { "id": "expressroute", "front": "ExpressRoute", "back": "Conexión privada a Azure y Microsoft 365 a través de un proveedor, sin pasar por internet. Global Reach une sedes." },
+    { "id": "dns", "front": "Azure DNS", "back": "Aloja zonas DNS públicas y privadas con RBAC y facturación de Azure. No registra dominios." },
+    { "id": "private-endpoint", "front": "Private endpoint", "back": "IP privada en tu VNet para un servicio PaaS (Private Link); el tráfico no sale a internet." }
+  ]
+}

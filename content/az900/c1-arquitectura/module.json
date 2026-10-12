@@ -1,0 +1,8 @@
+{
+  "title": "Arquitectura de Azure",
+  "summary": "Regions, region pairs, sovereign regions, availability zones y la jerarquía management groups → suscripciones → resource groups → recursos.",
+  "level": 1,
+  "order": 2,
+  "xp": 80,
+  "prereqs": []
+}

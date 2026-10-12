@@ -1,0 +1,129 @@
+{
+  "exercises": [
+    {
+      "id": "cmd-vm-create-zona",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea la VM `vm-web-01` en el resource group `rg-web` con la imagen `Ubuntu2204`, en la availability zone `1`, generando las claves SSH si no existen.",
+      "hints": ["Es `az vm create` con nombre, grupo e imagen.", "La zona va en `--zone` y las claves con `--generate-ssh-keys`."],
+      "accepted": ["az vm create --name vm-web-01 --resource-group rg-web --image Ubuntu2204 --zone 1 --generate-ssh-keys"],
+      "solution": { "answer": "az vm create -n vm-web-01 -g rg-web --image Ubuntu2204 --zone 1 --generate-ssh-keys", "explanation": "La zona se elige al crear la VM. Para alta disponibilidad, crea otra VM en la zona 2 (y 3) detrás de un balanceador." }
+    },
+    {
+      "id": "stop-vs-deallocate",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres apagar una VM de pruebas durante el fin de semana y NO pagar su cómputo. ¿Qué comando usas?",
+      "hints": ["Uno de los dos mantiene el hardware asignado."],
+      "options": [
+        { "id": "a", "text": "`az vm stop`", "correct": false, "explanation": "La VM queda detenida pero asignada: se sigue cobrando el cómputo." },
+        { "id": "b", "text": "`az vm deallocate`", "correct": true, "explanation": "Correcto: libera el hardware y deja de cobrarse el cómputo (los discos sí se pagan)." }
+      ],
+      "solution": { "answer": "az vm deallocate", "explanation": "Estado «Stopped (deallocated)»: sin coste de cómputo. Ojo: si la IP pública es dinámica, puede cambiar." }
+    },
+    {
+      "id": "cmd-deallocate",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Desasigna la VM `vm-informes` del resource group `rg-web`.",
+      "hints": ["El verbo es el que libera el hardware."],
+      "accepted": ["az vm deallocate --name vm-informes --resource-group rg-web"],
+      "solution": { "answer": "az vm deallocate -n vm-informes -g rg-web", "explanation": "Para volver a encenderla: `az vm start -n vm-informes -g rg-web`." }
+    },
+    {
+      "id": "cmd-resize-options",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Antes de cambiar el tamaño de `vm-informes` (grupo `rg-web`), lista los tamaños a los que puede cambiar en su hardware actual.",
+      "hints": ["Hay un comando específico de opciones de resize."],
+      "accepted": ["az vm list-vm-resize-options --name vm-informes --resource-group rg-web"],
+      "solution": { "answer": "az vm list-vm-resize-options -n vm-informes -g rg-web", "explanation": "Si el tamaño que buscas no aparece, desasigna la VM: entonces puede ir a otro clúster de hardware." }
+    },
+    {
+      "id": "cmd-resize",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Cambia el tamaño de `vm-informes` (grupo `rg-web`) a `Standard_E4s_v5`.",
+      "hints": ["Es `az vm resize`.", "El nuevo tamaño va en `--size`."],
+      "accepted": ["az vm resize --name vm-informes --resource-group rg-web --size Standard_E4s_v5"],
+      "solution": { "answer": "az vm resize -n vm-informes -g rg-web --size Standard_E4s_v5", "explanation": "La VM se reinicia durante el cambio." }
+    },
+    {
+      "id": "cmd-disk-attach",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Añade a `vm-web-01` (grupo `rg-web`) un disco de datos NUEVO llamado `disco-datos` de 128 GiB.",
+      "hints": ["Es `az vm disk attach`.", "Usa `--new` y `--size-gb`."],
+      "accepted": ["az vm disk attach --vm-name vm-web-01 --resource-group rg-web --name disco-datos --new --size-gb 128"],
+      "solution": { "answer": "az vm disk attach --vm-name vm-web-01 -g rg-web --name disco-datos --new --size-gb 128", "explanation": "Después hay que particionarlo y formatearlo dentro del sistema operativo." }
+    },
+    {
+      "id": "disco-temporal",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Una aplicación guarda sus ficheros de trabajo en el disco temporal (D: en Windows) y tras un mantenimiento han desaparecido. ¿Por qué?",
+      "hints": ["El disco temporal no es un managed disk."],
+      "options": [
+        { "id": "a", "text": "Los datos del disco temporal pueden perderse en mantenimientos, al redistribuir o al detener la VM", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Alguien borró el managed disk", "correct": false, "explanation": "El disco temporal no es un managed disk." },
+        { "id": "c", "text": "El soft delete los movió a la papelera", "correct": false, "explanation": "No hay soft delete para el disco temporal." }
+      ],
+      "solution": { "answer": "Es almacenamiento temporal", "explanation": "Úsalo solo para paginación, swap o ficheros temporales; los datos van en discos de datos." }
+    },
+    {
+      "id": "cifrado-host",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Necesitas que también el disco temporal y las cachés de una VM nueva estén cifrados. ¿Qué opción recomienda Microsoft?",
+      "hints": ["Una de las opciones se retira en 2028."],
+      "options": [
+        { "id": "a", "text": "Encryption at host", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Azure Disk Encryption", "correct": false, "explanation": "Se retira el 15 de septiembre de 2028; para VMs nuevas, encryption at host." },
+        { "id": "c", "text": "Nada: SSE ya cifra el disco temporal", "correct": false, "explanation": "SSE no cifra el disco temporal ni las cachés." }
+      ],
+      "solution": { "answer": "Encryption at host", "explanation": "Cifra el disco temporal y las cachés, y los datos viajan cifrados al almacenamiento." }
+    },
+    {
+      "id": "cmd-avset",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea el availability set `as-web` en `rg-web` con 2 fault domains y 5 update domains.",
+      "hints": ["Es `az vm availability-set create`.", "Flags `--platform-fault-domain-count` y `--platform-update-domain-count`."],
+      "accepted": ["az vm availability-set create --name as-web --resource-group rg-web --platform-fault-domain-count 2 --platform-update-domain-count 5"],
+      "solution": { "answer": "az vm availability-set create -n as-web -g rg-web --platform-fault-domain-count 2 --platform-update-domain-count 5", "explanation": "Las VMs se añaden al crearlas con `az vm create ... --availability-set as-web`." }
+    },
+    {
+      "id": "avset-despues",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: puedes añadir una VM que ya existe a un availability set.",
+      "hints": ["Se decide en un momento concreto del ciclo de vida de la VM."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "Solo se puede al crear la VM." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: habría que volver a crear la VM." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "El availability set (como la zona) se elige al crear la VM." }
+    },
+    {
+      "id": "cmd-vmss-scale",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Cambia manualmente el scale set `vmss-web` (grupo `rg-web`) a 5 instancias.",
+      "hints": ["Es `az vmss scale`.", "El número va en `--new-capacity`."],
+      "accepted": ["az vmss scale --name vmss-web --resource-group rg-web --new-capacity 5"],
+      "solution": { "answer": "az vmss scale -n vmss-web -g rg-web --new-capacity 5", "explanation": "Si hay reglas de autoescalado, estas pueden volver a cambiar el número de instancias." }
+    },
+    {
+      "id": "vmss-modo",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Qué modo de orquestación de scale sets recomienda Microsoft para alta disponibilidad?",
+      "hints": ["Su nombre indica que admite más variedad de VMs."],
+      "options": [
+        { "id": "a", "text": "Flexible", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Uniform", "correct": false, "explanation": "Sigue existiendo, pero el recomendado es Flexible." }
+      ],
+      "solution": { "answer": "Flexible", "explanation": "Flexible gestiona VMs normales en grupo, las reparte entre zonas y fault domains y admite tamaños distintos." }
+    }
+  ]
+}

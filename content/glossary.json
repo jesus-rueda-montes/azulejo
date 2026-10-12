@@ -1,0 +1,319 @@
+{
+  "entries": [
+    {
+      "term": "IaaS",
+      "definition": "Infrastructure as a Service: alquilas máquinas virtuales, red y discos; tú gestionas el sistema operativo y lo de encima.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "PaaS",
+      "definition": "Platform as a Service: el proveedor gestiona la infraestructura y el sistema operativo; tú despliegas la aplicación.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "SaaS",
+      "definition": "Software as a Service: usas una aplicación terminada; el proveedor lo gestiona todo.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "CapEx",
+      "definition": "Gasto de capital: inversión inicial en activos físicos, como comprar servidores.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "OpEx",
+      "definition": "Gasto operativo: pagas por uso de forma continua, como en la nube.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "SLA",
+      "definition": "Service Level Agreement: el compromiso de disponibilidad de un servicio (por ejemplo, 99,9 %) y la compensación si no se cumple.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "availability zone",
+      "definition": "Centro o centros de datos de una región con alimentación, refrigeración y red independientes.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "availability set",
+      "definition": "Agrupación de VMs repartidas en fault domains y update domains dentro de un centro de datos.",
+      "introducedIn": "az900/c2-computo"
+    },
+    {
+      "term": "fault domain",
+      "definition": "Grupo de hardware que comparte alimentación y red; un fallo afecta a todo el grupo.",
+      "introducedIn": "az900/c2-computo"
+    },
+    {
+      "term": "update domain",
+      "definition": "Grupo de VMs que se reinicia a la vez durante el mantenimiento planificado.",
+      "introducedIn": "az900/c2-computo"
+    },
+    {
+      "term": "region pair",
+      "definition": "Dos regiones de la misma geografía emparejadas para recuperación ante desastres y actualizaciones escalonadas.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "resource group",
+      "definition": "Contenedor lógico de recursos que comparten ciclo de vida; todo recurso está en uno.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "management group",
+      "definition": "Contenedor de suscripciones para aplicar políticas y permisos a varias a la vez.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "Azure Resource Manager",
+      "definition": "La capa de gestión de Azure: toda petición (portal, CLI, API) pasa por ella.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "Bicep",
+      "definition": "Lenguaje declarativo de Microsoft que se compila a ARM templates; más legible que el JSON.",
+      "introducedIn": "az900/c3-gestion-monitorizacion"
+    },
+    {
+      "term": "VNet",
+      "definition": "Virtual Network: red privada aislada en una región de Azure.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "peering",
+      "definition": "Conexión directa entre dos VNets por la red troncal de Microsoft; no es transitiva.",
+      "introducedIn": "az900/c2-redes"
+    },
+    {
+      "term": "NSG",
+      "definition": "Network Security Group: lista de reglas que permiten o deniegan tráfico en una subnet o NIC.",
+      "introducedIn": "az900/c2-computo"
+    },
+    {
+      "term": "ASG",
+      "definition": "Application Security Group: agrupa NICs por función para usarlas en reglas de NSG sin IPs.",
+      "introducedIn": "az104/a3-redes"
+    },
+    {
+      "term": "UDR",
+      "definition": "User-defined route: ruta propia en una route table que sobrescribe el enrutado del sistema.",
+      "introducedIn": "az104/a3-redes"
+    },
+    {
+      "term": "NVA",
+      "definition": "Network Virtual Appliance: VM que hace de firewall, router u otro equipo de red.",
+      "introducedIn": "az104/a3-redes"
+    },
+    {
+      "term": "VPN Gateway",
+      "definition": "Puerta de enlace que conecta una VNet con otras redes mediante túneles VPN cifrados por internet.",
+      "introducedIn": "az900/c2-redes"
+    },
+    {
+      "term": "ExpressRoute",
+      "definition": "Conexión privada y dedicada entre tu red y Azure que no pasa por internet.",
+      "introducedIn": "az900/c2-redes"
+    },
+    {
+      "term": "private endpoint",
+      "definition": "Interfaz de red con IP privada de tu VNet que da acceso privado a un servicio PaaS.",
+      "introducedIn": "az900/c2-redes"
+    },
+    {
+      "term": "service endpoint",
+      "definition": "Extiende la identidad de una subnet a un servicio PaaS, que mantiene su IP pública.",
+      "introducedIn": "az104/a2-almacenamiento"
+    },
+    {
+      "term": "Application Gateway",
+      "definition": "Balanceador de capa 7 (HTTP/HTTPS) con enrutado por ruta o host, terminación TLS y WAF.",
+      "introducedIn": "az104/a2-maquinas-virtuales"
+    },
+    {
+      "term": "WAF",
+      "definition": "Web Application Firewall: protege aplicaciones web de ataques comunes como inyección SQL o XSS.",
+      "introducedIn": "az104/a3-redes"
+    },
+    {
+      "term": "storage account",
+      "definition": "Recurso que agrupa los servicios de almacenamiento (blobs, ficheros, colas, tablas) bajo un nombre único.",
+      "introducedIn": "az900/c2-almacenamiento"
+    },
+    {
+      "term": "LRS",
+      "definition": "Locally redundant storage: tres copias en un centro de datos.",
+      "introducedIn": "az900/c2-almacenamiento"
+    },
+    {
+      "term": "ZRS",
+      "definition": "Zone-redundant storage: copias en tres o más availability zones de la región.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "GRS",
+      "definition": "Geo-redundant storage: LRS en la región principal más copia asíncrona a la región emparejada.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "GZRS",
+      "definition": "Geo-zone-redundant storage: ZRS en la región principal más copia asíncrona a la región emparejada.",
+      "introducedIn": "az900/c2-almacenamiento"
+    },
+    {
+      "term": "SAS",
+      "definition": "Shared Access Signature: URL firmada que da acceso limitado (permisos y caducidad) a recursos de storage.",
+      "introducedIn": "az104/a2-almacenamiento"
+    },
+    {
+      "term": "soft delete",
+      "definition": "Papelera: lo borrado se conserva un tiempo y se puede recuperar.",
+      "introducedIn": "az104/a2-almacenamiento"
+    },
+    {
+      "term": "AzCopy",
+      "definition": "Herramienta de línea de comandos para copiar datos a, desde y entre storage accounts.",
+      "introducedIn": "az900/c2-almacenamiento"
+    },
+    {
+      "term": "Microsoft Entra ID",
+      "definition": "El servicio de identidad de Microsoft en la nube (antes Azure Active Directory).",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "tenant",
+      "definition": "Instancia dedicada de Microsoft Entra ID de una organización.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "RBAC",
+      "definition": "Role-based access control: permisos que se conceden asignando un rol a un principal en un scope.",
+      "introducedIn": "az900/c1-arquitectura"
+    },
+    {
+      "term": "MFA",
+      "definition": "Multi-factor authentication: pide un segundo factor además de la contraseña.",
+      "introducedIn": "az900/c2-identidad-seguridad"
+    },
+    {
+      "term": "SSPR",
+      "definition": "Self-service password reset: los usuarios restablecen su contraseña sin llamar a soporte.",
+      "introducedIn": "az104/a1-entra-rbac"
+    },
+    {
+      "term": "Conditional Access",
+      "definition": "Políticas de Entra ID del tipo «si se cumple esta condición, exige esto» (MFA, bloquear, dispositivo conforme…).",
+      "introducedIn": "az900/c2-identidad-seguridad"
+    },
+    {
+      "term": "managed identity",
+      "definition": "Identidad de Entra ID gestionada por Azure para un recurso, sin secretos que guardar ni rotar.",
+      "introducedIn": "az104/a1-entra-rbac"
+    },
+    {
+      "term": "service principal",
+      "definition": "Identidad de una aplicación en un tenant de Entra ID.",
+      "introducedIn": "az900/c2-identidad-seguridad"
+    },
+    {
+      "term": "Zero Trust",
+      "definition": "Modelo de seguridad: no confiar por defecto, verificar siempre, mínimo privilegio y suponer que ya hay una brecha.",
+      "introducedIn": "az900/c2-identidad-seguridad"
+    },
+    {
+      "term": "Key Vault",
+      "definition": "Servicio para guardar secretos, claves y certificados de forma segura.",
+      "introducedIn": "az104/a2-almacenamiento"
+    },
+    {
+      "term": "Azure Policy",
+      "definition": "Reglas que evalúan y hacen cumplir cómo deben ser los recursos (regiones, SKUs, etiquetas…).",
+      "introducedIn": "az900/c3-costes-gobernanza"
+    },
+    {
+      "term": "lock",
+      "definition": "Bloqueo de recurso (CanNotDelete o ReadOnly) que impide borrar o modificar, incluso a un Owner.",
+      "introducedIn": "az900/c3-costes-gobernanza"
+    },
+    {
+      "term": "tag",
+      "definition": "Par nombre-valor en un recurso para organizarlo y repartir costes.",
+      "introducedIn": "az900/c3-costes-gobernanza"
+    },
+    {
+      "term": "TCO",
+      "definition": "Total cost of ownership: coste total de tener una infraestructura, incluidos los costes ocultos.",
+      "introducedIn": "az900/c3-costes-gobernanza"
+    },
+    {
+      "term": "Azure Monitor",
+      "definition": "La plataforma de Azure para recoger métricas y logs, analizarlos y lanzar alertas.",
+      "introducedIn": "az900/c3-gestion-monitorizacion"
+    },
+    {
+      "term": "Log Analytics",
+      "definition": "Servicio de Azure Monitor donde se guardan los logs en workspaces y se consultan con KQL.",
+      "introducedIn": "az900/c3-gestion-monitorizacion"
+    },
+    {
+      "term": "KQL",
+      "definition": "Kusto Query Language: lenguaje de consulta de logs de Azure Monitor.",
+      "introducedIn": "az900/c3-gestion-monitorizacion"
+    },
+    {
+      "term": "diagnostic setting",
+      "definition": "Configuración que envía los logs y métricas de un recurso a Log Analytics, storage o Event Hub.",
+      "introducedIn": "az104/a4-monitorizacion-backup"
+    },
+    {
+      "term": "action group",
+      "definition": "Conjunto reutilizable de notificaciones y acciones que se ejecutan al saltar una alerta.",
+      "introducedIn": "az900/c3-costes-gobernanza"
+    },
+    {
+      "term": "Application Insights",
+      "definition": "Monitorización de aplicaciones: peticiones, dependencias, errores y disponibilidad.",
+      "introducedIn": "az900/c3-gestion-monitorizacion"
+    },
+    {
+      "term": "App Service plan",
+      "definition": "Conjunto de recursos de cómputo (tier e instancias) donde se ejecutan las apps de App Service.",
+      "introducedIn": "az104/a3-app-service-contenedores"
+    },
+    {
+      "term": "deployment slot",
+      "definition": "Copia de una web app con su propio nombre de host; permite desplegar y hacer swap sin cortes.",
+      "introducedIn": "az900/c2-computo"
+    },
+    {
+      "term": "managed disk",
+      "definition": "Disco de VM gestionado por Azure como recurso propio.",
+      "introducedIn": "az104/a2-maquinas-virtuales"
+    },
+    {
+      "term": "serverless",
+      "definition": "Modelo en el que no gestionas servidores y pagas solo por la ejecución.",
+      "introducedIn": "az900/c1-conceptos-cloud"
+    },
+    {
+      "term": "scale set",
+      "definition": "Virtual Machine Scale Set: grupo de VMs que se gestionan y escalan juntas.",
+      "introducedIn": "az900/c2-computo"
+    },
+    {
+      "term": "KEDA",
+      "definition": "Kubernetes Event-driven Autoscaling: motor de escalado por eventos que usa Container Apps.",
+      "introducedIn": "az104/a3-app-service-contenedores"
+    },
+    {
+      "term": "RPO",
+      "definition": "Recovery Point Objective: pérdida de datos máxima aceptable, medida en tiempo.",
+      "introducedIn": "az104/a4-monitorizacion-backup"
+    },
+    {
+      "term": "RTO",
+      "definition": "Recovery Time Objective: tiempo máximo aceptable hasta recuperar el servicio.",
+      "introducedIn": "az104/a4-monitorizacion-backup"
+    }
+  ]
+}

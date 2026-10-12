@@ -1,0 +1,8 @@
+{
+  "title": "App Service y contenedores",
+  "summary": "App Service plans, escalado, deployment slots, dominios, TLS y backup; Azure Container Registry, Container Instances y Container Apps.",
+  "level": 3,
+  "order": 1,
+  "xp": 140,
+  "prereqs": []
+}

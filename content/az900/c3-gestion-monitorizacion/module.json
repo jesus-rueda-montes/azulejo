@@ -1,0 +1,8 @@
+{
+  "title": "Gestión y monitorización",
+  "summary": "Portal, Cloud Shell, Azure CLI y PowerShell, Azure Arc, IaC con ARM y Bicep, Advisor, Service Health y Azure Monitor.",
+  "level": 3,
+  "order": 2,
+  "xp": 120,
+  "prereqs": []
+}

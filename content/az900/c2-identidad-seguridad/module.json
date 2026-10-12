@@ -1,0 +1,8 @@
+{
+  "title": "Identidad, acceso y seguridad",
+  "summary": "Microsoft Entra ID, SSO, MFA y passwordless, identidades externas, Conditional Access, Azure RBAC, Zero Trust, defensa en profundidad y Defender for Cloud.",
+  "level": 2,
+  "order": 4,
+  "xp": 100,
+  "prereqs": []
+}

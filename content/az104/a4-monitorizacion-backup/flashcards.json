@@ -1,0 +1,12 @@
+{
+  "cards": [
+    { "id": "metricas-logs", "front": "Métricas frente a logs", "back": "Métricas: números a intervalos, automáticas. Logs: registros detallados en un Log Analytics workspace, consultados con KQL." },
+    { "id": "diag", "front": "Diagnostic settings", "back": "Envían los logs y métricas de un recurso a Log Analytics, storage account o Event Hub. Sin ellos, los logs del recurso no se guardan." },
+    { "id": "kql", "front": "Operadores básicos de KQL", "back": "Tabla | where | project | summarize ... by | order by | take." },
+    { "id": "alertas", "front": "Tipos de alerta", "back": "Metric, log search, activity log y service health. Severidad de 0 (crítica) a 4." },
+    { "id": "action-group", "front": "Action group y alert processing rule", "back": "Action group: notificaciones y acciones reutilizables. Alert processing rule: silenciar (mantenimiento) o añadir action groups a alertas disparadas." },
+    { "id": "vaults", "front": "Recovery Services vault frente a Backup vault", "back": "RSV: VMs, SQL/SAP HANA en VM, Azure Files, MARS. Backup vault: discos, blobs, PostgreSQL, AKS." },
+    { "id": "vault-reglas", "front": "Reglas del vault de backup de VMs", "back": "Misma región que la VM; redundancia antes de la primera copia; GRS permite Cross Region Restore." },
+    { "id": "asr", "front": "Azure Site Recovery", "back": "Replica a otra región; test failover (red aislada), failover, failback y recovery plans. RPO: datos perdidos; RTO: tiempo caído." }
+  ]
+}

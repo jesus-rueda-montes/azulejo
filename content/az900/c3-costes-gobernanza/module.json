@@ -1,0 +1,8 @@
+{
+  "title": "Costes y gobernanza",
+  "summary": "Factores de coste, calculadora de precios, Cost Management, tags, Microsoft Purview, Azure Policy y resource locks.",
+  "level": 3,
+  "order": 1,
+  "xp": 120,
+  "prereqs": []
+}

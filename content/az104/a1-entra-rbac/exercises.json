@@ -1,0 +1,121 @@
+{
+  "exercises": [
+    {
+      "id": "grupo-dinamico",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres que todos los usuarios con departamento «Ventas» entren y salgan solos del grupo Ventas. ¿Qué configuras?",
+      "hints": ["La pertenencia la decide una regla sobre atributos."],
+      "options": [
+        { "id": "a", "text": "Un grupo con pertenencia Dynamic user y la regla `user.department -eq \"Ventas\"`", "correct": true, "explanation": "Correcto. Requiere Microsoft Entra ID P1." },
+        { "id": "b", "text": "Un grupo Assigned y un recordatorio para revisarlo cada mes", "correct": false, "explanation": "Funciona, pero no es automático." },
+        { "id": "c", "text": "Un rol de Azure asignado al departamento", "correct": false, "explanation": "Los roles se asignan a principals, no a atributos." }
+      ],
+      "solution": { "answer": "Grupo dinámico", "explanation": "En un grupo dinámico no se pueden añadir ni quitar miembros a mano: lo decide la regla." }
+    },
+    {
+      "id": "licencia-ubicacion",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "La asignación de una licencia a un usuario recién creado falla. ¿Qué es lo primero que compruebas?",
+      "hints": ["No todos los servicios están disponibles en todos los países."],
+      "options": [
+        { "id": "a", "text": "Que tenga una ubicación de uso (usage location)", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Que tenga rol Owner en la suscripción", "correct": false, "explanation": "Los roles de Azure no tienen que ver con las licencias." },
+        { "id": "c", "text": "Que esté en un grupo dinámico", "correct": false, "explanation": "No es obligatorio." }
+      ],
+      "solution": { "answer": "Usage location", "explanation": "La ubicación de uso es obligatoria para asignar licencias. Con licencias por grupo, los usuarios sin ubicación heredan la del tenant." }
+    },
+    {
+      "id": "b2b",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un auditor externo necesita acceso durante dos meses. ¿Cuál es la mejor opción?",
+      "hints": ["Debe entrar con la identidad de su propia empresa."],
+      "options": [
+        { "id": "a", "text": "Invitarlo como usuario B2B (guest)", "correct": true, "explanation": "Correcto: usa su propia identidad y su empresa gestiona su ciclo de vida." },
+        { "id": "b", "text": "Crearle una cuenta de miembro con contraseña", "correct": false, "explanation": "Te tocaría gestionar una credencial más y acordarte de borrarla." },
+        { "id": "c", "text": "Compartir con él la cuenta de un empleado", "correct": false, "explanation": "Nunca: sin trazabilidad ni control." }
+      ],
+      "solution": { "answer": "Invitado B2B", "explanation": "B2B collaboration permite dar acceso a externos que entran con su cuenta; aparecen como Guest." }
+    },
+    {
+      "id": "sspr-metodos",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa la configuración de SSPR: a quién se aplica (opciones None, Selected o All) y cuántos métodos se pueden exigir como máximo.",
+      "template": "Ámbito: None | {{ambito}} | All — Métodos exigidos: 1 o {{metodos}}",
+      "hints": ["El ámbito intermedio se aplica a un grupo.", "El máximo de métodos exigidos es un número pequeño."],
+      "blanks": [
+        { "id": "ambito", "accepted": ["Selected"] },
+        { "id": "metodos", "accepted": ["2"] }
+      ],
+      "solution": { "answer": "Selected · 2", "explanation": "SSPR se activa para nadie, un grupo seleccionado o todos, y exige uno o dos métodos. Los administradores siempre tienen una política de dos métodos." }
+    },
+    {
+      "id": "cmd-group-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea en Entra ID el grupo de seguridad con nombre visible `Soporte` y alias de correo `soporte`.",
+      "hints": ["Es un comando de `az ad group`.", "Necesita `--display-name` y `--mail-nickname`."],
+      "accepted": ["az ad group create --display-name Soporte --mail-nickname soporte"],
+      "solution": { "answer": "az ad group create --display-name Soporte --mail-nickname soporte", "explanation": "Después se añaden miembros con `az ad group member add --group Soporte --member-id <id>`." }
+    },
+    {
+      "id": "cmd-role-assignment",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Asigna el rol `Reader` al usuario `ana@tienda.com` en el resource group `rg-web` de la suscripción `11111111-2222-3333-4444-555555555555`.",
+      "hints": ["Es `az role assignment create` con `--assignee` y `--role`.", "El resource group se indica con `--scope` y su ID completo: `/subscriptions/<id>/resourceGroups/<nombre>`."],
+      "accepted": ["az role assignment create --assignee ana@tienda.com --role Reader --scope /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-web"],
+      "solution": { "answer": "az role assignment create --assignee ana@tienda.com --role Reader --scope /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-web", "explanation": "El scope es el ID del recurso donde se asigna: una suscripción (`/subscriptions/<id>`), un resource group o un recurso concreto." }
+    },
+    {
+      "id": "acceso-efectivo",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Luis es Reader en la suscripción y Contributor en `rg-web`. ¿Qué puede hacer en `rg-web`?",
+      "hints": ["El acceso efectivo es la suma de las asignaciones."],
+      "options": [
+        { "id": "a", "text": "Solo leer, porque Reader en la suscripción manda sobre lo de abajo", "correct": false, "explanation": "Las asignaciones no se restan: se suman." },
+        { "id": "b", "text": "Leer y gestionar recursos (pero no asignar roles)", "correct": true, "explanation": "Correcto: Reader heredado + Contributor en el grupo." },
+        { "id": "c", "text": "Todo, incluido dar acceso a otros", "correct": false, "explanation": "Eso requeriría Owner o User Access Administrator." }
+      ],
+      "solution": { "answer": "Leer y gestionar", "explanation": "RBAC es aditivo: el acceso efectivo es la unión de todos los roles, directos y heredados." }
+    },
+    {
+      "id": "data-actions",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Marta es Contributor en una storage account, pero al leer blobs con su cuenta de Entra ID (`--auth-mode login`) recibe un error de autorización. ¿Por qué?",
+      "hints": ["Hay permisos de gestión y permisos de datos."],
+      "options": [
+        { "id": "a", "text": "Contributor da permisos de gestión (Actions), no de datos (DataActions); necesita un rol como Storage Blob Data Reader", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Hay un lock ReadOnly", "correct": false, "explanation": "Un lock no impide leer." },
+        { "id": "c", "text": "Contributor no puede ver storage accounts", "correct": false, "explanation": "Sí puede verlas y gestionarlas." }
+      ],
+      "solution": { "answer": "Le falta un rol de datos", "explanation": "Los roles de datos (Storage Blob Data Reader/Contributor/Owner) conceden DataActions sobre blobs." }
+    },
+    {
+      "id": "entra-vs-azure",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: un usuario con el rol de Entra «User Administrator» puede reiniciar las VMs de la suscripción.",
+      "hints": ["Hay dos sistemas de roles distintos."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "Los roles de Entra gestionan el directorio, no los recursos de Azure." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: para las VMs necesita un rol de Azure RBAC." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Roles de Entra: usuarios, grupos, licencias. Roles de Azure: recursos de Azure." }
+    },
+    {
+      "id": "cmd-role-list",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Lista todas las asignaciones de roles de `ana@tienda.com` en la suscripción, incluidas las heredadas de scopes superiores.",
+      "hints": ["`az role assignment list` con `--assignee`.", "Necesitas `--all` y `--include-inherited`."],
+      "accepted": ["az role assignment list --assignee ana@tienda.com --all --include-inherited"],
+      "solution": { "answer": "az role assignment list --assignee ana@tienda.com --all --include-inherited", "explanation": "`--all` muestra las asignaciones en todos los scopes de la suscripción e `--include-inherited`, las heredadas del management group." }
+    }
+  ]
+}

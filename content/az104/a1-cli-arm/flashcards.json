@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "account-set", "front": "Cambiar la suscripción activa en la CLI", "back": "`az account set --subscription <nombre-o-id>`; compruébalo con `az account show`." },
+    { "id": "output-query", "front": "`--output` y `--query`", "back": "`-o` json/jsonc/table/tsv/yaml/yamlc/none. `--query` filtra con JMESPath, p. ej. `--query id -o tsv`." },
+    { "id": "group-tags", "front": "`az group update --tags`", "back": "Sustituye TODAS las tags del grupo por las indicadas; no añade una suelta." },
+    { "id": "move", "front": "Mover recursos de resource group", "back": "`az resource move --destination-group <rg> --ids <ids>`. Los dos grupos se bloquean para escrituras durante el traslado; el ID del recurso cambia." },
+    { "id": "arm-secciones", "front": "Secciones de una plantilla ARM", "back": "$schema, contentVersion, parameters, variables, (functions), resources y outputs." },
+    { "id": "modos", "front": "Modos de despliegue", "back": "Incremental (por defecto): deja lo que no está en la plantilla. Complete: lo borra." },
+    { "id": "bicep-cli", "front": "Comandos de Bicep y exportación", "back": "`az bicep build` (Bicep→ARM), `az bicep decompile` (ARM→Bicep), `az group export` (grupo→plantilla), `what-if` para previsualizar." }
+  ]
+}

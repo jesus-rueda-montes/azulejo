@@ -1,0 +1,136 @@
+{
+  "exercises": [
+    {
+      "id": "cmd-account-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea la storage account `tiendadatos2026` en el resource group `rg-datos`, región `westeurope`, con redundancia entre zonas (`Standard_ZRS`) y tipo `StorageV2`.",
+      "hints": ["Es `az storage account create`.", "La redundancia va en `--sku` y el tipo en `--kind`."],
+      "accepted": ["az storage account create --name tiendadatos2026 --resource-group rg-datos --location westeurope --sku Standard_ZRS --kind StorageV2"],
+      "solution": { "answer": "az storage account create -n tiendadatos2026 -g rg-datos -l westeurope --sku Standard_ZRS --kind StorageV2", "explanation": "StorageV2 (general-purpose v2) es el tipo recomendado. El SKU combina rendimiento (Standard/Premium) y redundancia." }
+    },
+    {
+      "id": "sas-recomendado",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Necesitas dar acceso temporal de lectura a un blob sin exponer la clave de la cuenta. ¿Qué tipo de SAS recomienda Microsoft?",
+      "hints": ["Se firma con credenciales de Entra ID."],
+      "options": [
+        { "id": "a", "text": "User delegation SAS", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Account SAS", "correct": false, "explanation": "Se firma con la clave de la cuenta." },
+        { "id": "c", "text": "Service SAS", "correct": false, "explanation": "También se firma con la clave de la cuenta." }
+      ],
+      "solution": { "answer": "User delegation SAS", "explanation": "Se firma con una user delegation key obtenida con Entra ID, así que no hace falta manejar la clave de la cuenta." }
+    },
+    {
+      "id": "stored-policy",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Repartiste service SAS de un contenedor a varios proveedores y uno se ha filtrado. ¿Cómo los revocas sin regenerar las claves de la cuenta?",
+      "hints": ["Hay que haberlos creado asociados a algo que se define en el contenedor."],
+      "options": [
+        { "id": "a", "text": "Modificando o borrando la stored access policy a la que están asociados", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Poniendo un lock ReadOnly en la cuenta", "correct": false, "explanation": "Un lock no invalida SAS." },
+        { "id": "c", "text": "No hay forma: hay que esperar a que caduquen", "correct": false, "explanation": "Con stored access policy sí se puede; sin ella, habría que regenerar la clave." }
+      ],
+      "solution": { "answer": "Stored access policy", "explanation": "Los service SAS asociados a una stored access policy heredan sus restricciones; cambiarla o borrarla los revoca. Máximo cinco por contenedor." }
+    },
+    {
+      "id": "dos-claves",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Por qué una storage account tiene dos claves de acceso?",
+      "hints": ["Piensa en cambiar una clave sin cortar el servicio."],
+      "options": [
+        { "id": "a", "text": "Para poder rotarlas sin interrupción: las apps usan una mientras regeneras la otra", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Una es de lectura y otra de escritura", "correct": false, "explanation": "Las dos dan acceso total." },
+        { "id": "c", "text": "Una es para la región primaria y otra para la secundaria", "correct": false, "explanation": "Las claves son las mismas en ambos endpoints." }
+      ],
+      "solution": { "answer": "Para rotarlas sin cortes", "explanation": "Mejor aún: usar Entra ID y desactivar el acceso con clave (Shared Key) si las aplicaciones lo permiten." }
+    },
+    {
+      "id": "cmd-firewall",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Permite en el firewall de `tiendadatos2026` (resource group `rg-datos`) el rango de IPs `203.0.113.0/24`.",
+      "hints": ["Es un subcomando de `az storage account network-rule`.", "El rango va en `--ip-address`."],
+      "accepted": ["az storage account network-rule add --account-name tiendadatos2026 --resource-group rg-datos --ip-address 203.0.113.0/24"],
+      "solution": { "answer": "az storage account network-rule add --account-name tiendadatos2026 -g rg-datos --ip-address 203.0.113.0/24", "explanation": "Para que la regla tenga efecto, la acción por defecto de la cuenta debe ser Deny (`az storage account update --default-action Deny`)." }
+    },
+    {
+      "id": "files-identidad",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "Un usuario del dominio debe poder modificar ficheros de un share de Azure Files por SMB con su identidad. ¿Qué dos niveles de permisos tienes que configurar? (marca todas)",
+      "hints": ["Uno es un rol de Azure y el otro, de Windows."],
+      "options": [
+        { "id": "a", "text": "Un rol de share como Storage File Data SMB Share Contributor", "correct": true, "explanation": "Correcto: permiso a nivel de share." },
+        { "id": "b", "text": "Permisos NTFS en directorios y ficheros", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Rol Owner en la suscripción", "correct": false, "explanation": "Demasiado y no da acceso SMB a los datos." }
+      ],
+      "solution": { "answer": "Rol de share + NTFS", "explanation": "El acceso efectivo es el más restrictivo de los dos niveles." }
+    },
+    {
+      "id": "editor-lifecycle",
+      "type": "editor",
+      "language": "json",
+      "prompt": "Completa la regla de lifecycle para los blobs con prefijo `logs/`: moverlos a cool a los 30 días de su última modificación y borrarlos a los 365.",
+      "starter": "{\n  \"rules\": [\n    {\n      \"enabled\": true,\n      \"name\": \"logs\",\n      \"type\": \"Lifecycle\",\n      \"definition\": {\n        \"filters\": { \"blobTypes\": [\"blockBlob\"] },\n        \"actions\": {\n          \"baseBlob\": {}\n        }\n      }\n    }\n  ]\n}\n",
+      "hints": ["El prefijo va en `filters.prefixMatch` (una lista).", "Las acciones son `tierToCool` y `delete`, cada una con `daysAfterModificationGreaterThan`."],
+      "assertions": [
+        { "path": "rules[0].definition.filters.prefixMatch[0]", "op": "equals", "value": "logs/", "message": "filters.prefixMatch contiene \"logs/\"" },
+        { "path": "rules[0].definition.actions.baseBlob.tierToCool.daysAfterModificationGreaterThan", "op": "equals", "value": 30, "message": "tierToCool a los 30 días de la modificación" },
+        { "path": "rules[0].definition.actions.baseBlob.delete.daysAfterModificationGreaterThan", "op": "equals", "value": 365, "message": "delete a los 365 días de la modificación" },
+        { "path": "rules[0].type", "op": "equals", "value": "Lifecycle", "message": "La regla sigue siendo de tipo Lifecycle" }
+      ],
+      "solution": {
+        "answer": "{\n  \"rules\": [\n    {\n      \"enabled\": true,\n      \"name\": \"logs\",\n      \"type\": \"Lifecycle\",\n      \"definition\": {\n        \"filters\": { \"blobTypes\": [\"blockBlob\"], \"prefixMatch\": [\"logs/\"] },\n        \"actions\": {\n          \"baseBlob\": {\n            \"tierToCool\": { \"daysAfterModificationGreaterThan\": 30 },\n            \"delete\": { \"daysAfterModificationGreaterThan\": 365 }\n          }\n        }\n      }\n    }\n  ]\n}\n",
+        "explanation": "La política se aplica con `az storage account management-policy create --policy @politica.json`."
+      }
+    },
+    {
+      "id": "cmd-soft-delete",
+      "type": "command",
+      "cli": "az",
+      "prompt": "En `tiendadatos2026` (resource group `rg-datos`), activa el soft delete de blobs con 14 días de retención.",
+      "hints": ["Es `az storage account blob-service-properties update`.", "Flags `--enable-delete-retention` y `--delete-retention-days`."],
+      "accepted": ["az storage account blob-service-properties update --account-name tiendadatos2026 --resource-group rg-datos --enable-delete-retention true --delete-retention-days 14"],
+      "solution": { "answer": "az storage account blob-service-properties update --account-name tiendadatos2026 -g rg-datos --enable-delete-retention true --delete-retention-days 14", "explanation": "La retención admite de 1 a 365 días. Para contenedores borrados hay que activar también `--enable-container-delete-retention`." }
+    },
+    {
+      "id": "object-replication",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Qué requiere object replication entre dos storage accounts? (marca todas)",
+      "hints": ["Son dos funciones de Blob Storage.", "Una en ambas cuentas y otra solo en el origen."],
+      "options": [
+        { "id": "a", "text": "Blob versioning en origen y destino", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Change feed en la cuenta de origen", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Que las dos cuentas estén en la misma región", "correct": false, "explanation": "Pueden estar en regiones, suscripciones e incluso tenants distintos." },
+        { "id": "d", "text": "Que los blobs sean page blobs", "correct": false, "explanation": "Solo replica block blobs." }
+      ],
+      "solution": { "answer": "Versioning en ambas y change feed en origen", "explanation": "La copia es asíncrona y el contenedor de destino no admite escrituras mientras la regla esté activa." }
+    },
+    {
+      "id": "soft-delete-cuenta",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: con el soft delete de blobs y de contenedores activado, puedes recuperar los datos si alguien borra la storage account entera.",
+      "hints": ["El soft delete actúa dentro de la cuenta."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "No protege frente al borrado de la cuenta." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: para eso, un lock CanNotDelete y Azure Backup." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Soft delete protege blobs, snapshots, versiones y contenedores, pero no la cuenta." }
+    },
+    {
+      "id": "cmd-share",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea en la cuenta `tiendadatos2026` (resource group `rg-datos`) el file share `contabilidad` con una cuota de 100 GiB.",
+      "hints": ["Es `az storage share-rm create`.", "La cuenta va en `--storage-account` y la cuota en `--quota`."],
+      "accepted": ["az storage share-rm create --storage-account tiendadatos2026 --resource-group rg-datos --name contabilidad --quota 100"],
+      "solution": { "answer": "az storage share-rm create --storage-account tiendadatos2026 -g rg-datos --name contabilidad --quota 100", "explanation": "`share-rm` gestiona el share a través de Resource Manager (con tu identidad de Azure), no con la clave de la cuenta." }
+    }
+  ]
+}

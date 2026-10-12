@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@import "@fontsource-variable/sora";
+@import "@fontsource-variable/source-sans-3";
+
+/* Paleta «Laguna» (decisión 56): app clara de agua poco profunda; solo la
+   terminal y el código son oscuros. */
+@theme {
+  --font-sans: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: #effafc;
+  --color-surface: #ffffff;
+  --color-line: #cdeef3;
+  --color-line-strong: #9fd8e2;
+  --color-ink: #0b2e45;
+  --color-ink-soft: #2f5a72;
+  --color-muted: #4a6b80;
+  --color-primary: #0f7c86;
+  --color-primary-hover: #0b6670;
+  --color-primary-soft: #d5f3f7;
+  --color-primary-faint: #e9f8fa;
+  --color-deep: #0b4f6c;
+  --color-sea-blue: #1d6fb8;
+
+  /* Capas de profundidad del mapa de itinerarios */
+  --color-depth-1: #cdf2f6;
+  --color-depth-2: #0e6f86;
+  --color-depth-3: #0a4766;
+  --color-depth-4: #062a44;
+
+  /* Terminal y código */
+  --color-term: #061a2a;
+  --color-term-bar: #0a2236;
+  --color-term-line: #12364f;
+  --color-term-ink: #e6f6fb;
+  --color-term-muted: #8fb3c6;
+  --color-term-accent: #2dd4bf;
+  --color-term-flag: #7dd3fc;
+  --color-term-select: #124a66;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-bg font-sans text-ink antialiased;
+}
+
+h1, h2, h3 {
+  @apply font-display;
+}
+
+/* Resaltado de sintaxis (clases de @lezer/highlight classHighlighter),
+   compartido por los bloques de las lecciones y el editor (fondo oscuro). */
+.tok-comment { color: #7f9cb0; font-style: italic; }
+.tok-propertyName { color: #7dd3fc; }
+.tok-string, .tok-string2 { color: #fcd34d; }
+.tok-number, .tok-bool, .tok-atom { color: #c4b5fd; }
+.tok-keyword { color: #f9a8d4; }
+.tok-variableName { color: #e6f6fb; }
+.tok-definition { color: #7dd3fc; }
+.tok-typeName, .tok-className { color: #5eead4; }
+.tok-operator, .tok-punctuation { color: #a9c9d8; }
+.tok-meta { color: #a9c9d8; }
+.tok-invalid { color: #fca5a5; }

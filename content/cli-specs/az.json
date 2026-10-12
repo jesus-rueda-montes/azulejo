@@ -1,0 +1,1741 @@
+{
+  "cli": "az",
+  "description": "Azure CLI",
+  "source": "https://learn.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest",
+  "globalFlags": [
+    {"name": "output", "short": "o", "takesValue": true, "values": ["json", "jsonc", "none", "table", "tsv", "yaml", "yamlc"], "description": "Formato de salida", "strict": true},
+    {"name": "query", "takesValue": true, "description": "Consulta JMESPath para filtrar la salida"},
+    {"name": "subscription", "takesValue": true, "description": "Suscripción en la que se ejecuta (nombre o ID)"},
+    {"name": "debug", "takesValue": false, "description": "Muestra el log de depuración"},
+    {"name": "only-show-errors", "takesValue": false, "description": "Solo muestra errores"}
+  ],
+  "commands": [
+    {
+      "name": "login",
+      "description": "Inicia sesión en Azure",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az-login",
+      "flags": [
+        {"name": "tenant", "short": "t", "takesValue": true, "description": "Tenant de Microsoft Entra ID"},
+        {"name": "use-device-code", "takesValue": false, "description": "Inicia sesión con un código desde otro dispositivo"},
+        {"name": "identity", "short": "i", "takesValue": false, "description": "Inicia sesión con una managed identity"}
+      ]
+    },
+    {
+      "name": "account",
+      "description": "Suscripciones de la sesión",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "list",
+          "description": "Lista las suscripciones",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-list",
+          "flags": [
+            {"name": "all", "takesValue": false, "description": "Incluye también las deshabilitadas"},
+            {"name": "refresh", "takesValue": false, "description": "Recupera la lista actualizada del servidor"}
+          ]
+        },
+        {
+          "name": "show",
+          "description": "Muestra la suscripción activa",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-show",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["subscription", "s"], "takesValue": true, "description": "Nombre o ID de la suscripción"}
+          ]
+        },
+        {
+          "name": "set",
+          "description": "Cambia la suscripción activa",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-set",
+          "flags": [
+            {"name": "subscription", "short": "s", "aliases": ["name", "n"], "takesValue": true, "description": "Nombre o ID de la suscripción"}
+          ]
+        },
+        {
+          "name": "list-locations",
+          "description": "Lista las regiones disponibles",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-list-locations"
+        },
+        {
+          "name": "management-group",
+          "description": "Management groups",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/account/management-group?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un management group",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/account/management-group?view=azure-cli-latest#az-account-management-group-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre (ID) del management group"},
+                {"name": "display-name", "short": "d", "takesValue": true, "description": "Nombre visible"},
+                {"name": "parent", "short": "p", "takesValue": true, "description": "Management group padre"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista los management groups",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/account/management-group?view=azure-cli-latest#az-account-management-group-list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "group",
+      "description": "Resource groups",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea un resource group",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-create",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["resource-group", "g"], "takesValue": true, "description": "Nombre del resource group"},
+            {"name": "location", "short": "l", "takesValue": true, "description": "Región"},
+            {"name": "tags", "takesValue": true, "description": "Etiquetas clave=valor separadas por espacios"}
+          ]
+        },
+        {
+          "name": "list",
+          "description": "Lista los resource groups",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-list",
+          "flags": [
+            {"name": "tag", "takesValue": true, "description": "Filtra por etiqueta clave[=valor]"}
+          ]
+        },
+        {
+          "name": "show",
+          "description": "Muestra un resource group",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-show",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["resource-group", "g"], "takesValue": true, "description": "Nombre del resource group"}
+          ]
+        },
+        {
+          "name": "update",
+          "description": "Actualiza un resource group (p. ej. sus tags)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-update",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["resource-group", "g"], "takesValue": true, "description": "Nombre del resource group"},
+            {"name": "tags", "takesValue": true, "description": "Etiquetas clave=valor (sustituyen a las actuales)"},
+            {"name": "set", "takesValue": true, "description": "Asigna una propiedad: ruta=valor"}
+          ]
+        },
+        {
+          "name": "export",
+          "description": "Exporta los recursos de un resource group como plantilla",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-export",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["resource-group", "g"], "takesValue": true, "description": "Nombre del resource group"},
+            {"name": "export-format", "takesValue": true, "values": ["arm", "bicep", "json"], "description": "Formato: json/arm o bicep"}
+          ]
+        },
+        {
+          "name": "delete",
+          "description": "Elimina un resource group y todo lo que contiene",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-delete",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["resource-group", "g"], "takesValue": true, "description": "Nombre del resource group"},
+            {"name": "yes", "short": "y", "takesValue": false, "description": "No pide confirmación"},
+            {"name": "no-wait", "takesValue": false, "description": "No espera a que termine la operación"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "resource",
+      "description": "Recursos genéricos",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/resource?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "list",
+          "description": "Lista recursos",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/resource?view=azure-cli-latest#az-resource-list",
+          "flags": [
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "location", "short": "l", "takesValue": true, "description": "Región"},
+            {"name": "resource-type", "takesValue": true, "description": "Tipo de recurso (p. ej. Microsoft.Compute/virtualMachines)"},
+            {"name": "tag", "takesValue": true, "description": "Filtra por etiqueta clave[=valor]"},
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del recurso"}
+          ]
+        },
+        {
+          "name": "move",
+          "description": "Mueve recursos a otro resource group o suscripción",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/resource?view=azure-cli-latest#az-resource-move",
+          "flags": [
+            {"name": "ids", "takesValue": true, "description": "IDs de los recursos (separados por espacios)"},
+            {"name": "destination-group", "takesValue": true, "description": "Resource group de destino"},
+            {"name": "destination-subscription-id", "takesValue": true, "description": "Suscripción de destino"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "deployment",
+      "description": "Despliegues de ARM y Bicep",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/deployment?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "group",
+          "description": "Despliegues a nivel de resource group",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Despliega una plantilla ARM o Bicep en un resource group",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create",
+              "flags": [
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group de destino"},
+                {"name": "template-file", "short": "f", "takesValue": true, "description": "Ruta de la plantilla (.json o .bicep)"},
+                {"name": "parameters", "short": "p", "takesValue": true, "description": "Parámetros: archivo o clave=valor"},
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del despliegue"},
+                {"name": "mode", "takesValue": true, "values": ["Complete", "Incremental"], "description": "Modo: Incremental (por defecto) o Complete"}
+              ]
+            },
+            {
+              "name": "what-if",
+              "description": "Muestra qué cambiaría un despliegue sin aplicarlo",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-what-if",
+              "flags": [
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group de destino"},
+                {"name": "template-file", "short": "f", "takesValue": true, "description": "Ruta de la plantilla (.json o .bicep)"},
+                {"name": "parameters", "short": "p", "takesValue": true, "description": "Parámetros: archivo o clave=valor"},
+                {"name": "mode", "takesValue": true, "values": ["Complete", "Incremental"], "description": "Modo: Incremental o Complete"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bicep",
+      "description": "Herramientas de Bicep",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/bicep?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "build",
+          "description": "Compila un archivo Bicep a plantilla ARM (JSON)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/bicep?view=azure-cli-latest#az-bicep-build",
+          "flags": [
+            {"name": "file", "short": "f", "takesValue": true, "description": "Archivo .bicep"},
+            {"name": "outfile", "takesValue": true, "description": "Archivo JSON de salida"}
+          ]
+        },
+        {
+          "name": "decompile",
+          "description": "Convierte una plantilla ARM (JSON) en Bicep",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/bicep?view=azure-cli-latest#az-bicep-decompile",
+          "flags": [
+            {"name": "file", "short": "f", "takesValue": true, "description": "Plantilla ARM (.json)"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ad",
+      "description": "Microsoft Entra ID",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/ad?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "user",
+          "description": "Usuarios",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un usuario",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest#az-ad-user-create",
+              "flags": [
+                {"name": "display-name", "takesValue": true, "description": "Nombre visible"},
+                {"name": "user-principal-name", "takesValue": true, "description": "UPN: usuario@dominio"},
+                {"name": "password", "takesValue": true, "description": "Contraseña inicial"},
+                {"name": "force-change-password-next-sign-in", "takesValue": false, "optionalValue": true, "description": "Obliga a cambiar la contraseña al entrar"}
+              ]
+            },
+            {
+              "name": "update",
+              "description": "Actualiza un usuario",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest#az-ad-user-update",
+              "flags": [
+                {"name": "id", "takesValue": true, "description": "UPN o ID de objeto"},
+                {"name": "display-name", "takesValue": true, "description": "Nombre visible"},
+                {"name": "account-enabled", "takesValue": false, "optionalValue": true, "description": "Habilita o deshabilita la cuenta"},
+                {"name": "password", "takesValue": true, "description": "Nueva contraseña"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista usuarios",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest#az-ad-user-list",
+              "flags": [
+                {"name": "display-name", "takesValue": true, "description": "Filtra por nombre visible"},
+                {"name": "upn", "takesValue": true, "description": "Filtra por UPN"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "group",
+          "description": "Grupos",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/ad/group?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un grupo de seguridad",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/ad/group?view=azure-cli-latest#az-ad-group-create",
+              "flags": [
+                {"name": "display-name", "takesValue": true, "description": "Nombre visible"},
+                {"name": "mail-nickname", "takesValue": true, "description": "Alias de correo"},
+                {"name": "description", "takesValue": true, "description": "Descripción"}
+              ]
+            },
+            {
+              "name": "member",
+              "description": "Miembros de un grupo",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/ad/group/member?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "add",
+                  "description": "Añade un miembro a un grupo",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/ad/group/member?view=azure-cli-latest#az-ad-group-member-add",
+                  "flags": [
+                    {"name": "group", "short": "g", "takesValue": true, "description": "Nombre o ID del grupo"},
+                    {"name": "member-id", "takesValue": true, "description": "ID de objeto del miembro"}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "role",
+      "description": "Azure RBAC",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/role?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "assignment",
+          "description": "Asignaciones de roles",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/role/assignment?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Asigna un rol a un principal en un scope",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/role/assignment?view=azure-cli-latest#az-role-assignment-create",
+              "flags": [
+                {"name": "assignee", "takesValue": true, "description": "Usuario, grupo o service principal"},
+                {"name": "role", "takesValue": true, "description": "Nombre o ID del rol"},
+                {"name": "scope", "takesValue": true, "description": "Scope: suscripción, resource group o recurso"},
+                {"name": "assignee-object-id", "takesValue": true, "description": "ID de objeto del principal"},
+                {"name": "assignee-principal-type", "takesValue": true, "values": ["ForeignGroup", "Group", "ServicePrincipal", "User"], "description": "Tipo de principal"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista asignaciones de roles",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/role/assignment?view=azure-cli-latest#az-role-assignment-list",
+              "flags": [
+                {"name": "assignee", "takesValue": true, "description": "Filtra por principal"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "scope", "takesValue": true, "description": "Scope"},
+                {"name": "all", "takesValue": false, "description": "Todas las asignaciones de la suscripción"},
+                {"name": "include-inherited", "takesValue": false, "description": "Incluye las heredadas de scopes superiores"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "definition",
+          "description": "Definiciones de roles",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/role/definition?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "list",
+              "description": "Lista definiciones de roles",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/role/definition?view=azure-cli-latest#az-role-definition-list",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del rol"},
+                {"name": "custom-role-only", "takesValue": false, "optionalValue": true, "description": "Solo roles personalizados"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "policy",
+      "description": "Azure Policy",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/policy?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "assignment",
+          "description": "Asignaciones de políticas",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/policy/assignment?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Asigna una política o iniciativa a un scope",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/policy/assignment?view=azure-cli-latest#az-policy-assignment-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la asignación"},
+                {"name": "policy", "takesValue": true, "description": "Nombre o ID de la definición de política"},
+                {"name": "policy-set-definition", "short": "d", "takesValue": true, "description": "Nombre o ID de la iniciativa"},
+                {"name": "scope", "takesValue": true, "description": "Scope de la asignación"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group (como scope)"},
+                {"name": "params", "short": "p", "takesValue": true, "description": "Parámetros de la política (JSON)"},
+                {"name": "display-name", "takesValue": true, "description": "Nombre visible"},
+                {"name": "enforcement-mode", "short": "e", "takesValue": true, "values": ["Default", "DoNotEnforce", "Enroll"], "description": "Default (aplica) o DoNotEnforce (solo evalúa)"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista asignaciones de políticas",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/policy/assignment?view=azure-cli-latest#az-policy-assignment-list",
+              "flags": [
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "scope", "takesValue": true, "description": "Scope"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "definition",
+          "description": "Definiciones de políticas",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/policy/definition?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "list",
+              "description": "Lista definiciones de políticas",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/policy/definition?view=azure-cli-latest#az-policy-definition-list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lock",
+      "description": "Bloqueos de recursos",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/lock?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea un bloqueo",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/lock?view=azure-cli-latest#az-lock-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del bloqueo"},
+            {"name": "lock-type", "short": "t", "takesValue": true, "values": ["CanNotDelete", "ReadOnly"], "description": "CanNotDelete o ReadOnly"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "resource", "aliases": ["resource-name"], "takesValue": true, "description": "Nombre del recurso (bloqueo a nivel de recurso)"},
+            {"name": "resource-type", "takesValue": true, "description": "Tipo de recurso"},
+            {"name": "notes", "takesValue": true, "description": "Notas"}
+          ]
+        },
+        {
+          "name": "list",
+          "description": "Lista bloqueos",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/lock?view=azure-cli-latest#az-lock-list",
+          "flags": [
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+          ]
+        },
+        {
+          "name": "delete",
+          "description": "Elimina un bloqueo",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/lock?view=azure-cli-latest#az-lock-delete",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del bloqueo"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "storage",
+      "description": "Azure Storage",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/storage?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "account",
+          "description": "Storage accounts",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea una storage account",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre (3-24 minúsculas y números, único en Azure)"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"},
+                {"name": "sku", "takesValue": true, "values": ["PremiumV2_LRS", "PremiumV2_ZRS", "Premium_LRS", "Premium_ZRS", "StandardV2_GRS", "StandardV2_GZRS", "StandardV2_LRS", "StandardV2_ZRS", "Standard_GRS", "Standard_GZRS", "Standard_LRS", "Standard_RAGRS", "Standard_RAGZRS", "Standard_ZRS"], "description": "Rendimiento y redundancia (p. ej. Standard_LRS)"},
+                {"name": "kind", "takesValue": true, "values": ["BlobStorage", "BlockBlobStorage", "FileStorage", "Storage", "StorageV2"], "description": "Tipo de cuenta"},
+                {"name": "access-tier", "takesValue": true, "values": ["Cold", "Cool", "Hot", "Premium", "Smart"], "description": "Nivel de acceso por defecto"},
+                {"name": "allow-blob-public-access", "takesValue": false, "optionalValue": true, "description": "Permite acceso anónimo a blobs"},
+                {"name": "min-tls-version", "takesValue": true, "values": ["TLS1_0", "TLS1_1", "TLS1_2", "TLS1_3"], "description": "Versión mínima de TLS"},
+                {"name": "https-only", "takesValue": false, "optionalValue": true, "description": "Solo HTTPS"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista storage accounts",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-list",
+              "flags": [
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+              ]
+            },
+            {
+              "name": "show",
+              "description": "Muestra una storage account",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+              ]
+            },
+            {
+              "name": "update",
+              "description": "Actualiza una storage account",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-update",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "sku", "takesValue": true, "values": ["PremiumV2_LRS", "PremiumV2_ZRS", "Premium_LRS", "Premium_ZRS", "StandardV2_GRS", "StandardV2_GZRS", "StandardV2_LRS", "StandardV2_ZRS", "Standard_GRS", "Standard_GZRS", "Standard_LRS", "Standard_RAGRS", "Standard_RAGZRS", "Standard_ZRS"], "description": "Rendimiento y redundancia"},
+                {"name": "access-tier", "takesValue": true, "values": ["Cold", "Cool", "Hot", "Premium", "Smart"], "description": "Nivel de acceso por defecto"},
+                {"name": "allow-blob-public-access", "takesValue": false, "optionalValue": true, "description": "Permite acceso anónimo a blobs"},
+                {"name": "default-action", "takesValue": true, "values": ["Allow", "Deny"], "description": "Acción por defecto del firewall"},
+                {"name": "min-tls-version", "takesValue": true, "values": ["TLS1_0", "TLS1_1", "TLS1_2", "TLS1_3"], "description": "Versión mínima de TLS"}
+              ]
+            },
+            {
+              "name": "blob-service-properties",
+              "description": "Propiedades del servicio Blob",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/blob-service-properties?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "update",
+                  "description": "Configura versioning, soft delete y change feed",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/blob-service-properties?view=azure-cli-latest#az-storage-account-blob-service-properties-update",
+                  "flags": [
+                    {"name": "account-name", "short": "n", "takesValue": true, "description": "Storage account"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "enable-versioning", "takesValue": false, "optionalValue": true, "description": "Activa el versioning de blobs"},
+                    {"name": "enable-delete-retention", "takesValue": false, "optionalValue": true, "description": "Activa el soft delete de blobs"},
+                    {"name": "delete-retention-days", "takesValue": true, "description": "Días de retención del soft delete de blobs"},
+                    {"name": "enable-container-delete-retention", "aliases": ["container-retention"], "takesValue": false, "optionalValue": true, "description": "Activa el soft delete de contenedores"},
+                    {"name": "container-delete-retention-days", "aliases": ["container-days"], "takesValue": true, "description": "Días de retención del soft delete de contenedores"},
+                    {"name": "enable-change-feed", "takesValue": false, "optionalValue": true, "description": "Activa el change feed"}
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "management-policy",
+              "description": "Lifecycle management",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/management-policy?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea la política de lifecycle management",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/management-policy?view=azure-cli-latest#az-storage-account-management-policy-create",
+                  "flags": [
+                    {"name": "account-name", "takesValue": true, "description": "Storage account"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "policy", "takesValue": true, "description": "Política en JSON (archivo o texto)"}
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "network-rule",
+              "description": "Reglas del firewall de la cuenta",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/network-rule?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "add",
+                  "description": "Añade una regla de red (IP o subnet)",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/network-rule?view=azure-cli-latest#az-storage-account-network-rule-add",
+                  "flags": [
+                    {"name": "account-name", "short": "n", "takesValue": true, "description": "Storage account"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "ip-address", "takesValue": true, "description": "IP o rango CIDR permitido"},
+                    {"name": "vnet-name", "takesValue": true, "description": "VNet de la subnet"},
+                    {"name": "subnet", "takesValue": true, "description": "Subnet permitida"}
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "keys",
+              "description": "Claves de acceso",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/keys?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "list",
+                  "description": "Lista las claves de acceso",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/storage/account/keys?view=azure-cli-latest#az-storage-account-keys-list",
+                  "flags": [
+                    {"name": "account-name", "short": "n", "takesValue": true, "description": "Nombre de la storage account"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "container",
+          "description": "Contenedores de blobs",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/storage/container?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un contenedor",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/container?view=azure-cli-latest#az-storage-container-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del contenedor"},
+                {"name": "account-name", "takesValue": true, "description": "Storage account"},
+                {"name": "auth-mode", "takesValue": true, "values": ["key", "login"], "description": "key (clave de cuenta) o login (Entra ID)"},
+                {"name": "public-access", "takesValue": true, "values": ["blob", "container", "off"], "description": "Nivel de acceso público"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "blob",
+          "description": "Blobs",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/storage/blob?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "upload",
+              "description": "Sube un archivo como blob",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/blob?view=azure-cli-latest#az-storage-blob-upload",
+              "flags": [
+                {"name": "account-name", "takesValue": true, "description": "Storage account"},
+                {"name": "container-name", "short": "c", "takesValue": true, "description": "Contenedor"},
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del blob"},
+                {"name": "file", "short": "f", "takesValue": true, "description": "Archivo local"},
+                {"name": "auth-mode", "takesValue": true, "values": ["key", "login"], "description": "key o login"},
+                {"name": "tier", "takesValue": true, "description": "Nivel de acceso del blob"},
+                {"name": "overwrite", "takesValue": false, "optionalValue": true, "description": "Sobrescribe si existe"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista blobs",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/blob?view=azure-cli-latest#az-storage-blob-list",
+              "flags": [
+                {"name": "account-name", "takesValue": true, "description": "Storage account"},
+                {"name": "container-name", "short": "c", "takesValue": true, "description": "Contenedor"},
+                {"name": "auth-mode", "takesValue": true, "values": ["key", "login"], "description": "key o login"},
+                {"name": "prefix", "takesValue": true, "description": "Filtra por prefijo"}
+              ]
+            },
+            {
+              "name": "generate-sas",
+              "description": "Genera un SAS para un blob",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/blob?view=azure-cli-latest#az-storage-blob-generate-sas",
+              "flags": [
+                {"name": "account-name", "takesValue": true, "description": "Storage account"},
+                {"name": "container-name", "short": "c", "takesValue": true, "description": "Contenedor"},
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del blob"},
+                {"name": "permissions", "takesValue": true, "description": "Permisos (p. ej. r, rw)"},
+                {"name": "expiry", "takesValue": true, "description": "Caducidad en UTC (p. ej. 2026-12-31T23:59Z)"},
+                {"name": "as-user", "takesValue": false, "description": "Firma con una user delegation key (Entra ID)"},
+                {"name": "auth-mode", "takesValue": true, "values": ["key", "login"], "description": "key o login"},
+                {"name": "full-uri", "takesValue": false, "description": "Devuelve la URI completa del blob con el SAS"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "share-rm",
+          "description": "File shares (Azure Files)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/storage/share-rm?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un file share",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/storage/share-rm?view=azure-cli-latest#az-storage-share-rm-create",
+              "flags": [
+                {"name": "name", "short": "n", "aliases": ["share-name"], "takesValue": true, "description": "Nombre del share"},
+                {"name": "storage-account", "aliases": ["account-name"], "takesValue": true, "description": "Storage account"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "quota", "short": "q", "takesValue": true, "description": "Tamaño máximo en GiB"},
+                {"name": "access-tier", "takesValue": true, "values": ["Cool", "Hot", "Premium", "TransactionOptimized"], "description": "Nivel de acceso"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "vm",
+      "description": "Máquinas virtuales",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "image", "takesValue": true, "description": "Imagen (alias como Ubuntu2204 o URN)"},
+            {"name": "size", "takesValue": true, "description": "Tamaño (p. ej. Standard_B2s)"},
+            {"name": "admin-username", "takesValue": true, "description": "Usuario administrador"},
+            {"name": "admin-password", "takesValue": true, "description": "Contraseña del administrador"},
+            {"name": "generate-ssh-keys", "takesValue": false, "description": "Genera claves SSH si no existen"},
+            {"name": "authentication-type", "takesValue": true, "values": ["all", "password", "ssh"], "description": "password, ssh o all"},
+            {"name": "location", "short": "l", "takesValue": true, "description": "Región"},
+            {"name": "zone", "short": "z", "takesValue": true, "description": "Availability zone"},
+            {"name": "availability-set", "takesValue": true, "description": "Availability set"},
+            {"name": "vnet-name", "takesValue": true, "description": "Virtual network"},
+            {"name": "subnet", "takesValue": true, "description": "Subnet"},
+            {"name": "public-ip-address", "takesValue": true, "description": "IP pública (\"\" para ninguna)"},
+            {"name": "public-ip-sku", "takesValue": true, "values": ["Basic", "Standard"], "description": "SKU de la IP pública"},
+            {"name": "nsg", "takesValue": true, "description": "Network security group"},
+            {"name": "nsg-rule", "takesValue": true, "values": ["NONE", "RDP", "SSH"], "description": "Regla de NSG que se crea por defecto"},
+            {"name": "os-disk-size-gb", "takesValue": true, "description": "Tamaño del disco del SO"},
+            {"name": "storage-sku", "takesValue": true, "description": "SKU del disco"},
+            {"name": "priority", "takesValue": true, "values": ["Low", "Regular", "Spot", "SpotPlus"], "description": "Prioridad (Spot = más barata, desalojable)"},
+            {"name": "tags", "takesValue": true, "description": "Etiquetas"},
+            {"name": "no-wait", "takesValue": false, "description": "No espera a que termine"},
+            {"name": "encryption-at-host", "takesValue": false, "optionalValue": true, "description": "Cifrado en el host (discos temporales y cachés)"}
+          ]
+        },
+        {
+          "name": "list",
+          "description": "Lista VMs",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list",
+          "flags": [
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "show-details", "short": "d", "takesValue": false, "description": "Incluye IPs y estado de energía"}
+          ]
+        },
+        {
+          "name": "show",
+          "description": "Muestra una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-show",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "show-details", "short": "d", "takesValue": false, "description": "Incluye IPs y estado de energía"}
+          ]
+        },
+        {
+          "name": "start",
+          "description": "Arranca una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-start",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["vm-name"], "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "no-wait", "takesValue": false, "optionalValue": true, "description": "No espera a que termine"}
+          ]
+        },
+        {
+          "name": "stop",
+          "description": "Apaga la VM sin liberar el hardware (se sigue pagando el cómputo)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-stop",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "no-wait", "takesValue": false, "description": "No espera a que termine"}
+          ]
+        },
+        {
+          "name": "deallocate",
+          "description": "Apaga la VM y libera el hardware (deja de cobrarse el cómputo)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-deallocate",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["vm-name"], "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "no-wait", "takesValue": false, "optionalValue": true, "description": "No espera a que termine"}
+          ]
+        },
+        {
+          "name": "restart",
+          "description": "Reinicia una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-restart",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+          ]
+        },
+        {
+          "name": "resize",
+          "description": "Cambia el tamaño de una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-resize",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "size", "takesValue": true, "description": "Nuevo tamaño"}
+          ]
+        },
+        {
+          "name": "list-sizes",
+          "description": "Lista los tamaños disponibles en una región",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes",
+          "flags": [
+            {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+          ]
+        },
+        {
+          "name": "list-vm-resize-options",
+          "description": "Lista los tamaños a los que puede cambiar una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-vm-resize-options",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["vm-name"], "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+          ]
+        },
+        {
+          "name": "open-port",
+          "description": "Abre un puerto en el NSG de la VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-open-port",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "port", "takesValue": true, "description": "Puerto o rango"},
+            {"name": "priority", "takesValue": true, "description": "Prioridad de la regla"}
+          ]
+        },
+        {
+          "name": "update",
+          "description": "Actualiza una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-update",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "set", "takesValue": true, "description": "Asigna una propiedad: ruta=valor"}
+          ]
+        },
+        {
+          "name": "delete",
+          "description": "Elimina una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-delete",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VM"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "yes", "short": "y", "takesValue": false, "description": "No pide confirmación"}
+          ]
+        },
+        {
+          "name": "disk",
+          "description": "Discos de datos de una VM",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm/disk?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "attach",
+              "description": "Conecta un disco de datos a una VM",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/vm/disk?view=azure-cli-latest#az-vm-disk-attach",
+              "flags": [
+                {"name": "vm-name", "takesValue": true, "description": "Nombre de la VM"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del disco"},
+                {"name": "new", "takesValue": false, "description": "Crea un disco vacío nuevo"},
+                {"name": "size-gb", "short": "z", "takesValue": true, "description": "Tamaño en GiB (con --new)"},
+                {"name": "sku", "takesValue": true, "values": ["PremiumV2_LRS", "Premium_LRS", "Premium_ZRS", "StandardSSD_LRS", "StandardSSD_ZRS", "Standard_LRS", "UltraSSD_LRS"], "description": "SKU del disco"},
+                {"name": "lun", "takesValue": true, "description": "LUN (posición del disco)"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "availability-set",
+          "description": "Availability sets",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vm/availability-set?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un availability set",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/vm/availability-set?view=azure-cli-latest#az-vm-availability-set-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "platform-fault-domain-count", "takesValue": true, "description": "Número de fault domains"},
+                {"name": "platform-update-domain-count", "takesValue": true, "description": "Número de update domains"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "vmss",
+      "description": "Virtual Machine Scale Sets",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/vmss?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea un scale set",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vmss?view=azure-cli-latest#az-vmss-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "image", "takesValue": true, "description": "Imagen"},
+            {"name": "instance-count", "takesValue": true, "description": "Número de instancias"},
+            {"name": "vm-sku", "takesValue": true, "description": "Tamaño de las instancias"},
+            {"name": "admin-username", "takesValue": true, "description": "Usuario administrador"},
+            {"name": "generate-ssh-keys", "takesValue": false, "description": "Genera claves SSH si no existen"},
+            {"name": "upgrade-policy-mode", "takesValue": true, "values": ["Automatic", "Manual", "Rolling"], "description": "Política de actualización"},
+            {"name": "orchestration-mode", "takesValue": true, "values": ["Flexible", "Uniform"], "description": "Flexible o Uniform"},
+            {"name": "zones", "short": "z", "takesValue": true, "description": "Availability zones"},
+            {"name": "lb", "aliases": ["load-balancer"], "takesValue": true, "description": "Load balancer"}
+          ]
+        },
+        {
+          "name": "scale",
+          "description": "Cambia el número de instancias",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vmss?view=azure-cli-latest#az-vmss-scale",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del scale set"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "new-capacity", "takesValue": true, "description": "Número de instancias deseado"}
+          ]
+        },
+        {
+          "name": "list-instances",
+          "description": "Lista las instancias de un scale set",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/vmss?view=azure-cli-latest#az-vmss-list-instances",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["virtual-machine-scale-set-name"], "takesValue": true, "description": "Nombre del scale set"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "appservice",
+      "description": "App Service",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/appservice?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "plan",
+          "description": "App Service plans",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/appservice/plan?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un App Service plan",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del plan"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "sku", "takesValue": true, "values": ["B1", "B2", "B3", "D1", "F1", "FREE", "I1MV2", "I1MV4", "I1V2", "I1V4", "I2MV2", "I2MV4", "I2V2", "I2V4", "I3MV2", "I3MV4", "I3V2", "I3V4", "I4MV2", "I4MV4", "I4V2", "I4V4", "I5MV2", "I5MV4", "I5V2", "I5V4", "I6V2", "I6V4", "P0V3", "P0V4", "P1MV3", "P1MV4", "P1V2", "P1V3", "P1V4", "P2MV3", "P2MV4", "P2V2", "P2V3", "P2V4", "P3MV3", "P3MV4", "P3V2", "P3V3", "P3V4", "P4MV3", "P4MV4", "P5MV3", "P5MV4", "S1", "S2", "S3", "SHARED", "WS1", "WS2", "WS3"], "description": "Plan de precios (F1, B1, S1, P1V3...)"},
+                {"name": "is-linux", "takesValue": false, "optionalValue": true, "description": "Plan de Linux"},
+                {"name": "number-of-workers", "takesValue": true, "description": "Número de instancias"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            },
+            {
+              "name": "update",
+              "description": "Cambia el plan (escalado vertical u horizontal)",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-update",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del plan"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "sku", "takesValue": true, "values": ["B1", "B2", "B3", "D1", "F1", "FREE", "I1MV2", "I1MV4", "I1V2", "I1V4", "I2MV2", "I2MV4", "I2V2", "I2V4", "I3MV2", "I3MV4", "I3V2", "I3V4", "I4MV2", "I4MV4", "I4V2", "I4V4", "I5MV2", "I5MV4", "I5V2", "I5V4", "I6V2", "I6V4", "P0V3", "P0V4", "P1MV3", "P1MV4", "P1V2", "P1V3", "P1V4", "P2MV3", "P2MV4", "P2V2", "P2V3", "P2V4", "P3MV3", "P3MV4", "P3V2", "P3V3", "P3V4", "P4MV3", "P4MV4", "P5MV3", "P5MV4", "S1", "S2", "S3", "SHARED", "WS1", "WS2", "WS3"], "description": "Nuevo plan de precios"},
+                {"name": "number-of-workers", "takesValue": true, "description": "Número de instancias"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "webapp",
+      "description": "Web apps de App Service",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea una web app",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre (forma parte de la URL)"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "plan", "short": "p", "takesValue": true, "description": "App Service plan"},
+            {"name": "runtime", "short": "r", "takesValue": true, "description": "Pila (consulta az webapp list-runtimes)"},
+            {"name": "container-image-name", "short": "c", "takesValue": true, "description": "Imagen de contenedor"},
+            {"name": "https-only", "takesValue": false, "optionalValue": true, "description": "Solo HTTPS"}
+          ]
+        },
+        {
+          "name": "list-runtimes",
+          "description": "Lista las pilas disponibles",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-list-runtimes",
+          "flags": [
+            {"name": "os-type", "aliases": ["os"], "takesValue": true, "values": ["linux", "windows"], "description": "linux o windows"}
+          ]
+        },
+        {
+          "name": "config",
+          "description": "Configuración de una web app",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/config?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "hostname",
+              "description": "Nombres de host personalizados",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/config/hostname?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "add",
+                  "description": "Asocia un dominio personalizado",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/config/hostname?view=azure-cli-latest#az-webapp-config-hostname-add",
+                  "flags": [
+                    {"name": "webapp-name", "takesValue": true, "description": "Web app"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "hostname", "takesValue": true, "description": "Dominio (p. ej. www.tienda.com)"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "deployment",
+          "description": "Despliegues de una web app",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/deployment?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "slot",
+              "description": "Deployment slots",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/deployment/slot?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea un deployment slot",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/deployment/slot?view=azure-cli-latest#az-webapp-deployment-slot-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la web app"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "slot", "short": "s", "takesValue": true, "description": "Nombre del slot"},
+                    {"name": "configuration-source", "takesValue": true, "description": "Copia la configuración de otro slot"}
+                  ]
+                },
+                {
+                  "name": "swap",
+                  "description": "Intercambia dos slots",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/webapp/deployment/slot?view=azure-cli-latest#az-webapp-deployment-slot-swap",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la web app"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "slot", "short": "s", "takesValue": true, "description": "Slot de origen"},
+                    {"name": "target-slot", "takesValue": true, "description": "Slot de destino (production por defecto)"}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "acr",
+      "description": "Azure Container Registry",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea un registro",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az-acr-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del registro"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "sku", "takesValue": true, "values": ["Basic", "Premium", "Standard"], "description": "Basic, Standard o Premium"},
+            {"name": "admin-enabled", "takesValue": false, "optionalValue": true, "description": "Activa el usuario administrador"}
+          ]
+        },
+        {
+          "name": "build",
+          "description": "Construye una imagen en Azure y la sube al registro",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az-acr-build",
+          "flags": [
+            {"name": "registry", "short": "r", "takesValue": true, "description": "Registro"},
+            {"name": "image", "short": "t", "takesValue": true, "description": "Nombre:tag de la imagen"},
+            {"name": "file", "short": "f", "takesValue": true, "description": "Ruta del Dockerfile"}
+          ],
+          "args": [
+            {
+              "name": "SOURCE_LOCATION"
+            }
+          ]
+        },
+        {
+          "name": "login",
+          "description": "Inicia sesión en el registro (Docker)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az-acr-login",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del registro"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "container",
+      "description": "Azure Container Instances",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea un container group",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest#az-container-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "image", "takesValue": true, "description": "Imagen"},
+            {"name": "cpu", "takesValue": true, "description": "Núcleos de CPU"},
+            {"name": "memory", "takesValue": true, "description": "Memoria en GB"},
+            {"name": "ports", "takesValue": true, "description": "Puertos"},
+            {"name": "ip-address", "takesValue": true, "values": ["Private", "Public"], "description": "Tipo de IP"},
+            {"name": "dns-name-label", "takesValue": true, "description": "Etiqueta DNS para la IP pública"},
+            {"name": "os-type", "takesValue": true, "values": ["Linux", "Windows"], "description": "Linux o Windows"},
+            {"name": "restart-policy", "takesValue": true, "values": ["Always", "Never", "OnFailure"], "description": "Política de reinicio"},
+            {"name": "environment-variables", "short": "e", "takesValue": true, "description": "Variables de entorno"}
+          ]
+        },
+        {
+          "name": "logs",
+          "description": "Muestra los logs de un contenedor",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest#az-container-logs",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "follow", "takesValue": false, "description": "Sigue los logs en directo"}
+          ]
+        },
+        {
+          "name": "show",
+          "description": "Muestra un container group",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest#az-container-show",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "containerapp",
+      "description": "Azure Container Apps",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/containerapp?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "env",
+          "description": "Entornos de Container Apps",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/containerapp/env?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un entorno de Container Apps",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/containerapp/env?view=azure-cli-latest#az-containerapp-env-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del entorno"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "description": "Crea una container app",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/containerapp?view=azure-cli-latest#az-containerapp-create",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "environment", "takesValue": true, "description": "Entorno de Container Apps"},
+            {"name": "image", "short": "i", "takesValue": true, "description": "Imagen"},
+            {"name": "target-port", "takesValue": true, "description": "Puerto en el que escucha el contenedor"},
+            {"name": "ingress", "takesValue": true, "values": ["external", "internal"], "description": "external (internet) o internal (solo el entorno)"},
+            {"name": "cpu", "takesValue": true, "description": "Núcleos de CPU por réplica"},
+            {"name": "memory", "takesValue": true, "description": "Memoria por réplica (p. ej. 1.0Gi)"},
+            {"name": "min-replicas", "takesValue": true, "description": "Mínimo de réplicas (0 = escala a cero)"},
+            {"name": "max-replicas", "takesValue": true, "description": "Máximo de réplicas"}
+          ]
+        },
+        {
+          "name": "update",
+          "description": "Actualiza una container app (nueva revisión)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/containerapp?view=azure-cli-latest#az-containerapp-update",
+          "flags": [
+            {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "image", "short": "i", "takesValue": true, "description": "Imagen"},
+            {"name": "cpu", "takesValue": true, "description": "Núcleos de CPU por réplica"},
+            {"name": "memory", "takesValue": true, "description": "Memoria por réplica"},
+            {"name": "min-replicas", "takesValue": true, "description": "Mínimo de réplicas"},
+            {"name": "max-replicas", "takesValue": true, "description": "Máximo de réplicas"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "network",
+      "description": "Redes",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/network?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "vnet",
+          "description": "Virtual networks",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea una VNet",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet?view=azure-cli-latest#az-network-vnet-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la VNet"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "address-prefixes", "takesValue": true, "description": "Espacio de direcciones (CIDR)"},
+                {"name": "subnet-name", "takesValue": true, "description": "Crea también una subnet con este nombre"},
+                {"name": "subnet-prefixes", "takesValue": true, "description": "CIDR de esa subnet"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            },
+            {
+              "name": "list",
+              "description": "Lista VNets",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet?view=azure-cli-latest#az-network-vnet-list",
+              "flags": [
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+              ]
+            },
+            {
+              "name": "subnet",
+              "description": "Subnets",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet/subnet?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea una subnet",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet/subnet?view=azure-cli-latest#az-network-vnet-subnet-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la subnet"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "vnet-name", "takesValue": true, "description": "VNet"},
+                    {"name": "address-prefixes", "takesValue": true, "description": "CIDR de la subnet"},
+                    {"name": "network-security-group", "aliases": ["nsg"], "takesValue": true, "description": "NSG asociado"},
+                    {"name": "service-endpoints", "takesValue": true, "description": "Service endpoints"},
+                    {"name": "route-table", "takesValue": true, "description": "Route table asociada"}
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "peering",
+              "description": "Peering entre VNets",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet/peering?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea un peering (en un sentido)",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet/peering?view=azure-cli-latest#az-network-vnet-peering-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del peering"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "vnet-name", "takesValue": true, "description": "VNet local"},
+                    {"name": "remote-vnet", "takesValue": true, "description": "VNet remota (nombre o ID)"},
+                    {"name": "allow-vnet-access", "takesValue": false, "optionalValue": true, "description": "Permite el acceso entre las VNets"},
+                    {"name": "allow-forwarded-traffic", "takesValue": false, "optionalValue": true, "description": "Permite tráfico reenviado"},
+                    {"name": "allow-gateway-transit", "takesValue": false, "optionalValue": true, "description": "Permite usar el gateway de esta VNet"},
+                    {"name": "use-remote-gateways", "takesValue": false, "optionalValue": true, "description": "Usa el gateway de la VNet remota"}
+                  ]
+                },
+                {
+                  "name": "list",
+                  "description": "Lista los peerings de una VNet",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/vnet/peering?view=azure-cli-latest#az-network-vnet-peering-list",
+                  "flags": [
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "vnet-name", "takesValue": true, "description": "VNet"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nsg",
+          "description": "Network security groups",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/nsg?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un NSG",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/nsg?view=azure-cli-latest#az-network-nsg-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del NSG"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            },
+            {
+              "name": "rule",
+              "description": "Reglas de un NSG",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/nsg/rule?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea una regla de seguridad",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/nsg/rule?view=azure-cli-latest#az-network-nsg-rule-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la regla"},
+                    {"name": "nsg-name", "takesValue": true, "description": "NSG"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "priority", "takesValue": true, "description": "Prioridad (100-4096, menor = antes)"},
+                    {"name": "direction", "takesValue": true, "values": ["Inbound", "Outbound"], "description": "Inbound u Outbound"},
+                    {"name": "access", "takesValue": true, "values": ["Allow", "Deny"], "description": "Allow o Deny"},
+                    {"name": "protocol", "takesValue": true, "values": ["*", "Ah", "Esp", "Icmp", "Tcp", "Udp"], "description": "Protocolo"},
+                    {"name": "source-address-prefixes", "takesValue": true, "description": "Origen (CIDR, IP o service tag)"},
+                    {"name": "source-port-ranges", "takesValue": true, "description": "Puertos de origen"},
+                    {"name": "destination-address-prefixes", "takesValue": true, "description": "Destino"},
+                    {"name": "destination-port-ranges", "takesValue": true, "description": "Puertos de destino"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "route-table",
+          "description": "Route tables (rutas definidas por el usuario)",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/route-table?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea una route table",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/route-table?view=azure-cli-latest#az-network-route-table-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            },
+            {
+              "name": "route",
+              "description": "Rutas",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/route-table/route?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea una ruta",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/route-table/route?view=azure-cli-latest#az-network-route-table-route-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la ruta"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "route-table-name", "takesValue": true, "description": "Route table"},
+                    {"name": "address-prefix", "takesValue": true, "description": "Destino (CIDR)"},
+                    {"name": "next-hop-type", "takesValue": true, "values": ["Internet", "None", "VirtualAppliance", "VirtualApplianceEcmp", "VirtualNetworkGateway", "VnetLocal"], "description": "Tipo de siguiente salto"},
+                    {"name": "next-hop-ip-address", "takesValue": true, "description": "IP del siguiente salto (con VirtualAppliance)"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bastion",
+          "description": "Azure Bastion",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/bastion?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un Bastion",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/bastion?view=azure-cli-latest#az-network-bastion-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "vnet-name", "takesValue": true, "description": "VNet (necesita la subnet AzureBastionSubnet)"},
+                {"name": "public-ip-address", "takesValue": true, "description": "IP pública"},
+                {"name": "sku", "takesValue": true, "values": ["Basic", "Developer", "Premium", "Standard"], "description": "Nivel"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "private-endpoint",
+          "description": "Private endpoints",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/private-endpoint?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un private endpoint",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/private-endpoint?view=azure-cli-latest#az-network-private-endpoint-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "vnet-name", "takesValue": true, "description": "VNet"},
+                {"name": "subnet", "takesValue": true, "description": "Subnet"},
+                {"name": "private-connection-resource-id", "takesValue": true, "description": "ID del recurso PaaS"},
+                {"name": "group-id", "aliases": ["group-ids"], "takesValue": true, "description": "Subrecurso (p. ej. blob)"},
+                {"name": "connection-name", "takesValue": true, "description": "Nombre de la conexión"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "lb",
+          "description": "Azure Load Balancer",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/lb?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un load balancer",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/lb?view=azure-cli-latest#az-network-lb-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "sku", "takesValue": true, "values": ["Basic", "Gateway", "Standard"], "description": "SKU"},
+                {"name": "public-ip-address", "takesValue": true, "description": "IP pública (balanceador público)"},
+                {"name": "vnet-name", "takesValue": true, "description": "VNet (balanceador interno)"},
+                {"name": "subnet", "takesValue": true, "description": "Subnet (balanceador interno)"},
+                {"name": "frontend-ip-name", "takesValue": true, "description": "Nombre de la IP de frontend"},
+                {"name": "backend-pool-name", "takesValue": true, "description": "Nombre del backend pool"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "dns",
+          "description": "Azure DNS",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/dns?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "zone",
+              "description": "Zonas DNS",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea una zona DNS pública",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Dominio"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "record-set",
+              "description": "Registros DNS",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/dns/record-set?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "a",
+                  "description": "Registros A",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/network/dns/record-set/a?view=azure-cli-latest",
+                  "subcommands": [
+                    {
+                      "name": "add-record",
+                      "description": "Añade una IP a un registro A",
+                      "source": "https://learn.microsoft.com/en-us/cli/azure/network/dns/record-set/a?view=azure-cli-latest#az-network-dns-record-set-a-add-record",
+                      "flags": [
+                        {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                        {"name": "zone-name", "short": "z", "takesValue": true, "description": "Zona DNS"},
+                        {"name": "record-set-name", "short": "n", "takesValue": true, "description": "Nombre del registro (p. ej. www)"},
+                        {"name": "ipv4-address", "short": "a", "takesValue": true, "description": "IPv4"},
+                        {"name": "ttl", "takesValue": true, "description": "TTL en segundos"}
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nic",
+          "description": "Interfaces de red",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/nic?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "list-effective-nsg",
+              "description": "Muestra las reglas efectivas de NSG de una NIC",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/nic?view=azure-cli-latest#az-network-nic-list-effective-nsg",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la NIC"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "watcher",
+          "description": "Network Watcher",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/watcher?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "test-ip-flow",
+              "description": "Comprueba si un NSG permite o deniega un flujo",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/watcher?view=azure-cli-latest#az-network-watcher-test-ip-flow",
+              "flags": [
+                {"name": "vm", "takesValue": true, "description": "VM"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "direction", "takesValue": true, "values": ["Inbound", "Outbound"], "description": "Inbound u Outbound"},
+                {"name": "protocol", "takesValue": true, "values": ["TCP", "UDP"], "description": "TCP o UDP"},
+                {"name": "local", "takesValue": true, "description": "IP:puerto local"},
+                {"name": "remote", "takesValue": true, "description": "IP:puerto remoto"}
+              ]
+            },
+            {
+              "name": "show-next-hop",
+              "description": "Muestra el siguiente salto de un paquete",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/watcher?view=azure-cli-latest#az-network-watcher-show-next-hop",
+              "flags": [
+                {"name": "vm", "takesValue": true, "description": "VM"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "source-ip", "takesValue": true, "description": "IP de origen"},
+                {"name": "dest-ip", "takesValue": true, "description": "IP de destino"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "public-ip",
+          "description": "IPs públicas",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/network/public-ip?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea una IP pública",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/network/public-ip?view=azure-cli-latest#az-network-public-ip-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "sku", "takesValue": true, "values": ["Basic", "Standard", "StandardV2"], "description": "SKU"},
+                {"name": "allocation-method", "takesValue": true, "values": ["Dynamic", "Static"], "description": "Static o Dynamic"},
+                {"name": "zone", "short": "z", "takesValue": true, "description": "Availability zones"},
+                {"name": "version", "takesValue": true, "values": ["IPv4", "IPv6"], "description": "IPv4 o IPv6"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "monitor",
+      "description": "Azure Monitor",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/monitor?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "metrics",
+          "description": "Métricas",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/metrics?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "list",
+              "description": "Consulta valores de métricas de un recurso",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/metrics?view=azure-cli-latest#az-monitor-metrics-list",
+              "flags": [
+                {"name": "resource", "takesValue": true, "description": "ID del recurso"},
+                {"name": "metrics", "takesValue": true, "description": "Nombre de las métricas"},
+                {"name": "aggregation", "takesValue": true, "values": ["Average", "Count", "Maximum", "Minimum", "None", "Total Value"], "description": "Agregación"},
+                {"name": "interval", "takesValue": true, "description": "Intervalo (p. ej. PT1M, PT1H)"},
+                {"name": "start-time", "takesValue": true, "description": "Inicio"},
+                {"name": "end-time", "takesValue": true, "description": "Fin"}
+              ]
+            },
+            {
+              "name": "list-definitions",
+              "description": "Lista las métricas disponibles de un recurso",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/metrics?view=azure-cli-latest#az-monitor-metrics-list-definitions",
+              "flags": [
+                {"name": "resource", "takesValue": true, "description": "ID del recurso"}
+              ]
+            },
+            {
+              "name": "alert",
+              "description": "Alertas de métricas",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/metrics/alert?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea una alerta de métrica",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/metrics/alert?view=azure-cli-latest#az-monitor-metrics-alert-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "takesValue": true, "description": "Nombre de la alerta"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "scopes", "takesValue": true, "description": "Recursos vigilados"},
+                    {"name": "condition", "takesValue": true, "description": "Condición (p. ej. \"avg Percentage CPU > 80\")"},
+                    {"name": "action", "short": "a", "takesValue": true, "description": "Action group que se dispara"},
+                    {"name": "description", "takesValue": true, "description": "Descripción"},
+                    {"name": "severity", "takesValue": true, "description": "Severidad (0 crítica - 4 detallada)"},
+                    {"name": "window-size", "takesValue": true, "description": "Ventana de evaluación"},
+                    {"name": "evaluation-frequency", "takesValue": true, "description": "Frecuencia de evaluación"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "diagnostic-settings",
+          "description": "Diagnostic settings",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/diagnostic-settings?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Envía logs y métricas de un recurso a un destino",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/diagnostic-settings?view=azure-cli-latest#az-monitor-diagnostic-settings-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre"},
+                {"name": "resource", "takesValue": true, "description": "ID del recurso"},
+                {"name": "workspace", "takesValue": true, "description": "Workspace de Log Analytics"},
+                {"name": "storage-account", "takesValue": true, "description": "Storage account"},
+                {"name": "logs", "takesValue": true, "description": "Categorías de logs (JSON)"},
+                {"name": "metrics", "takesValue": true, "description": "Métricas (JSON)"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "log-analytics",
+          "description": "Log Analytics",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/log-analytics?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "workspace",
+              "description": "Workspaces",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/log-analytics/workspace?view=azure-cli-latest",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "description": "Crea un workspace de Log Analytics",
+                  "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/log-analytics/workspace?view=azure-cli-latest#az-monitor-log-analytics-workspace-create",
+                  "flags": [
+                    {"name": "name", "short": "n", "aliases": ["workspace-name"], "takesValue": true, "description": "Nombre del workspace"},
+                    {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                    {"name": "location", "short": "l", "takesValue": true, "description": "Región"},
+                    {"name": "retention-time", "takesValue": true, "description": "Días de retención"},
+                    {"name": "sku", "aliases": ["sku-name"], "takesValue": true, "values": ["CapacityReservation", "Free", "LACluster", "PerGB2018", "PerNode", "Premium", "Standalone", "Standard"], "description": "Plan de precios"}
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "query",
+              "description": "Ejecuta una consulta KQL",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/log-analytics?view=azure-cli-latest#az-monitor-log-analytics-query",
+              "flags": [
+                {"name": "workspace", "short": "w", "takesValue": true, "description": "ID (customer ID) del workspace"},
+                {"name": "analytics-query", "takesValue": true, "description": "Consulta KQL"},
+                {"name": "timespan", "short": "t", "takesValue": true, "description": "Intervalo ISO 8601 (p. ej. P1D)"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "action-group",
+          "description": "Action groups",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/action-group?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un action group",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/monitor/action-group?view=azure-cli-latest#az-monitor-action-group-create",
+              "flags": [
+                {"name": "name", "short": "n", "aliases": ["action-group-name"], "takesValue": true, "description": "Nombre"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "short-name", "aliases": ["group-short-name"], "takesValue": true, "description": "Nombre corto (aparece en SMS y correos)"},
+                {"name": "action", "short": "a", "aliases": ["actions"], "takesValue": true, "description": "Acción: tipo nombre destino (p. ej. email admin a@b.com)"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "backup",
+      "description": "Azure Backup",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/backup?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "vault",
+          "description": "Recovery Services vaults",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/backup/vault?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "create",
+              "description": "Crea un Recovery Services vault",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/backup/vault?view=azure-cli-latest#az-backup-vault-create",
+              "flags": [
+                {"name": "name", "short": "n", "takesValue": true, "description": "Nombre del vault"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "protection",
+          "description": "Protección de elementos",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/backup/protection?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "enable-for-vm",
+              "description": "Activa la copia de seguridad de una VM",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/backup/protection?view=azure-cli-latest#az-backup-protection-enable-for-vm",
+              "flags": [
+                {"name": "vault-name", "short": "v", "takesValue": true, "description": "Vault"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "vm", "takesValue": true, "description": "Nombre o ID de la VM"},
+                {"name": "policy-name", "short": "p", "takesValue": true, "description": "Política de copia"}
+              ]
+            },
+            {
+              "name": "backup-now",
+              "description": "Lanza una copia de seguridad bajo demanda",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/backup/protection?view=azure-cli-latest#az-backup-protection-backup-now",
+              "flags": [
+                {"name": "vault-name", "short": "v", "takesValue": true, "description": "Vault"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "container-name", "short": "c", "takesValue": true, "description": "Contenedor (la VM)"},
+                {"name": "item-name", "short": "i", "takesValue": true, "description": "Elemento protegido"},
+                {"name": "retain-until", "takesValue": true, "description": "Conservar hasta (dd-mm-aaaa)"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "job",
+          "description": "Trabajos de copia",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/backup/job?view=azure-cli-latest",
+          "subcommands": [
+            {
+              "name": "list",
+              "description": "Lista los trabajos de copia",
+              "source": "https://learn.microsoft.com/en-us/cli/azure/backup/job?view=azure-cli-latest#az-backup-job-list",
+              "flags": [
+                {"name": "vault-name", "short": "v", "takesValue": true, "description": "Vault"},
+                {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+                {"name": "status", "takesValue": true, "values": ["Cancelled", "Completed", "CompletedWithWarnings", "Failed", "InProgress"], "description": "Filtra por estado"},
+                {"name": "operation", "takesValue": true, "values": ["Backup", "ConfigureBackup", "DeleteBackupData", "DisableBackup", "Restore"], "description": "Filtra por operación"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "identity",
+      "description": "Managed identities asignadas por el usuario",
+      "source": "https://learn.microsoft.com/en-us/cli/azure/identity?view=azure-cli-latest",
+      "subcommands": [
+        {
+          "name": "create",
+          "description": "Crea una user-assigned managed identity",
+          "source": "https://learn.microsoft.com/en-us/cli/azure/identity?view=azure-cli-latest#az-identity-create",
+          "flags": [
+            {"name": "name", "short": "n", "aliases": ["resource-name"], "takesValue": true, "description": "Nombre"},
+            {"name": "resource-group", "short": "g", "takesValue": true, "description": "Resource group"},
+            {"name": "location", "short": "l", "takesValue": true, "description": "Región"}
+          ]
+        }
+      ]
+    }
+  ]
+}

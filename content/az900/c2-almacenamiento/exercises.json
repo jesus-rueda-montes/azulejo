@@ -1,0 +1,109 @@
+{
+  "exercises": [
+    {
+      "id": "servicio-files",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Una oficina necesita una carpeta compartida en la nube que los equipos Windows monten como unidad de red por SMB. ¿Qué servicio usa?",
+      "hints": ["Es un servicio de «ficheros», no de objetos."],
+      "options": [
+        { "id": "a", "text": "Blob Storage", "correct": false, "explanation": "Blob es para objetos; no se monta por SMB." },
+        { "id": "b", "text": "Azure Files", "correct": true, "explanation": "Correcto: file shares gestionados por SMB o NFS." },
+        { "id": "c", "text": "Queue Storage", "correct": false, "explanation": "Queue es para mensajes entre componentes." }
+      ],
+      "solution": { "answer": "Azure Files", "explanation": "Azure Files ofrece file shares accesibles por SMB o NFS, y se combina con Azure File Sync para servidores on-premises." }
+    },
+    {
+      "id": "nombre-cuenta",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cuál de estos nombres es válido para una storage account?",
+      "hints": ["Solo minúsculas y números, de 3 a 24 caracteres."],
+      "options": [
+        { "id": "a", "text": "`Tienda-Fotos`", "correct": false, "explanation": "No admite mayúsculas ni guiones." },
+        { "id": "b", "text": "`tiendafotos2026`", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "`tienda_fotos`", "correct": false, "explanation": "No admite guiones bajos." }
+      ],
+      "solution": { "answer": "tiendafotos2026", "explanation": "El nombre es único en todo Azure porque forma parte del endpoint (`tiendafotos2026.blob.core.windows.net`)." }
+    },
+    {
+      "id": "archive",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un despacho debe guardar 10 años unos documentos que casi nunca se consultan y puede esperar horas para leerlos. ¿Qué nivel es el más barato para almacenarlos?",
+      "hints": ["Es el único nivel offline."],
+      "options": [
+        { "id": "a", "text": "Hot", "correct": false, "explanation": "Es el más caro para almacenar." },
+        { "id": "b", "text": "Cool", "correct": false, "explanation": "Más barato que hot, pero no el que menos." },
+        { "id": "c", "text": "Archive", "correct": true, "explanation": "Correcto: el almacenamiento más barato, con rehidratación de hasta 15 horas." }
+      ],
+      "solution": { "answer": "Archive", "explanation": "Archive tiene el menor coste de almacenamiento y el mayor coste y latencia de acceso; la retención mínima recomendada es de 180 días." }
+    },
+    {
+      "id": "minimos",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa la retención mínima recomendada (en días) de cada nivel de acceso.",
+      "template": "cool: {{cool}} días | cold: {{cold}} días | archive: {{archive}} días",
+      "hints": ["Cada nivel más frío exige más días que el anterior.", "El de archive es medio año."],
+      "blanks": [
+        { "id": "cool", "accepted": ["30"] },
+        { "id": "cold", "accepted": ["90"] },
+        { "id": "archive", "accepted": ["180"] }
+      ],
+      "solution": { "answer": "30 | 90 | 180", "explanation": "Si borras o mueves un blob antes, pagas una penalización por borrado anticipado (prorrateada)." }
+    },
+    {
+      "id": "redundancia-zonas",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres que tus datos sigan disponibles si cae un centro de datos, pero por normativa no pueden salir de la región. ¿Qué redundancia eliges?",
+      "hints": ["Necesitas varias zonas, pero no otra región."],
+      "options": [
+        { "id": "a", "text": "LRS", "correct": false, "explanation": "LRS está en un único centro de datos: si cae, no hay copia en otro." },
+        { "id": "b", "text": "ZRS", "correct": true, "explanation": "Correcto: copia entre zonas de la misma región." },
+        { "id": "c", "text": "GRS", "correct": false, "explanation": "GRS replica a otra región, lo que no permite la normativa." }
+      ],
+      "solution": { "answer": "ZRS", "explanation": "ZRS copia de forma síncrona en tres o más availability zones de la región principal." }
+    },
+    {
+      "id": "ra-grs",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Tu aplicación debe poder LEER datos de la región secundaria incluso sin hacer failover. ¿Qué opción necesitas?",
+      "hints": ["Busca las siglas «read-access»."],
+      "options": [
+        { "id": "a", "text": "GRS", "correct": false, "explanation": "Con GRS la secundaria no se puede leer hasta que hay un failover." },
+        { "id": "b", "text": "RA-GRS", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "ZRS", "correct": false, "explanation": "ZRS no tiene región secundaria." }
+      ],
+      "solution": { "answer": "RA-GRS (o RA-GZRS)", "explanation": "Las variantes RA- dan lectura permanente de la secundaria en el endpoint `<cuenta>-secondary`." }
+    },
+    {
+      "id": "file-sync",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres mantener el servidor de ficheros Windows de la oficina, pero que los ficheros antiguos solo ocupen espacio en Azure. ¿Qué usas?",
+      "hints": ["Busca la herramienta con «cloud tiering»."],
+      "options": [
+        { "id": "a", "text": "Azure File Sync", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "AzCopy", "correct": false, "explanation": "AzCopy copia cuando lo ejecutas; no mantiene una caché local sincronizada." },
+        { "id": "c", "text": "Azure Data Box", "correct": false, "explanation": "Data Box es para transferencias físicas puntuales." }
+      ],
+      "solution": { "answer": "Azure File Sync", "explanation": "Sincroniza Windows Server con Azure Files; con cloud tiering, lo poco usado queda solo en la nube." }
+    },
+    {
+      "id": "data-box",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Hay que llevar 70 TB a Azure y la conexión de la empresa tardaría semanas. ¿Qué usas?",
+      "hints": ["Es un dispositivo físico."],
+      "options": [
+        { "id": "a", "text": "Azure Data Box", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Azure Storage Explorer", "correct": false, "explanation": "Sigue subiendo por la misma conexión lenta." },
+        { "id": "c", "text": "Azure Migrate", "correct": false, "explanation": "Es el hub de migración; para el transporte físico de datos usa Data Box." }
+      ],
+      "solution": { "answer": "Azure Data Box", "explanation": "Microsoft envía el dispositivo, lo llenas y lo devuelves; después los datos se suben a tu storage account." }
+    }
+  ]
+}

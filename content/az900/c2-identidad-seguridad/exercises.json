@@ -1,0 +1,108 @@
+{
+  "exercises": [
+    {
+      "id": "sso",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un usuario inicia sesión una vez por la mañana y accede sin volver a identificarse a Microsoft 365, el CRM y la intranet. ¿Cómo se llama esto?",
+      "hints": ["Son las siglas de «una sola autenticación»."],
+      "options": [
+        { "id": "a", "text": "Single sign-on (SSO)", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "MFA", "correct": false, "explanation": "MFA pide varios factores; no evita volver a identificarse." },
+        { "id": "c", "text": "Conditional Access", "correct": false, "explanation": "Conditional Access decide el acceso según señales." }
+      ],
+      "solution": { "answer": "SSO", "explanation": "Con SSO hay una única identidad para muchas aplicaciones, y dar de baja a alguien es mucho más sencillo." }
+    },
+    {
+      "id": "mfa-factores",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Qué combinación es realmente MFA?",
+      "hints": ["Los factores deben ser de tipos distintos: sabes, tienes, eres."],
+      "options": [
+        { "id": "a", "text": "Contraseña + pregunta de seguridad", "correct": false, "explanation": "Las dos son «algo que sabes»." },
+        { "id": "b", "text": "Contraseña + código en la app Authenticator del móvil", "correct": true, "explanation": "Correcto: algo que sabes y algo que tienes." },
+        { "id": "c", "text": "Dos contraseñas distintas", "correct": false, "explanation": "Mismo tipo de factor." }
+      ],
+      "solution": { "answer": "Contraseña + Authenticator", "explanation": "MFA combina al menos dos factores de tipos distintos: algo que sabes, algo que tienes o algo que eres." }
+    },
+    {
+      "id": "domain-services",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Una aplicación heredada necesita unir VMs a un dominio y usar Kerberos y directivas de grupo, pero no quieres mantener controladores de dominio. ¿Qué usas?",
+      "hints": ["Es la versión «gestionada» de los servicios de dominio clásicos."],
+      "options": [
+        { "id": "a", "text": "Microsoft Entra Domain Services", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Microsoft Entra Connect", "correct": false, "explanation": "Entra Connect sincroniza el AD on-premises con Entra ID." },
+        { "id": "c", "text": "Azure RBAC", "correct": false, "explanation": "RBAC controla permisos sobre recursos de Azure." }
+      ],
+      "solution": { "answer": "Entra Domain Services", "explanation": "Ofrece unión a dominio, GPO, LDAP y Kerberos/NTLM como servicio gestionado." }
+    },
+    {
+      "id": "conditional-access",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres exigir MFA solo cuando alguien inicia sesión desde fuera de la red de la oficina. ¿Qué configuras?",
+      "hints": ["Decide el acceso a partir de señales como la ubicación."],
+      "options": [
+        { "id": "a", "text": "Una política de Conditional Access", "correct": true, "explanation": "Correcto: señal (ubicación) → decisión (exigir MFA)." },
+        { "id": "b", "text": "Un rol de Azure RBAC", "correct": false, "explanation": "RBAC decide qué puedes hacer, no cómo te autenticas." },
+        { "id": "c", "text": "Una invitación B2B", "correct": false, "explanation": "B2B es para usuarios externos." }
+      ],
+      "solution": { "answer": "Conditional Access", "explanation": "Conditional Access usa señales (usuario, ubicación, dispositivo, aplicación, riesgo) para permitir, exigir MFA o bloquear." }
+    },
+    {
+      "id": "owner-contributor",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un desarrollador debe crear y borrar recursos en un resource group, pero NO dar acceso a otras personas. ¿Qué rol le asignas en ese resource group?",
+      "hints": ["Uno de los roles puede hacerlo todo, incluso dar acceso."],
+      "options": [
+        { "id": "a", "text": "Owner", "correct": false, "explanation": "Owner también permite dar acceso a otros." },
+        { "id": "b", "text": "Contributor", "correct": true, "explanation": "Correcto: gestiona recursos, pero no el acceso." },
+        { "id": "c", "text": "Reader", "correct": false, "explanation": "Reader solo puede ver." }
+      ],
+      "solution": { "answer": "Contributor", "explanation": "Contributor gestiona recursos; Owner, además, asigna roles; Reader solo lee." }
+    },
+    {
+      "id": "zero-trust",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Cuáles son los principios de Zero Trust? (marca todas)",
+      "hints": ["Son tres.", "Uno de ellos supone que el atacante ya está dentro."],
+      "options": [
+        { "id": "a", "text": "Verificar explícitamente", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Usar el acceso con mínimo privilegio", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Asumir la brecha", "correct": true, "explanation": "Correcto." },
+        { "id": "d", "text": "Confiar en todo lo que esté dentro de la red corporativa", "correct": false, "explanation": "Es justo lo que Zero Trust rechaza." }
+      ],
+      "solution": { "answer": "Verificar, mínimo privilegio, asumir la brecha", "explanation": "Zero Trust no da por segura ninguna petición por venir de la red interna." }
+    },
+    {
+      "id": "defensa-capas",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "En el modelo de defensa en profundidad, ¿qué capa protegen todas las demás?",
+      "hints": ["Es lo que el atacante quiere conseguir."],
+      "options": [
+        { "id": "a", "text": "Perímetro", "correct": false, "explanation": "Es una capa exterior." },
+        { "id": "b", "text": "Datos", "correct": true, "explanation": "Correcto: es la capa más interna." },
+        { "id": "c", "text": "Seguridad física", "correct": false, "explanation": "Es la capa más externa." }
+      ],
+      "solution": { "answer": "Datos", "explanation": "Capas: física, identidad y acceso, perímetro, red, cómputo, aplicación y datos." }
+    },
+    {
+      "id": "defender",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: Microsoft Defender for Cloud solo protege recursos que están en Azure.",
+      "hints": ["Piensa en entornos híbridos y multicloud."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "También cubre on-premises y otras nubes." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: Azure, on-premises, AWS y Google Cloud." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Defender for Cloud supervisa la postura de seguridad y detecta amenazas en entornos híbridos y multicloud." }
+    }
+  ]
+}

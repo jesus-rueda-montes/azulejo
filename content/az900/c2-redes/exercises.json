@@ -1,0 +1,104 @@
+{
+  "exercises": [
+    {
+      "id": "vnet-region",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: una virtual network puede extenderse por varias regiones de Azure.",
+      "hints": ["Para unir regiones existe otro mecanismo."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "Una VNet está en una sola región." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: para conectar VNets de regiones distintas se usa global peering." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Una VNet pertenece a una región y una suscripción. Varias VNets se conectan con peering (también entre regiones)." }
+    },
+    {
+      "id": "peering-transitivo",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "La VNet A tiene peering con B, y B tiene peering con C. ¿Pueden comunicarse A y C?",
+      "hints": ["El peering no es transitivo."],
+      "options": [
+        { "id": "a", "text": "Sí, automáticamente a través de B", "correct": false, "explanation": "El peering no es transitivo." },
+        { "id": "b", "text": "No, salvo que crees un peering entre A y C (o enrutes por B con un diseño específico)", "correct": true, "explanation": "Correcto." }
+      ],
+      "solution": { "answer": "No por defecto", "explanation": "Cada par de VNets que deba hablar directamente necesita su propio peering." }
+    },
+    {
+      "id": "peering-internet",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Por dónde viaja el tráfico entre dos VNets conectadas por global peering?",
+      "hints": ["Nunca sale a la red pública."],
+      "options": [
+        { "id": "a", "text": "Por internet, cifrado", "correct": false, "explanation": "Eso sería una VPN." },
+        { "id": "b", "text": "Por la red troncal de Microsoft, con IPs privadas", "correct": true, "explanation": "Correcto." }
+      ],
+      "solution": { "answer": "Red troncal de Microsoft", "explanation": "El peering, local o global, usa la red de Microsoft y direcciones privadas." }
+    },
+    {
+      "id": "vpn-tipos",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un comercial necesita conectar su portátil a la VNet de la empresa desde un hotel. ¿Qué tipo de conexión VPN usa?",
+      "hints": ["Es un solo equipo, no una red completa."],
+      "options": [
+        { "id": "a", "text": "Site-to-site", "correct": false, "explanation": "Conecta una red on-premises completa." },
+        { "id": "b", "text": "Point-to-site", "correct": true, "explanation": "Correcto: un equipo concreto con la VNet." },
+        { "id": "c", "text": "ExpressRoute", "correct": false, "explanation": "ExpressRoute es una conexión privada de una sede, no de un portátil." }
+      ],
+      "solution": { "answer": "Point-to-site", "explanation": "Site-to-site une redes; point-to-site, un dispositivo; network-to-network, dos VNets." }
+    },
+    {
+      "id": "expressroute",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un banco necesita conectar su centro de datos con Azure sin que el tráfico pase por internet y con latencia estable. ¿Qué usa?",
+      "hints": ["Es una conexión privada a través de un proveedor."],
+      "options": [
+        { "id": "a", "text": "VPN Gateway site-to-site", "correct": false, "explanation": "La VPN va por internet (cifrada)." },
+        { "id": "b", "text": "ExpressRoute", "correct": true, "explanation": "Correcto." },
+        { "id": "c", "text": "Azure DNS", "correct": false, "explanation": "Azure DNS resuelve nombres, no conecta redes." }
+      ],
+      "solution": { "answer": "ExpressRoute", "explanation": "ExpressRoute ofrece una conexión privada, más fiable y con latencia más estable que una VPN por internet." }
+    },
+    {
+      "id": "dns-dominio",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: puedes comprar el dominio `tienda.com` directamente en Azure DNS.",
+      "hints": ["Azure DNS aloja zonas."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "Azure DNS no registra dominios." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: se compra en un registrador y se delega la zona en Azure DNS." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Azure DNS aloja zonas públicas y privadas, pero el registro del dominio se hace en un registrador." }
+    },
+    {
+      "id": "private-endpoint",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres que tu base de datos Azure SQL solo sea accesible desde tu VNet, con una IP privada. ¿Qué configuras?",
+      "hints": ["Usa la tecnología Private Link."],
+      "options": [
+        { "id": "a", "text": "Un private endpoint", "correct": true, "explanation": "Correcto: le da al servicio una IP privada en tu VNet." },
+        { "id": "b", "text": "Una IP pública estática", "correct": false, "explanation": "Lo expondría más, no menos." },
+        { "id": "c", "text": "Un VPN gateway", "correct": false, "explanation": "La VPN conecta redes; no da una IP privada a un servicio PaaS." }
+      ],
+      "solution": { "answer": "Un private endpoint", "explanation": "Después conviene desactivar el acceso público del servicio." }
+    },
+    {
+      "id": "fill-vpn",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa los tipos de conexión de VPN Gateway: une una red on-premises completa, un solo equipo y dos VNets.",
+      "template": "{{a}}-to-site | {{b}}-to-site | network-to-network",
+      "hints": ["El primero es un «sitio» (una sede)."],
+      "blanks": [
+        { "id": "a", "accepted": ["site"] },
+        { "id": "b", "accepted": ["point"] }
+      ],
+      "solution": { "answer": "site-to-site | point-to-site | network-to-network", "explanation": "Site-to-site une redes, point-to-site un equipo y network-to-network dos VNets." }
+    }
+  ]
+}

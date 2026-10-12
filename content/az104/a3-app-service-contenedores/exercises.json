@@ -1,0 +1,132 @@
+{
+  "exercises": [
+    {
+      "id": "cmd-plan-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea el App Service plan Linux `plan-web` en el resource group `rg-web` con el tier `S1`.",
+      "hints": ["Es `az appservice plan create`.", "El tier va en `--sku` y el sistema operativo con `--is-linux`."],
+      "accepted": ["az appservice plan create --name plan-web --resource-group rg-web --sku S1 --is-linux"],
+      "solution": { "answer": "az appservice plan create -n plan-web -g rg-web --sku S1 --is-linux", "explanation": "S1 (Standard) ya incluye deployment slots y autoescalado." }
+    },
+    {
+      "id": "tier-slots",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Tu plan es B1 y necesitas deployment slots. ¿Qué haces?",
+      "hints": ["Los slots dependen del tier del plan."],
+      "options": [
+        { "id": "a", "text": "Scale up del plan a Standard (o superior)", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Scale out a 3 instancias", "correct": false, "explanation": "Más instancias no dan funciones nuevas." },
+        { "id": "c", "text": "Crear un segundo plan B1 para staging", "correct": false, "explanation": "Funcionaría como app aparte, pero sin swap." }
+      ],
+      "solution": { "answer": "Scale up a Standard", "explanation": "Los slots están en Standard, Premium e Isolated." }
+    },
+    {
+      "id": "cmd-plan-scale-out",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Escala horizontalmente el plan `plan-web` (grupo `rg-web`) a 3 instancias.",
+      "hints": ["Se escala el plan, no la app.", "El número de instancias va en `--number-of-workers`."],
+      "accepted": ["az appservice plan update --name plan-web --resource-group rg-web --number-of-workers 3"],
+      "solution": { "answer": "az appservice plan update -n plan-web -g rg-web --number-of-workers 3", "explanation": "Todas las apps del plan se ejecutan en las 3 instancias." }
+    },
+    {
+      "id": "cmd-slot-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea el deployment slot `staging` en la web app `tienda-web` del grupo `rg-web`.",
+      "hints": ["Es `az webapp deployment slot create`."],
+      "accepted": ["az webapp deployment slot create --name tienda-web --resource-group rg-web --slot staging"],
+      "solution": { "answer": "az webapp deployment slot create -n tienda-web -g rg-web --slot staging", "explanation": "Con `--configuration-source tienda-web` copia la configuración de producción." }
+    },
+    {
+      "id": "cmd-slot-swap",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Intercambia el slot `staging` con `production` en la web app `tienda-web` (grupo `rg-web`).",
+      "hints": ["Es `az webapp deployment slot swap`.", "El destino va en `--target-slot`."],
+      "accepted": ["az webapp deployment slot swap --name tienda-web --resource-group rg-web --slot staging --target-slot production"],
+      "solution": { "answer": "az webapp deployment slot swap -n tienda-web -g rg-web --slot staging --target-slot production", "explanation": "Si la versión nueva falla, otro swap devuelve la anterior a producción." }
+    },
+    {
+      "id": "dominio-dns",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Para añadir `www.tienda.com` a la web app, completa los dos registros DNS que necesitas.",
+      "template": "www → registro {{tipo}} hacia tienda-web.azurewebsites.net\nasuid.www → registro {{verif}} con el ID de verificación",
+      "hints": ["Un registro es un alias de nombre; el otro, un texto."],
+      "blanks": [
+        { "id": "tipo", "accepted": ["CNAME"] },
+        { "id": "verif", "accepted": ["TXT"] }
+      ],
+      "solution": { "answer": "CNAME · TXT", "explanation": "El CNAME dirige el tráfico y el TXT `asuid` demuestra que el dominio es tuyo." }
+    },
+    {
+      "id": "vnet-integration",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "La web app tiene que conectarse a una base de datos con IP privada en tu VNet. ¿Qué configuras?",
+      "hints": ["Es tráfico que sale de la app."],
+      "options": [
+        { "id": "a", "text": "VNet integration", "correct": true, "explanation": "Correcto: es para el tráfico de salida hacia la VNet." },
+        { "id": "b", "text": "Un private endpoint en la web app", "correct": false, "explanation": "Eso hace privada la entrada a la app, no la salida." },
+        { "id": "c", "text": "Access restrictions", "correct": false, "explanation": "Filtran quién entra a la app." }
+      ],
+      "solution": { "answer": "VNet integration", "explanation": "Entrada privada: private endpoint. Salida a la VNet: VNet integration." }
+    },
+    {
+      "id": "cmd-acr-build",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Construye en Azure la imagen `tienda/api:v1` a partir del directorio actual (`.`) y súbela al registro `acrtienda`.",
+      "hints": ["Es `az acr build`.", "Registro en `--registry` y etiqueta en `--image`; el contexto es el último argumento."],
+      "accepted": ["az acr build --registry acrtienda --image tienda/api:v1 ."],
+      "solution": { "answer": "az acr build -r acrtienda -t tienda/api:v1 .", "explanation": "La construcción la hace ACR Tasks: no hace falta Docker en local." }
+    },
+    {
+      "id": "acr-pull",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cuál es la forma recomendada de que una Container App descargue imágenes de ACR?",
+      "hints": ["Sin contraseñas guardadas."],
+      "options": [
+        { "id": "a", "text": "Una managed identity con el rol AcrPull en el registro", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Activar el admin user y guardar su contraseña", "correct": false, "explanation": "Es una credencial compartida con todos los permisos; no es lo recomendado." },
+        { "id": "c", "text": "Hacer público el registro", "correct": false, "explanation": "Expone tus imágenes." }
+      ],
+      "solution": { "answer": "Managed identity + AcrPull", "explanation": "Sin secretos que rotar y con el mínimo privilegio." }
+    },
+    {
+      "id": "cmd-aci-create",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea en `rg-web` el contenedor `ci-informe` con la imagen `acrtienda.azurecr.io/tienda/informe:v1`, que NO se reinicie al terminar.",
+      "hints": ["Es `az container create`.", "La política es `--restart-policy` con el valor que nunca reinicia."],
+      "accepted": ["az container create --name ci-informe --resource-group rg-web --image acrtienda.azurecr.io/tienda/informe:v1 --restart-policy Never"],
+      "solution": { "answer": "az container create -n ci-informe -g rg-web --image acrtienda.azurecr.io/tienda/informe:v1 --restart-policy Never", "explanation": "Para una tarea que termina, `Never` (o `OnFailure` si quieres reintentos ante errores)." }
+    },
+    {
+      "id": "cmd-containerapp",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea la Container App `api-tienda` en `rg-web`, en el environment `env-tienda`, con la imagen `acrtienda.azurecr.io/tienda/api:v1`, ingress externo en el puerto `8080` y escalado de `0` a `10` réplicas.",
+      "hints": ["Es `az containerapp create` con `--environment` e `--image`.", "Usa `--target-port`, `--ingress`, `--min-replicas` y `--max-replicas`."],
+      "accepted": ["az containerapp create --name api-tienda --resource-group rg-web --environment env-tienda --image acrtienda.azurecr.io/tienda/api:v1 --target-port 8080 --ingress external --min-replicas 0 --max-replicas 10"],
+      "solution": { "answer": "az containerapp create -n api-tienda -g rg-web --environment env-tienda --image acrtienda.azurecr.io/tienda/api:v1 --target-port 8080 --ingress external --min-replicas 0 --max-replicas 10", "explanation": "Con mínimo 0 escala a cero cuando no hay tráfico." }
+    },
+    {
+      "id": "elegir-servicio",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Una tarea en contenedor se ejecuta una vez al día durante 10 minutos y no recibe tráfico. ¿Qué servicio es el más sencillo?",
+      "hints": ["No necesita escalar ni ingress."],
+      "options": [
+        { "id": "a", "text": "Azure Container Instances", "correct": true, "explanation": "Correcto: un contenedor suelto, pagado por segundos." },
+        { "id": "b", "text": "App Service Premium", "correct": false, "explanation": "Pagarías un plan todo el día." },
+        { "id": "c", "text": "Un scale set de VMs", "correct": false, "explanation": "Demasiada infraestructura para una tarea." }
+      ],
+      "solution": { "answer": "ACI", "explanation": "ACI con restart policy `Never` u `OnFailure`." }
+    }
+  ]
+}

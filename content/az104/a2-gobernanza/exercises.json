@@ -1,0 +1,117 @@
+{
+  "exercises": [
+    {
+      "id": "efecto-audit",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres saber cuántos recursos incumplen una regla nueva sin bloquear ningún despliegue. ¿Qué efecto usas?",
+      "hints": ["Permite el cambio, pero lo marca."],
+      "options": [
+        { "id": "a", "text": "Audit", "correct": true, "explanation": "Correcto: marca los recursos como no conformes sin bloquear." },
+        { "id": "b", "text": "Deny", "correct": false, "explanation": "Bloquearía los despliegues." },
+        { "id": "c", "text": "DeployIfNotExists", "correct": false, "explanation": "Despliega recursos; no es lo que buscas." }
+      ],
+      "solution": { "answer": "Audit", "explanation": "También puedes asignar con enforcement mode DoNotEnforce para ver el impacto antes de aplicar Deny." }
+    },
+    {
+      "id": "remediacion",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "Asignas una política con efecto Modify que hereda la tag `centro-coste` del resource group. ¿Qué necesitas para que se aplique también a los recursos que ya existían? (marca todas)",
+      "hints": ["La política actúa en tu nombre.", "Los recursos existentes no se corrigen solos."],
+      "options": [
+        { "id": "a", "text": "Una managed identity en la asignación", "correct": true, "explanation": "Correcto: Modify y DeployIfNotExists la necesitan." },
+        { "id": "b", "text": "Una remediation task", "correct": true, "explanation": "Correcto: corrige los recursos existentes." },
+        { "id": "c", "text": "Un lock ReadOnly en el resource group", "correct": false, "explanation": "Un lock ReadOnly impediría modificar las tags." }
+      ],
+      "solution": { "answer": "Managed identity y remediation task", "explanation": "Los recursos nuevos o actualizados se corrigen automáticamente; los existentes, con una tarea de remediación." }
+    },
+    {
+      "id": "cmd-policy-assign",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Asigna la definición de política `require-tag-rg` con el nombre de asignación `tags-obligatorias` al resource group `rg-web`.",
+      "hints": ["Es `az policy assignment create`.", "Necesita `--name`, `--policy` y el resource group (`-g`)."],
+      "accepted": ["az policy assignment create --name tags-obligatorias --policy require-tag-rg --resource-group rg-web"],
+      "solution": { "answer": "az policy assignment create --name tags-obligatorias --policy require-tag-rg -g rg-web", "explanation": "Para asignar en una suscripción o un management group se usa `--scope` con su ID." }
+    },
+    {
+      "id": "cmd-lock",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea un lock llamado `no-borrar` que impida borrar el resource group `rg-datos` (pero permita modificarlo).",
+      "hints": ["Es `az lock create`.", "El tipo es `CanNotDelete`."],
+      "accepted": ["az lock create --name no-borrar --lock-type CanNotDelete --resource-group rg-datos"],
+      "solution": { "answer": "az lock create --name no-borrar --lock-type CanNotDelete -g rg-datos", "explanation": "El lock se hereda a todos los recursos del grupo. ReadOnly impediría también modificar." }
+    },
+    {
+      "id": "lock-rol",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Un usuario con rol Contributor intenta borrar un lock y no puede. ¿Por qué?",
+      "hints": ["Hace falta un permiso de `Microsoft.Authorization`."],
+      "options": [
+        { "id": "a", "text": "Gestionar locks requiere `Microsoft.Authorization/locks/*`, que tienen Owner y User Access Administrator, no Contributor", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Los locks no se pueden borrar nunca", "correct": false, "explanation": "Sí se pueden borrar con el permiso adecuado." },
+        { "id": "c", "text": "Porque el lock es ReadOnly", "correct": false, "explanation": "El tipo de lock no cambia quién puede gestionarlo." }
+      ],
+      "solution": { "answer": "Le falta el permiso de locks", "explanation": "Contributor no incluye las acciones de `Microsoft.Authorization`, ni para roles ni para locks." }
+    },
+    {
+      "id": "readonly-keys",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Tras poner un lock ReadOnly en una storage account, una aplicación deja de poder obtener las claves de acceso. ¿Por qué?",
+      "hints": ["Listar claves no es un simple GET."],
+      "options": [
+        { "id": "a", "text": "Listar las claves es una operación POST, y ReadOnly bloquea las operaciones que no son de lectura", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "ReadOnly regenera las claves", "correct": false, "explanation": "Un lock no cambia nada del recurso." },
+        { "id": "c", "text": "ReadOnly borra los blobs", "correct": false, "explanation": "Los locks no borran nada." }
+      ],
+      "solution": { "answer": "Listar claves es POST", "explanation": "Los locks ReadOnly pueden tener efectos inesperados; piénsalo antes de aplicarlos." }
+    },
+    {
+      "id": "cmd-tags",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Pon la tag `entorno=pro` al resource group `rg-web` (sustituyendo las que tenga).",
+      "hints": ["Es `az group update`.", "Las etiquetas van en `--tags`."],
+      "accepted": ["az group update --name rg-web --tags entorno=pro"],
+      "solution": { "answer": "az group update -n rg-web --tags entorno=pro", "explanation": "`--tags` sustituye todas las tags del grupo. Recuerda que los recursos del grupo no las heredan sin una política." }
+    },
+    {
+      "id": "cmd-mg",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea el management group con ID `produccion` y nombre visible `Producción`.",
+      "hints": ["Es un subcomando de `az account management-group`.", "Usa `--name` y `--display-name`."],
+      "accepted": ["az account management-group create --name produccion --display-name Producción"],
+      "solution": { "answer": "az account management-group create --name produccion --display-name Producción", "explanation": "El ID (`--name`) no se puede cambiar; el nombre visible sí." }
+    },
+    {
+      "id": "move-region",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: `az resource move` puede trasladar una VM de West Europe a North Europe.",
+      "hints": ["`resource move` cambia de grupo o de suscripción."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "No cambia la región." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: para cambiar de región se usa Azure Resource Mover o se vuelve a desplegar." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "`az resource move` mueve a otro resource group o suscripción, manteniendo la región." }
+    },
+    {
+      "id": "budget-previsto",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres enterarte a mitad de mes si vas camino de pasarte del presupuesto, no cuando ya te has pasado. ¿Qué configuras en el budget?",
+      "hints": ["Hay alertas sobre el gasto real y sobre el gasto…"],
+      "options": [
+        { "id": "a", "text": "Una alerta sobre el gasto previsto (forecasted)", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Una alerta del 100 % sobre el gasto real", "correct": false, "explanation": "Saltaría cuando ya has gastado el presupuesto." },
+        { "id": "c", "text": "Un lock ReadOnly en la suscripción", "correct": false, "explanation": "Bloquearía cualquier cambio; no es una alerta de costes." }
+      ],
+      "solution": { "answer": "Alerta sobre gasto previsto", "explanation": "Las alertas de gasto previsto avisan con antelación; se pueden combinar con un action group para automatizar la respuesta." }
+    }
+  ]
+}

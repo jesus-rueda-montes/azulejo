@@ -1,0 +1,12 @@
+{
+  "cards": [
+    { "id": "subnet-reservadas", "front": "IPs reservadas por subnet", "back": "5: la primera, las tres siguientes y la última." },
+    { "id": "peering", "front": "VNet peering", "back": "Local o global, se crea en los dos sentidos, rangos sin solapar y NO transitivo. Gateway transit para compartir la VPN del hub." },
+    { "id": "pip-standard", "front": "IP pública Standard", "back": "Estática, compatible con zonas y cerrada por defecto (necesita un NSG que permita la entrada). Basic se retiró en 2025." },
+    { "id": "udr", "front": "Next hops de una UDR", "back": "VirtualAppliance (con IP), VirtualNetworkGateway, VnetLocal, Internet y None (descartar)." },
+    { "id": "nsg", "front": "Reglas de NSG", "back": "Prioridad 100-4096, menor número gana; reglas por defecto 65000+; en subnet y/o NIC; ASG para agrupar NICs." },
+    { "id": "bastion", "front": "Azure Bastion", "back": "RDP/SSH sin IP pública en la VM. Subnet AzureBastionSubnet /26 o mayor + IP pública Standard estática." },
+    { "id": "endpoints", "front": "Service endpoint frente a private endpoint", "back": "Service: el servicio sigue con IP pública, gratis, solo desde la VNet. Private: IP privada en tu subnet, accesible desde on-premises, necesita private DNS zone." },
+    { "id": "watcher", "front": "Network Watcher", "back": "IP flow verify (qué regla de NSG decide), next hop (por dónde sale), connection troubleshoot y flow logs." }
+  ]
+}

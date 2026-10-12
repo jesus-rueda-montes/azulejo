@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "herramientas", "front": "Portal, Cloud Shell, CLI y PowerShell", "back": "Portal: web. Cloud Shell: terminal en el navegador ya autenticada. CLI: `az ...`. PowerShell: `New-AzVM`. Todas usan ARM." },
+    { "id": "arc", "front": "Azure Arc", "back": "Gestiona desde Azure servidores, Kubernetes y bases de datos on-premises o de otras nubes (Policy, RBAC, tags, Monitor)." },
+    { "id": "arm-template", "front": "Plantilla ARM", "back": "JSON declarativo e idempotente: describes el estado final y Resource Manager orquesta el despliegue." },
+    { "id": "bicep", "front": "Bicep", "back": "Lenguaje de IaC con la misma capacidad que ARM y sintaxis más concisa; compila a ARM JSON." },
+    { "id": "advisor", "front": "Categorías de Azure Advisor", "back": "Reliability, Security, Performance, Operational Excellence y Cost." },
+    { "id": "service-health", "front": "Niveles de Service Health", "back": "Azure status (global), Service Health (tus servicios y regiones) y Resource Health (cada recurso)." },
+    { "id": "monitor", "front": "Piezas de Azure Monitor", "back": "Métricas, logs, Log Analytics (KQL), alertas con action groups y Application Insights (APM)." }
+  ]
+}

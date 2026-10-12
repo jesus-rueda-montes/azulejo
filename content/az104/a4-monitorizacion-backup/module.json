@@ -1,0 +1,8 @@
+{
+  "title": "Monitorización y backup",
+  "summary": "Métricas, diagnostic settings, KQL, alertas y action groups, Network Watcher; Recovery Services vault, políticas de backup y Site Recovery.",
+  "level": 4,
+  "order": 1,
+  "xp": 160,
+  "prereqs": []
+}

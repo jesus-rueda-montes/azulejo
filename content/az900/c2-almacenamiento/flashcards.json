@@ -1,0 +1,11 @@
+{
+  "cards": [
+    { "id": "servicios", "front": "Servicios de Azure Storage", "back": "Blob (objetos), Files (SMB/NFS), Queue (mensajes), Table (NoSQL clave-atributo) y Disks (discos de VMs)." },
+    { "id": "nombre", "front": "Reglas del nombre de una storage account", "back": "Único en Azure, de 3 a 24 caracteres, solo minúsculas y números. Forma los endpoints." },
+    { "id": "niveles", "front": "Niveles de acceso de blobs y mínimos", "back": "Hot; cool (30 días); cold (90 días); archive (180 días, offline, rehidratación de hasta 15 horas)." },
+    { "id": "redundancia", "front": "LRS, ZRS, GRS y GZRS", "back": "LRS: un centro de datos. ZRS: varias zonas. GRS: LRS + otra región. GZRS: ZRS + otra región." },
+    { "id": "ra", "front": "¿Qué añade RA- (RA-GRS, RA-GZRS)?", "back": "Lectura permanente de la región secundaria, sin esperar a un failover." },
+    { "id": "mover", "front": "AzCopy, Storage Explorer y File Sync", "back": "AzCopy: CLI de copia. Storage Explorer: interfaz gráfica. File Sync: Windows Server ↔ Azure Files con cloud tiering." },
+    { "id": "migrar", "front": "Azure Migrate y Azure Data Box", "back": "Migrate: hub para descubrir, evaluar y migrar. Data Box: dispositivo físico para grandes volúmenes sin internet." }
+  ]
+}

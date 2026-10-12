@@ -1,0 +1,10 @@
+{
+  "title": "Azure CLI, ARM y Bicep",
+  "summary": "Trabajar con la Azure CLI (sesión, suscripciones, resource groups, salida y consultas) y desplegar con plantillas ARM y Bicep.",
+  "level": 1,
+  "order": 1,
+  "xp": 100,
+  "prereqs": [
+    "az900/c1-arquitectura"
+  ]
+}

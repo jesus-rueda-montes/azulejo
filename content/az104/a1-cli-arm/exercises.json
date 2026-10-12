@@ -1,0 +1,112 @@
+{
+  "exercises": [
+    {
+      "id": "cmd-account-set",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Cambia la suscripción activa de la CLI a la suscripción `Tienda-Pro`.",
+      "hints": ["Es un comando de `az account`.", "El flag es `--subscription` (o `-s`)."],
+      "accepted": ["az account set --subscription Tienda-Pro"],
+      "solution": { "answer": "az account set --subscription Tienda-Pro", "explanation": "Todo lo que ejecutes después irá contra esa suscripción. Compruébalo con `az account show`." }
+    },
+    {
+      "id": "cmd-group-tags",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Crea el resource group `rg-tienda-dev` en `westeurope` con la tag `entorno=dev`.",
+      "hints": ["`az group create` con nombre y región.", "Las etiquetas van en `--tags clave=valor`."],
+      "accepted": ["az group create --name rg-tienda-dev --location westeurope --tags entorno=dev"],
+      "solution": { "answer": "az group create -n rg-tienda-dev -l westeurope --tags entorno=dev", "explanation": "`--tags` admite varias etiquetas separadas por espacios: `--tags entorno=dev proyecto=tienda`." }
+    },
+    {
+      "id": "cmd-list-table",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Lista los recursos del resource group `rg-tienda` en formato tabla.",
+      "hints": ["Es `az resource list`.", "Indica el grupo con `-g` y el formato con `-o`."],
+      "accepted": ["az resource list --resource-group rg-tienda --output table"],
+      "solution": { "answer": "az resource list -g rg-tienda -o table", "explanation": "`az resource list` sirve para cualquier tipo de recurso; filtra con `--resource-type` o `--tag`." }
+    },
+    {
+      "id": "query-tsv",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "En un script de Bash quieres guardar en una variable SOLO el ID del grupo `rg-tienda`, sin comillas. ¿Qué comando usas?",
+      "hints": ["Necesitas filtrar un campo y un formato de salida sin JSON."],
+      "options": [
+        { "id": "a", "text": "`az group show -n rg-tienda --query id -o tsv`", "correct": true, "explanation": "Correcto: `--query id` selecciona el campo y `tsv` lo devuelve sin comillas." },
+        { "id": "b", "text": "`az group show -n rg-tienda -o json`", "correct": false, "explanation": "Devuelve todo el objeto en JSON." },
+        { "id": "c", "text": "`az group show -n rg-tienda --query id -o json`", "correct": false, "explanation": "Devuelve el ID entre comillas." }
+      ],
+      "solution": { "answer": "--query id -o tsv", "explanation": "`--query` usa JMESPath para elegir campos; `-o tsv` da texto plano, ideal para variables." }
+    },
+    {
+      "id": "cmd-what-if",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Antes de desplegar `main.bicep` en el resource group `rg-tienda`, muestra qué cambiaría sin aplicar nada.",
+      "hints": ["Es un subcomando de `az deployment group`.", "Se llama igual que la pregunta «¿y si…?» en inglés."],
+      "accepted": ["az deployment group what-if --resource-group rg-tienda --template-file main.bicep"],
+      "solution": { "answer": "az deployment group what-if -g rg-tienda --template-file main.bicep", "explanation": "`what-if` compara la plantilla con lo que existe y enseña lo que se crearía, modificaría o borraría." }
+    },
+    {
+      "id": "cmd-deploy",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Despliega `main.bicep` en `rg-tienda` pasando el parámetro `sku=Standard_ZRS`.",
+      "hints": ["`az deployment group create`.", "Los parámetros van en `--parameters clave=valor` (o `-p`)."],
+      "accepted": ["az deployment group create --resource-group rg-tienda --template-file main.bicep --parameters sku=Standard_ZRS"],
+      "solution": { "answer": "az deployment group create -g rg-tienda --template-file main.bicep --parameters sku=Standard_ZRS", "explanation": "Vale igual para un fichero .json (ARM) o .bicep. Por defecto el modo es Incremental." }
+    },
+    {
+      "id": "modo-complete",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Despliegas una plantilla que solo contiene una storage account en un resource group que también tiene una VM. ¿Qué pasa con la VM en modo Complete?",
+      "hints": ["Complete deja el grupo exactamente como dice la plantilla."],
+      "options": [
+        { "id": "a", "text": "Se borra, porque no está en la plantilla", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Se queda igual", "correct": false, "explanation": "Eso pasaría en modo Incremental, el modo por defecto." },
+        { "id": "c", "text": "El despliegue falla", "correct": false, "explanation": "No falla: borra lo que sobra." }
+      ],
+      "solution": { "answer": "Se borra", "explanation": "Incremental deja lo que no está en la plantilla; Complete lo borra. Revisa siempre con `what-if`." }
+    },
+    {
+      "id": "cmd-decompile",
+      "type": "command",
+      "cli": "az",
+      "prompt": "Convierte la plantilla ARM `plantilla.json` a Bicep.",
+      "hints": ["Es un comando de `az bicep`.", "Lo contrario de compilar."],
+      "accepted": ["az bicep decompile --file plantilla.json"],
+      "solution": { "answer": "az bicep decompile --file plantilla.json", "explanation": "`decompile` va de ARM a Bicep; `build` va de Bicep a ARM. El resultado suele necesitar algo de limpieza." }
+    },
+    {
+      "id": "fill-export",
+      "type": "fill",
+      "language": "shell",
+      "prompt": "Completa el comando para exportar el resource group `rg-tienda` como plantilla Bicep.",
+      "template": "az group {{verbo}} --name rg-tienda --{{flag}} bicep",
+      "hints": ["Es lo contrario de importar.", "El flag indica el formato de la exportación."],
+      "blanks": [{ "id": "verbo", "accepted": ["export"] }, { "id": "flag", "accepted": ["export-format"] }],
+      "solution": { "answer": "az group export --name rg-tienda --export-format bicep", "explanation": "Devuelve una plantilla con los recursos del grupo; sin `--export-format`, en JSON (ARM)." }
+    },
+    {
+      "id": "editor-arm-zrs",
+      "type": "editor",
+      "language": "json",
+      "prompt": "Modifica la plantilla ARM: la storage account debe usar redundancia `Standard_ZRS` y su región debe ser la del resource group (`[resourceGroup().location]`) en lugar de `westeurope` fija.",
+      "starter": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"nombreCuenta\": { \"type\": \"string\" }\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"apiVersion\": \"2023-05-01\",\n      \"name\": \"[parameters('nombreCuenta')]\",\n      \"location\": \"westeurope\",\n      \"sku\": { \"name\": \"Standard_LRS\" },\n      \"kind\": \"StorageV2\"\n    }\n  ]\n}\n",
+      "hints": ["Cambia el valor de `sku.name`.", "La región va en `location` y es una expresión entre corchetes."],
+      "assertions": [
+        { "path": "resources[0].sku.name", "op": "equals", "value": "Standard_ZRS", "message": "sku.name es Standard_ZRS" },
+        { "path": "resources[0].location", "op": "equals", "value": "[resourceGroup().location]", "message": "location es [resourceGroup().location]" },
+        { "path": "resources[0].type", "op": "equals", "value": "Microsoft.Storage/storageAccounts", "message": "El recurso sigue siendo una storage account" },
+        { "path": "resources[0].name", "op": "equals", "value": "[parameters('nombreCuenta')]", "message": "El nombre sigue saliendo del parámetro nombreCuenta" }
+      ],
+      "solution": {
+        "answer": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"nombreCuenta\": { \"type\": \"string\" }\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"apiVersion\": \"2023-05-01\",\n      \"name\": \"[parameters('nombreCuenta')]\",\n      \"location\": \"[resourceGroup().location]\",\n      \"sku\": { \"name\": \"Standard_ZRS\" },\n      \"kind\": \"StorageV2\"\n    }\n  ]\n}\n",
+        "explanation": "Usar `[resourceGroup().location]` hace la plantilla reutilizable en cualquier región. Aún mejor sería convertir el SKU en un parámetro."
+      }
+    }
+  ]
+}

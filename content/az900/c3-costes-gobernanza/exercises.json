@@ -1,0 +1,118 @@
+{
+  "exercises": [
+    {
+      "id": "calculadora",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Antes de desplegar nada, quieres saber cuánto costarían al mes 3 VMs y una base de datos en West Europe. ¿Qué herramienta usas?",
+      "hints": ["Todavía no hay recursos desplegados."],
+      "options": [
+        { "id": "a", "text": "La calculadora de precios", "correct": true, "explanation": "Correcto: estima costes antes de desplegar." },
+        { "id": "b", "text": "Cost analysis de Cost Management", "correct": false, "explanation": "Cost analysis muestra lo que ya gastas." },
+        { "id": "c", "text": "Azure Advisor", "correct": false, "explanation": "Advisor recomienda mejoras sobre lo que ya existe." }
+      ],
+      "solution": { "answer": "Calculadora de precios", "explanation": "La calculadora de precios estima; la TCO compara on-premises con Azure; Cost Management analiza el gasto real." }
+    },
+    {
+      "id": "budget",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: al superar el 100 % de un budget de Cost Management, Azure apaga automáticamente los recursos.",
+      "hints": ["Un budget es un umbral con alertas."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "Un budget no apaga nada por sí mismo." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: envía alertas; actuar requiere automatización adicional." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Los budgets avisan cuando el gasto alcanza los umbrales configurados." }
+    },
+    {
+      "id": "factores",
+      "type": "quiz",
+      "mode": "multi",
+      "prompt": "¿Qué factores influyen en el coste de una solución en Azure? (marca todas)",
+      "hints": ["Son varios; solo uno de la lista no influye."],
+      "options": [
+        { "id": "a", "text": "La región en la que despliegas", "correct": true, "explanation": "Correcto: el precio varía por región." },
+        { "id": "b", "text": "El tráfico de datos de salida", "correct": true, "explanation": "Correcto: la salida (egress) se paga." },
+        { "id": "c", "text": "El tipo y el tamaño del recurso", "correct": true, "explanation": "Correcto." },
+        { "id": "d", "text": "El número de tags que pones a un recurso", "correct": false, "explanation": "Las tags no tienen coste." }
+      ],
+      "solution": { "answer": "Región, tráfico de salida y tipo de recurso", "explanation": "También el consumo, el mantenimiento, el tipo de suscripción y el Marketplace." }
+    },
+    {
+      "id": "tags-herencia",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Pones la tag `proyecto=tienda` en un resource group. ¿La tienen automáticamente sus recursos?",
+      "hints": ["Las tags se comportan distinto que los roles o las políticas."],
+      "options": [
+        { "id": "a", "text": "Sí, como ocurre con los roles de RBAC", "correct": false, "explanation": "Las tags no se heredan por defecto." },
+        { "id": "b", "text": "No; hace falta, por ejemplo, una política que las herede o exija", "correct": true, "explanation": "Correcto." }
+      ],
+      "solution": { "answer": "No", "explanation": "Las tags no se heredan. Azure Policy tiene definiciones para exigirlas o heredarlas del resource group." }
+    },
+    {
+      "id": "policy-vs-rbac",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Quieres impedir que NADIE, ni siquiera un Owner, cree recursos fuera de las regiones de la UE. ¿Qué usas?",
+      "hints": ["No se trata de quién actúa, sino de qué configuración está permitida."],
+      "options": [
+        { "id": "a", "text": "Azure Policy con la regla de ubicaciones permitidas y efecto deny", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Quitar el rol Owner a todo el mundo", "correct": false, "explanation": "Los Contributor podrían seguir creando recursos en cualquier región." },
+        { "id": "c", "text": "Un resource lock ReadOnly", "correct": false, "explanation": "Un lock protege recursos existentes; no restringe regiones." }
+      ],
+      "solution": { "answer": "Azure Policy", "explanation": "Policy controla las propiedades permitidas de los recursos, independientemente del rol de quien los cree." }
+    },
+    {
+      "id": "lock-tipo",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "La base de datos de producción debe poder modificarse (escalarla, cambiar parámetros), pero nunca borrarse por accidente. ¿Qué lock usas?",
+      "hints": ["Uno de los locks también impide modificar."],
+      "options": [
+        { "id": "a", "text": "CanNotDelete (Delete)", "correct": true, "explanation": "Correcto: permite modificar, pero no borrar." },
+        { "id": "b", "text": "ReadOnly", "correct": false, "explanation": "ReadOnly impediría también escalarla." }
+      ],
+      "solution": { "answer": "CanNotDelete", "explanation": "CanNotDelete bloquea el borrado; ReadOnly bloquea el borrado y cualquier modificación." }
+    },
+    {
+      "id": "lock-owner",
+      "type": "quiz",
+      "mode": "truefalse",
+      "prompt": "Verdadero o falso: un usuario con rol Owner puede borrar un recurso que tiene un lock CanNotDelete sin hacer nada más.",
+      "hints": ["Los locks aplican a todos los usuarios."],
+      "options": [
+        { "id": "v", "text": "Verdadero", "correct": false, "explanation": "El lock le bloquea también a él." },
+        { "id": "f", "text": "Falso", "correct": true, "explanation": "Correcto: primero tiene que quitar el lock." }
+      ],
+      "solution": { "answer": "Falso", "explanation": "Los locks se aplican a todos, incluidos los Owner. Hay que eliminar el lock antes de borrar." }
+    },
+    {
+      "id": "iniciativa",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "¿Cómo se llama un grupo de definiciones de Azure Policy que se asignan y siguen juntas?",
+      "hints": ["En inglés empieza por «i»."],
+      "options": [
+        { "id": "a", "text": "Iniciativa", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Blueprint de tags", "correct": false, "explanation": "No es el término." },
+        { "id": "c", "text": "Management group", "correct": false, "explanation": "Un management group es un scope, no un grupo de políticas." }
+      ],
+      "solution": { "answer": "Iniciativa (initiative)", "explanation": "Una iniciativa agrupa políticas con un objetivo común, por ejemplo, cumplir una norma de seguridad." }
+    },
+    {
+      "id": "purview",
+      "type": "quiz",
+      "mode": "single",
+      "prompt": "Necesitas descubrir y clasificar datos sensibles repartidos entre on-premises, varias nubes y Microsoft 365. ¿Qué servicio usas?",
+      "hints": ["Es la familia de soluciones de gobierno de datos, riesgo y cumplimiento."],
+      "options": [
+        { "id": "a", "text": "Microsoft Purview", "correct": true, "explanation": "Correcto." },
+        { "id": "b", "text": "Azure Policy", "correct": false, "explanation": "Policy controla la configuración de recursos de Azure, no clasifica datos." },
+        { "id": "c", "text": "Cost Management", "correct": false, "explanation": "Cost Management es para costes." }
+      ],
+      "solution": { "answer": "Microsoft Purview", "explanation": "Purview ofrece gobierno de datos (descubrimiento, clasificación, linaje) y soluciones de riesgo y cumplimiento." }
+    }
+  ]
+}

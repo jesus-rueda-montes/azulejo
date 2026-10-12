@@ -1,0 +1,8 @@
+{
+  "title": "Redes en la práctica",
+  "summary": "VNets, subnets, peering, IPs públicas, rutas, NSG y ASG, Bastion, service y private endpoints, Azure DNS y load balancers.",
+  "level": 3,
+  "order": 2,
+  "xp": 140,
+  "prereqs": []
+}
