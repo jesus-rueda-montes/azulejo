@@ -13,7 +13,7 @@ App web personal (SPA estática, sin backend ni IA) para aprender cloud con Micr
 
 - Itinerarios (`content/tracks.json`): `az900` (8 módulos, niveles 1-3) y `az104` (8 módulos, niveles 1-4). Máximo 10 módulos por itinerario y módulos concisos (decisión 63).
 - Especificación de CLI: `content/cli-specs/az.json`, generada desde learn.microsoft.com (decisión 62).
-- Deriva de Kubernetete (decisión 59). Sin repositorio de GitHub por ahora: solo git local (decisión 66).
+- Deriva de Kubernetete (decisión 59). Repositorio en GitHub: `github.com/jesus-rueda-montes/azulejo`, con Pages (decisión 68).
 - Arquitectura y estado actual: [ARCHITECTURE.md](ARCHITECTURE.md)
 - Decisiones de diseño y su motivo: [DECISIONS.md](DECISIONS.md)
 - Temario (módulos y su estado): [TEMARIO.md](TEMARIO.md)

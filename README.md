@@ -11,4 +11,4 @@ npm run dev
 - Build: `npm run build`
 - Arquitectura: [ARCHITECTURE.md](ARCHITECTURE.md) · Decisiones: [DECISIONS.md](DECISIONS.md) · Temario: [TEMARIO.md](TEMARIO.md)
 
-Aún no tiene repositorio en GitHub. Cuando lo tenga, el workflow `.github/workflows/deploy.yml` lo publica en GitHub Pages al hacer push a `main` (hay que activar *Settings → Pages → Source: GitHub Actions*).
+Repositorio: `github.com/jesus-rueda-montes/azulejo`. El workflow `.github/workflows/deploy.yml` lo publica en GitHub Pages al hacer push a `main` (requiere *Settings → Pages → Source: GitHub Actions*). La app queda en `https://jesus-rueda-montes.github.io/azulejo/`.

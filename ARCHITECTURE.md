@@ -9,7 +9,7 @@ Azulejo deriva de **Kubernetete** (app para Cloud, Kubernetes, Terraform y Ansib
 - **Especificación de CLI**: solo `content/cli-specs/az.json` (182 nodos de comandos), generada desde la documentación oficial (decisión 62).
 - **Glosario**: 63 términos (`content/glossary.json`).
 - **Tests**: Vitest (motor, contenido, componentes; 90 tests) y Playwright (`e2e/progreso.spec.ts`, sobre `az900/c1-conceptos-cloud` → `c1-arquitectura`).
-- **Sin repositorio en GitHub** por ahora (decisión 66). El workflow `.github/workflows/deploy.yml` se conserva para cuando se cree.
+- **Repositorio en GitHub**: `github.com/jesus-rueda-montes/azulejo` (público, decisión 68). El workflow `.github/workflows/deploy.yml` publica en GitHub Pages en cada push a `main`: `https://jesus-rueda-montes.github.io/azulejo/`.
 
 ## Estructura
 ```
