@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { readFile } from 'node:fs/promises'
 import { defineConfig, type Plugin } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // `leccion.md?lesson-meta` devuelve solo el bloque de frontmatter de la lección.
 // Así el catálogo (títulos y minutos) va en el bundle inicial y el cuerpo de cada
@@ -41,7 +42,40 @@ function exerciseMeta(): Plugin {
 // En local se sirve desde la raíz.
 export default defineConfig({
   base: process.env.BASE_PATH ?? '/',
-  plugins: [lessonMeta(), exerciseMeta(), react(), tailwindcss()],
+  plugins: [
+    lessonMeta(),
+    exerciseMeta(),
+    react(),
+    tailwindcss(),
+    // PWA instalable y sin conexión (decisión 74). Se precachea todo el build,
+    // también las lecciones y ejercicios bajo demanda y el SDK de Firebase,
+    // para que cualquier módulo se abra sin red. Las rutas de manifest y
+    // service worker toman `base`, así que funcionan en /azulejo/.
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      manifest: {
+        name: 'Azulejo: aprende Azure',
+        short_name: 'Azulejo',
+        description: 'Aprende Azure: fundamentos de AZ-900 y administración de AZ-104 con la Azure CLI.',
+        lang: 'es',
+        theme_color: '#0f7c86',
+        background_color: '#effafc',
+        display: 'standalone',
+        icons: [
+          { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // El chunk más grande (Firebase) ronda 0,6 MB; margen para que crezca.
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        cleanupOutdatedCaches: true,
+      },
+    }),
+  ],
   // PORT lo asigna el panel de vista previa si 5173 está ocupado.
   server: { port: Number(process.env.PORT) || 5173 },
   test: {

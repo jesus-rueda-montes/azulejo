@@ -10,6 +10,7 @@ Azulejo deriva de **Kubernetete** (app para Cloud, Kubernetes, Terraform y Ansib
 - **Glosario**: 63 términos (`content/glossary.json`).
 - **Tests**: Vitest (motor, contenido, componentes; 90 tests) y Playwright (`e2e/progreso.spec.ts`, sobre `az900/c1-conceptos-cloud` → `c1-arquitectura`).
 - **Sincronización opcional** con Firebase Spark (Auth con Google + Firestore), decisiones 70-73. Desactivada mientras `src/sync/firebaseConfig.ts` sea `null`.
+- **PWA instalable** (decisión 74): manifest, iconos en `public/` (`pwa-192.png`, `pwa-512.png`, `maskable-512.png`, `apple-touch-icon.png`, generados con `node scripts/generate-icons.mjs`) y service worker de Workbox que precachea todo el build. Solo existe en el build de producción (`npm run build` + `npm run preview`), no en `npm run dev`.
 - **Repositorio en GitHub**: `github.com/jesus-rueda-montes/azulejo` (público, decisión 68). El workflow `.github/workflows/deploy.yml` publica en GitHub Pages en cada push a `main`: `https://jesus-rueda-montes.github.io/azulejo/`.
 
 ## Estructura
