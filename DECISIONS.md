@@ -74,6 +74,7 @@ Las decisiones 1-58 vienen de **Kubernetete**, la app de la que deriva Azulejo; 
 | 66 | ~~Sin repositorio de GitHub por ahora; solo git local~~ **Superada por la decisión 68** | Pedido por el usuario en su momento. |
 | 67 | Glosario generado a partir de una lista de candidatos: `introducedIn` = primer módulo (AZ-900 antes que AZ-104) que usa el término en la prosa; los candidatos que no se usan se descartan | Garantiza por construcción las reglas del test del glosario. |
 | 68 | **Repositorio público en GitHub**: `github.com/jesus-rueda-montes/azulejo`, con despliegue en GitHub Pages vía Actions (`BASE_PATH=/azulejo/`) | Pedido por el usuario: poder abrir la app desde otros equipos. Pages gratuito exige repositorio público. Sustituye a la decisión 66. |
+| 69 | **Logotipo: «Mosaico en progreso»**, elegido por el usuario entre 10 bocetos (oct. 2026): tres azulejos (`#0f7c86`, `#1d6fb8`, `#0b4f6c`) y el cuarto girado 45° en `#5fd3df`. Se usa en la cabecera (`Logo` en `icons.tsx`) y en `public/favicon.svg` | Encaja con la idea de completar un mosaico módulo a módulo y usa solo colores de la paleta Laguna. Boceto: https://claude.ai/artifact/YQikVp65NdGP357V7d22TC |
 
 ## Pendiente de decidir
 - **Versiones de las GitHub Actions** del workflow (`checkout@v4`, `upload-pages-artifact@v3`, `deploy-pages@v4`): comprobar si hay versiones mayores nuevas al crear el repo en GitHub.

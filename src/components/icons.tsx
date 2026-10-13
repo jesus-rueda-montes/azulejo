@@ -61,11 +61,12 @@ export const PlayCircleIcon = (p: P) => (
   </svg>
 )
 
-/** Logotipo: dos olas dentro de un círculo. */
+/** Logotipo: mosaico de tres azulejos colocados y el cuarto girado (aprender es completar el mosaico). */
 export const Logo = (p: P) => (
-  <svg width={28} height={28} viewBox="0 0 28 28" aria-hidden {...p}>
-    <circle cx="14" cy="14" r="13" fill="#c8f1f6" />
-    <path d="M5 15c3-3 6 3 9 0s6 3 9 0" fill="none" stroke="#0f7c86" strokeWidth="2.4" strokeLinecap="round" />
-    <path d="M7 20c2.4-2 4.8 2 7 0s4.8 2 7 0" fill="none" stroke="#1d6fb8" strokeWidth="2" strokeLinecap="round" />
+  <svg width={32} height={32} viewBox="0 0 96 96" aria-hidden {...p}>
+    <rect x="8" y="8" width="38" height="38" rx="9" fill="#0f7c86" />
+    <rect x="50" y="8" width="38" height="38" rx="9" fill="#1d6fb8" />
+    <rect x="8" y="50" width="38" height="38" rx="9" fill="#0b4f6c" />
+    <rect x="55" y="55" width="28" height="28" rx="7" fill="#5fd3df" transform="rotate(45 69 69)" />
   </svg>
 )
