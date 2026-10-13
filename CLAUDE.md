@@ -9,7 +9,7 @@
    - Haz una pausa y realiza preguntas claras y directas al usuario especificando las alternativas posibles con sus pros y contras.
 ## Proyecto: Azulejo
 
-App web personal (SPA estática, sin backend ni IA) para aprender cloud con Microsoft Azure: los fundamentos de **AZ-900** y la administración práctica de **AZ-104** con la Azure CLI.
+App web personal (SPA estática, sin servidor propio ni IA; sincronización opcional del progreso con Firebase, decisión 70) para aprender cloud con Microsoft Azure: los fundamentos de **AZ-900** y la administración práctica de **AZ-104** con la Azure CLI.
 
 - Itinerarios (`content/tracks.json`): `az900` (8 módulos, niveles 1-3) y `az104` (8 módulos, niveles 1-4). Máximo 10 módulos por itinerario y módulos concisos (decisión 63).
 - Especificación de CLI: `content/cli-specs/az.json`, generada desde learn.microsoft.com (decisión 62).

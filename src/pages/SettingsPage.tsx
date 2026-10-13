@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { exportFileName, exportProgress, importProgress } from '../engine/progressFile'
 import { useProgress } from '../store/progressStore'
+import { resetProgress, signIn, signOut, syncNow, useSync, type SyncStatus } from '../sync/syncStore'
 
 type Notice = { kind: 'ok' | 'error'; text: string } | null
 
@@ -8,6 +9,7 @@ export function SettingsPage() {
   const progress = useProgress()
   const fileInput = useRef<HTMLInputElement>(null)
   const [notice, setNotice] = useState<Notice>(null)
+  const signedIn = useSync((s) => s.user !== null)
 
   const download = () => {
     const now = new Date()
@@ -40,8 +42,8 @@ export function SettingsPage() {
       <h1 className="text-2xl font-semibold">Ajustes</h1>
 
       <p className="text-sm text-muted">
-        Tu progreso se guarda solo en este navegador. Descarga una copia de vez en cuando para no perderlo o para
-        continuar en otro dispositivo.
+        Tu progreso se guarda en este dispositivo. Con la sincronización activa, también se guarda en tu cuenta y lo
+        ves igual en la web y en el móvil. Sin ella, descarga una copia de vez en cuando para no perderlo.
       </p>
 
       {notice && (
@@ -53,6 +55,8 @@ export function SettingsPage() {
         </p>
       )}
 
+      <SyncPanel />
+
       <div className="rounded-2xl border border-line p-4">
         <h2 className="font-medium">Exportar progreso</h2>
         <p className="mt-1 text-sm text-muted">Descarga un archivo JSON con todo tu progreso.</p>
@@ -63,7 +67,10 @@ export function SettingsPage() {
 
       <div className="rounded-2xl border border-line p-4">
         <h2 className="font-medium">Importar progreso</h2>
-        <p className="mt-1 text-sm text-muted">Carga una copia descargada antes. Sustituye el progreso actual (se te pedirá confirmación).</p>
+        <p className="mt-1 text-sm text-muted">
+          Carga una copia descargada antes. Sustituye el progreso actual (se te pedirá confirmación); con la
+          sincronización activa, la copia se combina con tu progreso de la nube.
+        </p>
         <input
           ref={fileInput}
           type="file"
@@ -88,15 +95,18 @@ export function SettingsPage() {
       <div className="rounded-2xl border border-red-200 p-4">
         <h2 className="font-medium text-red-700">Borrar progreso</h2>
         <p className="mt-1 text-sm text-muted">
-          Elimina XP, racha, lecciones, ejercicios, exámenes y flashcards de este navegador. No se puede deshacer.
+          Elimina XP, racha, lecciones, ejercicios, exámenes y flashcards de este dispositivo y, si has entrado con
+          Google, también de la nube. No se puede deshacer.
         </p>
         <button
           type="button"
-          onClick={() => {
-            if (window.confirm('¿Seguro que quieres borrar todo tu progreso? Te recomendamos descargar antes una copia.')) {
-              progress.reset()
-              setNotice({ kind: 'ok', text: 'Progreso borrado.' })
-            }
+          onClick={async () => {
+            const msg =
+              '¿Seguro que quieres borrar todo tu progreso? Te recomendamos descargar antes una copia.' +
+              (signedIn ? '\n\nSe borrará también de la nube. Si tienes la app en otro dispositivo, bórralo también allí o lo volverá a subir.' : '')
+            if (!window.confirm(msg)) return
+            const r = await resetProgress()
+            setNotice(r.ok ? { kind: 'ok', text: 'Progreso borrado.' } : { kind: 'error', text: r.error })
           }}
           className="mt-3 rounded-full border border-red-300 px-5 py-2.5 text-sm text-red-800 hover:bg-red-50"
         >
@@ -104,5 +114,60 @@ export function SettingsPage() {
         </button>
       </div>
     </section>
+  )
+}
+
+const STATUS_TEXT: Record<SyncStatus, string> = {
+  off: '',
+  signedOut: '',
+  syncing: 'Sincronizando…',
+  ok: 'Sincronizado',
+  offline: 'Sin conexión: se sincronizará al recuperarla',
+  error: 'Error al sincronizar',
+}
+
+function SyncPanel() {
+  const { status, user, lastSync, error } = useSync()
+  return (
+    <div className="rounded-2xl border border-line p-4">
+      <h2 className="font-medium">Sincronización</h2>
+      {status === 'off' ? (
+        <p className="mt-1 text-sm text-muted">No está configurada en esta versión de la app.</p>
+      ) : !user ? (
+        <>
+          <p className="mt-1 text-sm text-muted">
+            Entra con tu cuenta de Google para tener el mismo progreso en todos tus dispositivos.
+          </p>
+          <button type="button" onClick={() => void signIn()} className="mt-3 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-hover">
+            Entrar con Google
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="mt-1 text-sm text-muted">
+            Conectado como <span className="font-medium text-ink">{user.email ?? user.name}</span>.
+          </p>
+          <p role="status" className="mt-1 text-sm text-muted">
+            {STATUS_TEXT[status]}
+            {status === 'ok' && lastSync && ` (${lastSync.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })})`}
+            {status === 'error' && error && `: ${error}`}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={status === 'syncing'}
+              onClick={() => void syncNow()}
+              className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-60"
+            >
+              Sincronizar ahora
+            </button>
+            <button type="button" onClick={() => void signOut()} className="rounded-full border border-line-strong px-5 py-2.5 text-sm hover:bg-primary-faint">
+              Cerrar sesión
+            </button>
+          </div>
+        </>
+      )}
+      {status === 'signedOut' && error && <p className="mt-2 text-sm text-red-800">{error}</p>}
+    </div>
   )
 }

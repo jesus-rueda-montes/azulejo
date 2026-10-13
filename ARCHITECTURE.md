@@ -9,10 +9,12 @@ Azulejo deriva de **Kubernetete** (app para Cloud, Kubernetes, Terraform y Ansib
 - **Especificación de CLI**: solo `content/cli-specs/az.json` (182 nodos de comandos), generada desde la documentación oficial (decisión 62).
 - **Glosario**: 63 términos (`content/glossary.json`).
 - **Tests**: Vitest (motor, contenido, componentes; 90 tests) y Playwright (`e2e/progreso.spec.ts`, sobre `az900/c1-conceptos-cloud` → `c1-arquitectura`).
+- **Sincronización opcional** con Firebase Spark (Auth con Google + Firestore), decisiones 70-73. Desactivada mientras `src/sync/firebaseConfig.ts` sea `null`.
 - **Repositorio en GitHub**: `github.com/jesus-rueda-montes/azulejo` (público, decisión 68). El workflow `.github/workflows/deploy.yml` publica en GitHub Pages en cada push a `main`: `https://jesus-rueda-montes.github.io/azulejo/`.
 
 ## Estructura
 ```
+firestore.rules                 # reglas de Firestore (se publican a mano en la consola)
 content/
   tracks.json                   # itinerarios (az900, az104)
   glossary.json                 # término -> definición, módulo donde se introduce
@@ -24,10 +26,11 @@ content/
     flashcards.json
 src/
   content/                      # schema.ts (zod), loader.ts, lesson.ts, glossaryPlugin.ts
-  engine/                       # lógica pura: grade, cli, yamlAssert, srs, progress, exam, badges, progressFile
+  engine/                       # lógica pura: grade, cli, yamlAssert, srs, progress, merge, exam, badges, progressFile
     __fixtures__/               # specs kubectl, terraform y ansible heredadas, solo para tests del motor
   lib/gradeExercise.ts          # corrección (síncrona; ya no hay HCL)
   store/                        # Zustand + persist (IndexedDB), clave `azulejo-progress`
+  sync/                         # firebaseConfig.ts, cloud.ts (Firebase bajo demanda), syncStore.ts (cuándo y cómo sincronizar)
   pages/                        # Dashboard, TrackMap, Lesson, Exercise, Exam, Review, Settings
   components/                   # Layout, MarkdownView, Terminal, CodeEditor, QuizCard, HintPanel…
 ```
@@ -47,7 +50,7 @@ src/
 | `/#/modulo/:trackId/:slug/ejercicio/:exerciseId` | Práctica con pistas y solución explicada |
 | `/#/modulo/:trackId/:slug/examen` | Examen del módulo |
 | `/#/repaso` | Repaso de flashcards (FSRS) |
-| `/#/ajustes` | Exportar, importar y borrar progreso |
+| `/#/ajustes` | Sincronización (Google), exportar, importar y borrar progreso |
 
 ## Plantilla de lección (obligatoria, en este orden)
 1. Qué problema resuelve
@@ -91,6 +94,7 @@ src/
 - Pistas y "ver solución" nunca cambian XP, nota, racha ni desbloqueo (hay test).
 - Desbloqueo: examen aprobado (≥ 80 %) del módulo anterior del itinerario + prereqs explícitos.
 - Flashcards: entran en el repaso cuando el módulo está desbloqueado y se han leído todas sus lecciones.
+- Sincronización (`src/sync/syncStore.ts`): al entrar con Google, al volver a la app, al recuperar la conexión y 3 s después de cada cambio. Lee la nube, fusiona con `mergeProgress` (`src/engine/merge.ts`), aplica el resultado en local (sin anunciar insignias) y solo escribe si algo cambió. El documento `users/{uid}` guarda el progreso en el formato de la copia JSON (`data`) y `updatedAt`, así se valida y migra como una importación.
 - Copia de progreso: JSON `{ app: 'azulejo', exportedAt, progress }`, archivo `azulejo-progreso-AAAA-MM-DD.json`.
 
 ## Convenciones de redacción del contenido
@@ -102,4 +106,5 @@ src/
 - Los tests de interfaz usan `az104/a1-cli-arm`: aprueban antes el itinerario az900 (`resetAndUnlock`) por su prerequisito.
 - Las acciones del store devuelven una Promise (por `persist`): dentro de `act`, usar cuerpo con llaves.
 - La corrección es asíncrona en la interfaz: tras "Comprobar", `await screen.findBy...`.
+- `src/sync/syncStore.test.ts` simula la nube con `vi.mock('./cloud')`; ningún test usa Firebase de verdad.
 - `App.test.tsx`: hay dos barras de navegación (escritorio y móvil), y jsdom no aplica el CSS que oculta una.

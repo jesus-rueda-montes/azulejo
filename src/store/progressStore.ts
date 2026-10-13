@@ -91,15 +91,12 @@ export const useProgress = create<ProgressStore>()(
       migrate: (saved, fromVersion) => migrateProgress(saved, fromVersion),
       storage: createJSONStorage(() => idbStorage),
       // Solo se guardan datos, no las funciones.
-      partialize: ({ version, xp, lessonsRead, exercises, exams, streak, cards }) => ({
-        version,
-        xp,
-        lessonsRead,
-        exercises,
-        exams,
-        streak,
-        cards,
-      }),
+      partialize: (s: ProgressStore) => progressData(s),
     },
   ),
 )
+
+/** Solo los datos del progreso, sin las acciones. */
+export function progressData({ version, xp, lessonsRead, exercises, exams, streak, cards }: ProgressState): ProgressState {
+  return { version, xp, lessonsRead, exercises, exams, streak, cards }
+}

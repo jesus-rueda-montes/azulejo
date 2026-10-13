@@ -24,6 +24,7 @@
     "@fontsource-variable/source-sans-3": "^5.3.1",
     "@lezer/common": "^1.5.3",
     "@lezer/highlight": "^1.2.4",
+    "firebase": "^13.0.0",
     "idb-keyval": "^6.3.0",
     "js-yaml": "^5.4.2",
     "react": "^19.2.8",

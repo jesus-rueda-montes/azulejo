@@ -3,6 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router'
 import './index.css'
 import App from './App.tsx'
+import { firebaseConfig } from './sync/firebaseConfig'
+import { startSync } from './sync/syncStore'
+
+startSync(firebaseConfig)
 
 // HashRouter: GitHub Pages no reescribe rutas, así que usamos /#/ruta.
 createRoot(document.getElementById('root')!).render(
